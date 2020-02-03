@@ -1,5 +1,6 @@
 OpenAPI-ignore-parser
 ============
+[![Build Status](https://travis-ci.com/elibracha/openapi-ignore-parser.svg?branch=master)](https://travis-ci.com/elibracha/openapi-ignore-parser)
 
 Parse a OpenAPI-diff ignore file specifications(1.x). 
 Can be use to integrate with OpenAPI-diff and customize your breaking changes.
