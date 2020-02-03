@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 public class IgnoreParserTest {
 
     @Test
-    public void testNameMkyong() {
-        assertEquals("Hello", "Hello");
+    public void hello() {
+        assertEquals("hello", IgnoreParser.hello());
     }
 }
