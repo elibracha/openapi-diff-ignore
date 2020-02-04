@@ -10,18 +10,19 @@ public class PathIgnore {
     private RequestIgnore requestIgnore;
     @JsonProperty("response")
     private ResponseIgnore responseIgnore;
-
     private String method;
     private String type;
+    private String info;
 
     public PathIgnore() {
     }
 
-    public PathIgnore(RequestIgnore requestIgnore, ResponseIgnore responseIgnore, String method, String type) {
-        this.requestIgnore = requestIgnore;
-        this.responseIgnore = responseIgnore;
-        this.method = method;
-        this.type = type;
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public RequestIgnore getRequestIgnore() {
@@ -64,12 +65,13 @@ public class PathIgnore {
         return Objects.equals(requestIgnore, that.requestIgnore) &&
                 Objects.equals(responseIgnore, that.responseIgnore) &&
                 Objects.equals(method, that.method) &&
-                Objects.equals(type, that.type);
+                Objects.equals(type, that.type) &&
+                Objects.equals(info, that.info);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(requestIgnore, responseIgnore, method, type);
+        return Objects.hash(requestIgnore, responseIgnore, method, type, info);
     }
 
     @Override
@@ -79,6 +81,7 @@ public class PathIgnore {
                 ", responseIgnore=" + responseIgnore +
                 ", method='" + method + '\'' +
                 ", type='" + type + '\'' +
+                ", info='" + info + '\'' +
                 '}';
     }
 }

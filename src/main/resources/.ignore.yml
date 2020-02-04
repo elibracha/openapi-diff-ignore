@@ -3,24 +3,27 @@ info: this is a sample ignore file to silence changes in openapi-diff
 project: sample-service
 paths:
   /*:
+    ignore-type: single
     ignore:
-      response:
-        info: this will ignore any response from any endpoint
-        status:
-          - default
+      post:
+        response:
+          info: this will ignore any response from any endpoint
+          status:
+            - default
+
   /pet:
+    ignore-type: single
     ignore:
-      type: single
-      method: post
-      response:
-        status:
-          - 400
-      request:
-        content-type:
-          - application/json
-        parameters:
-          content: octet-stream
+      post:
+        response:
+          status:
+            - 400
+        request:
+          content-type:
+            - application/json
+          parameters:
+            content: octet-stream
+
   /store:
-    ignore:
-      type: all
+    ignore-type: all
 
