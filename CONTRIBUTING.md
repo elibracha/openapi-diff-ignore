@@ -2,16 +2,16 @@
 
 ## Before submitting an issue
 
- - If you're not using the latest master to parse Ignore file, please give it another try by pulling the latest master as the issue may have already been addressed. Ref: [Getting Started](https://github.com/elibracha/openapi-ignore-parser)
- - Search the [open issue](https://github.com/elibracha/openapi-ignore-parser/issues) and [closed issue](https://github.com/elibracha/openapi-ignore-parser/issues) to ensure no one else has reported something similar before.
- - File an [issue ticket](https://github.com/elibracha/openapi-ignore-parser/issues/new) by providing all the required information.
+ - If you're not using the latest master to parse Ignore file, please give it another try by pulling the latest master as the issue may have already been addressed. Ref: [Getting Started](https://github.com/elibracha/openapi-diff-ignore)
+ - Search the [open issue](https://github.com/elibracha/openapi-diff-ignore/issues) and [closed issue](https://github.com/elibracha/openapi-diff-ignore/issues) to ensure no one else has reported something similar before.
+ - File an [issue ticket](https://github.com/elibracha/openapi-diff-ignore/issues/new) by providing all the required information.
  - Test with the latest master by building the JAR locally to see if the issue has already been addressed.
  - You can also make a suggestion or ask a question by opening an "issue".
 
 ## Before submitting a PR
 
- - Search the [open issue](https://github.com/elibracha/openapi-ignore-parser/issues) to ensure no one else has reported something similar and no one is actively working on similar proposed change.
- - If no one has suggested something similar, open an ["issue"](https://github.com/elibracha/openapi-ignore-parser/issues) with your suggestion to gather feedback from the community.
+ - Search the [open issue](https://github.com/elibracha/openapi-diff-ignore/issues) to ensure no one else has reported something similar and no one is actively working on similar proposed change.
+ - If no one has suggested something similar, open an ["issue"](https://github.com/elibracha/openapi-diff-ignore/issues) with your suggestion to gather feedback from the community.
  - It's recommended to **create a new git branch** for the change so that the merge commit message looks nicer in the commit history.
 
 ## How to contribute
