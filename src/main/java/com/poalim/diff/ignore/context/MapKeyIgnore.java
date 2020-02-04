@@ -1,9 +1,9 @@
-package com.poalim.parsers.context;
+package com.poalim.diff.ignore.context;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.poalim.parsers.models.GlobalIgnore;
+import com.poalim.diff.ignore.models.GlobalIgnore;
 
 import java.util.HashMap;
 import java.util.Map;

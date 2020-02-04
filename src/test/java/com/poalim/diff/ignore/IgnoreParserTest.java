@@ -1,6 +1,6 @@
-package com.poalim.parsers;
+package com.poalim.diff.ignore;
 
-import com.poalim.parsers.processors.IgnoreProcessor;
+import com.poalim.diff.ignore.processors.IgnoreProcessor;
 import org.junit.Test;
 
 public class IgnoreParserTest {

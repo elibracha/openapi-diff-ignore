@@ -1,4 +1,4 @@
-package com.poalim.parsers.models;
+package com.poalim.diff.ignore.models;
 
 import java.util.List;
 import java.util.Objects;
