@@ -60,11 +60,6 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.9.8</version>
         </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.25</version>
-        </dependency>
         <!-- END YAML PARSING DEPENDENCIES -->
 
         <!-- START TESTING-->

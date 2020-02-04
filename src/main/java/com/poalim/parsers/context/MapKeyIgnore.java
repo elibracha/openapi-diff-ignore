@@ -15,12 +15,12 @@ public class MapKeyIgnore<K, V> {
     private Map<K, V> mapKey;
     private GlobalIgnore globalIgnore;
 
-    public MapKeyIgnore(){
+    public MapKeyIgnore() {
         this.mapKey = new HashMap<>();
-        this.globalIgnore= new GlobalIgnore();
+        this.globalIgnore = new GlobalIgnore();
     }
 
-    public MapKeyIgnore<K, V> load(Map<K, V> map){
+    public MapKeyIgnore<K, V> load(Map<K, V> map) {
         this.mapKey.putAll(map);
         this.buildMap();
         return this;
