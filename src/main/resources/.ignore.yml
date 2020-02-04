@@ -12,7 +12,8 @@ paths:
     ignore:
       method: post
       response:
-        - 400
+        status:
+          - 400
       request:
         content-type:
           - application/json

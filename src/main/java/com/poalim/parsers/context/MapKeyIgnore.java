@@ -1,18 +1,32 @@
 package com.poalim.parsers.context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.poalim.parsers.models.GlobalIgnore;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class MapKeyIgnore<K, V> {
 
-    private Map<K, V> mapkey;
+    private final static String VERSION_SUPPORT = "1.0.0";
+
+    private Map<K, V> mapKey;
+    private GlobalIgnore globalIgnore;
 
     public MapKeyIgnore(){
-        this.mapkey = new HashMap<>();
+        this.mapKey = new HashMap<>();
+        this.globalIgnore= new GlobalIgnore();
     }
 
     public MapKeyIgnore<K, V> load(Map<K, V> map){
-        this.mapkey.putAll(map);
+        this.mapKey.putAll(map);
+        this.buildMap();
         return this;
+    }
+
+    private void buildMap(){
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        this.globalIgnore = mapper.convertValue(mapKey, GlobalIgnore.class);
     }
 }
