@@ -1,13 +1,13 @@
 package com.poalim.parsers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.poalim.parsers.context.MapKeyIgnore;
+import com.poalim.parsers.processors.IgnoreProcessor;
 
 public class IgnoreParser {
 
-    static final Logger logger = LoggerFactory.getLogger(IgnoreParser.class);
-
-    public static String hello() {
-        return "hello";
+    public static void main(String[] args) {
+        IgnoreProcessor parser = new IgnoreProcessor(".ignore.yml");
+        MapKeyIgnore<String, String> result = parser.processIgnore();
+        System.out.println(result);
     }
 }

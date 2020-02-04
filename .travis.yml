@@ -23,8 +23,7 @@ jdk:
 script:
   - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - ./mvnw test -B
-  -
-# This is to enable CodeCov's coverage
-# If a build is successful, the code is submitted for coverage analysis
+  - # This is to enable CodeCov's coverage
+  # If a build is successful, the code is submitted for coverage analysis
 after_success:
   - bash <(curl -s https://codecov.io/bash)
