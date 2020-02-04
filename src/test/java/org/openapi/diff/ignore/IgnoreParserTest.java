@@ -1,7 +1,7 @@
-package com.poalim.diff.ignore;
+package org.openapi.diff.ignore;
 
-import com.poalim.diff.ignore.processors.IgnoreProcessor;
 import org.junit.Test;
+import org.openapi.diff.ignore.processors.IgnoreProcessor;
 
 public class IgnoreParserTest {
 

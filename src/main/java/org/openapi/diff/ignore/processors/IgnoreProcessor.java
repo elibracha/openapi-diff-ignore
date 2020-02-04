@@ -1,7 +1,7 @@
-package com.poalim.diff.ignore.processors;
+package org.openapi.diff.ignore.processors;
 
 
-import com.poalim.diff.ignore.context.MapKeyIgnore;
+import org.openapi.diff.ignore.context.MapKeyIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;

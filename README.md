@@ -2,7 +2,7 @@ OpenAPI-diff-ignore
 ============
 [![Build Status](https://travis-ci.com/elibracha/openapi-diff-ignore.svg?branch=master)](https://travis-ci.com/elibracha/openapi-diff-ignore)
 [![codecov](https://codecov.io/gh/elibracha/openapi-diff-ignore/branch/master/graph/badge.svg)](https://codecov.io/gh/elibracha/openapi-diff-ignore)
-
+[![Jion the Slack chat room](https://img.shields.io/badge/Slack-Join%20the%20chat%20room-orange)](https://join.slack.com/t/openapi-diff-ignore/shared_invite/enQtNzAyNDMyOTU0OTE1LTY5ZDBiNDI5NzI5ZjQ1Y2E5OWVjMjZkYzY1ZGM2MWQ4YWFjMzcyNDY5MGI4NjQxNDBiMTlmZTc5NjY2ZTQ5MGM)
 Parse a OpenAPI-diff ignore file specifications(1.x). 
 Can be use to integrate with OpenAPI-diff and customize your breaking changes.
 

@@ -1,4 +1,4 @@
-package com.poalim.diff.ignore.models;
+package org.openapi.diff.ignore.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
