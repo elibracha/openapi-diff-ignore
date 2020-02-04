@@ -1,12 +1,12 @@
-OpenAPI-ignore-parser
+OpenAPI-diff-ignore
 ============
-[![Build Status](https://travis-ci.com/elibracha/openapi-ignore-parser.svg?branch=master)](https://travis-ci.com/elibracha/openapi-ignore-parser)
-[![codecov](https://codecov.io/gh/elibracha/openapi-ignore-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/elibracha/openapi-ignore-parser)
+[![Build Status](https://travis-ci.com/elibracha/openapi-diff-ignore.svg?branch=master)](https://travis-ci.com/elibracha/openapi-diff-ignore)
+[![codecov](https://codecov.io/gh/elibracha/openapi-diff-ignore/branch/master/graph/badge.svg)](https://codecov.io/gh/elibracha/openapi-diff-ignore)
 
 Parse a OpenAPI-diff ignore file specifications(1.x). 
 Can be use to integrate with OpenAPI-diff and customize your breaking changes.
 
-If you think you have found a bug, please file an issue in the [Github Issues](https://github.com/elibracha/openapi-ignore-parser/issues).
+If you think you have found a bug, please file an issue in the [Github Issues](https://github.com/elibracha/openapi-diff-ignore/issues).
 
 Documentation
 -------------
@@ -21,7 +21,7 @@ You can download release source from our release page.
 Contributing
 ------------
 
-If you are interested in the development of OpenAPI-ignore-parser, please consult the 
+If you are interested in the development of OpenAPI-diff-ignore, please consult the 
 documentation first and afterwards you are welcome to join the developers 
 mailing list to ask question or discuss new ideas / features / bugs etc.
 
