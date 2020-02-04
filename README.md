@@ -12,7 +12,7 @@ If you think you have found a bug, please file an issue in the [Github Issues](h
 Documentation
 -------------
 
-More information can be found on [Docs][maven-home].
+More information can be found on [Docs][openapi-diff-ignore-home].
 
 
 Where can I get the latest release?
@@ -32,26 +32,12 @@ Take a look into the [contribution guidelines](CONTRIBUTING.md).
 
 Quick Build
 -------
-If you want to bootstrap Maven, you'll need:
+If you want to bootstrap openapi-diff-ignore, you'll need:
 - Java 1.8+
-- Maven 3.0.5 or later
+- Maven 3.x.x or later
 - Run Maven, specifying a location into which the completed Maven distro should be installed:
 ```
-mvn clean package
+./mvnw clean package
 ```
 
-
-[home]: https://maven.apache.org/
-[license]: https://www.apache.org/licenses/LICENSE-2.0
-[build]: https://builds.apache.org/job/maven-box/job/maven/job/master/
-[test-results]: https://builds.apache.org/job/maven-box/job/maven/job/master/lastCompletedBuild/testReport/
-[build-status]: https://img.shields.io/jenkins/s/https/builds.apache.org/job/maven-box/job/maven/job/master.svg?style=flat-square
-[build-tests]: https://img.shields.io/jenkins/t/https/builds.apache.org/job/maven-box/job/maven/job/master.svg?style=flat-square
-[maven-home]: https://maven.apache.org/
-[maven-download]: https://maven.apache.org/download.cgi
-[users-list]: https://maven.apache.org/mailing-lists.html
-[dev-ml-list]: https://www.mail-archive.com/dev@maven.apache.org/
-[code-style]: http://maven.apache.org/developers/conventions/code.html
-[core-it]: https://maven.apache.org/core-its/core-it-suite/
-[building-maven]: https://maven.apache.org/guides/development/guide-building-maven.html
-[cla]: https://www.apache.org/licenses/#clas
+[openapi-diff-ignore-home]: https://maven.apache.org/
