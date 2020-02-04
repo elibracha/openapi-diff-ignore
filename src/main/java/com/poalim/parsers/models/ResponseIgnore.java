@@ -1,16 +1,17 @@
 package com.poalim.parsers.models;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ResponseIgnore {
 
     private String info;
-    private int status;
+    private List<String> status;
 
     public ResponseIgnore() {
     }
 
-    public ResponseIgnore(String info, int status) {
+    public ResponseIgnore(String info, List<String> status) {
         this.info = info;
         this.status = status;
     }
@@ -23,11 +24,11 @@ public class ResponseIgnore {
         this.info = info;
     }
 
-    public int getStatus() {
+    public List<String> getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(List<String> status) {
         this.status = status;
     }
 

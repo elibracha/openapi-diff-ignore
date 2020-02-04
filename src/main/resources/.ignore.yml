@@ -10,6 +10,7 @@ paths:
           - default
   /pet:
     ignore:
+      type: single
       method: post
       response:
         status:
@@ -20,5 +21,6 @@ paths:
         parameters:
           content: octet-stream
   /store:
-    ignore: all
+    ignore:
+      type: all
 

@@ -6,6 +6,9 @@ public class ParamsIgnore {
 
     private String content;
 
+    public ParamsIgnore() {
+    }
+
     public String getContent() {
         return content;
     }

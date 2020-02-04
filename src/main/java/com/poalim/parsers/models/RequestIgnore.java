@@ -1,24 +1,30 @@
 package com.poalim.parsers.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 import java.util.Objects;
 
 public class RequestIgnore {
 
-    private String contentType;
+    @JsonProperty("content-type")
+    private List<String> contentType;
+    @JsonProperty("parameters")
     private ParamsIgnore params;
 
-    public RequestIgnore() { }
+    public RequestIgnore() {
+    }
 
-    public RequestIgnore(String contentType, ParamsIgnore params) {
+    public RequestIgnore(List<String> contentType, ParamsIgnore params) {
         this.contentType = contentType;
         this.params = params;
     }
 
-    public String getContentType() {
+    public List<String> getContentType() {
         return contentType;
     }
 
-    public void setContentType(String contentType) {
+    public void setContentType(List<String> contentType) {
         this.contentType = contentType;
     }
 

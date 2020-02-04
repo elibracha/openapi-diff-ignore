@@ -28,18 +28,18 @@ public class IgnoreProcessor {
         this.ignorePath = path;
     }
 
-    public MapKeyIgnore<String, String> processIgnore() {
-        try(InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(this.ignorePath)){
+    public void processIgnore() {
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(this.ignorePath)) {
             Yaml yaml = new Yaml();
 
             this.mapKey.load(yaml.load(inputStream));
 
-            return mapKey;
-
-        } catch (IOException | YAMLException e){
+        } catch (IOException | YAMLException e) {
             logger.error(e.getMessage());
         }
+    }
 
-        return this.mapKey;
+    public MapKeyIgnore<String, String> getMapKey() {
+        return mapKey;
     }
 }

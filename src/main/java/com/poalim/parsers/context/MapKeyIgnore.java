@@ -1,5 +1,6 @@
 package com.poalim.parsers.context;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.poalim.parsers.models.GlobalIgnore;
@@ -25,8 +26,9 @@ public class MapKeyIgnore<K, V> {
         return this;
     }
 
-    private void buildMap(){
+    private void buildMap() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        this.globalIgnore = mapper.convertValue(mapKey, GlobalIgnore.class);
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
     }
 }
