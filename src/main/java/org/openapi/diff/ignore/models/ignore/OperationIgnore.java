@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore.models;
+package org.openapi.diff.ignore.models.ignore;
 
 import java.util.Objects;
 

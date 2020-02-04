@@ -3,7 +3,7 @@ package org.openapi.diff.ignore.context;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.openapi.diff.ignore.models.GlobalIgnore;
+import org.openapi.diff.ignore.models.ignore.GlobalIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
