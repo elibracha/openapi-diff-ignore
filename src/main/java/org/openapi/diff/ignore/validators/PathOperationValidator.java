@@ -13,9 +13,11 @@ public class PathOperationValidator {
 
     private Map<String, Object> path;
     private ValidationResult result;
+    private OperationValidator operationValidator;
 
     public PathOperationValidator() {
         this.result = new ValidationResult();
+        this.operationValidator = new OperationValidator();
     }
 
     public boolean validate() {
@@ -28,6 +30,15 @@ public class PathOperationValidator {
             if (!supported.contains(entry.getKey())) {
                 result.setMessage(String.format("value \"%s\" not supported", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                return false;
+            }
+        }
+
+        if (path.get("ignore") != null) {
+            operationValidator.setOperations((Map<String, Object>) path.get("ignore"));
+
+            if (!operationValidator.validate()) {
+                this.result = operationValidator.getResult();
                 return false;
             }
         }

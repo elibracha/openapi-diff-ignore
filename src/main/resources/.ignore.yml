@@ -3,7 +3,7 @@ info: this is a sample ignore file to silence changes in openapi-diff
 project: sample-service
 paths:
   /*:
-    ignore-types: single
+    ignore-type: single
     ignore:
       post:
         response:
