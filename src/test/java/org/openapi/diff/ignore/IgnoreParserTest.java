@@ -10,6 +10,5 @@ public class IgnoreParserTest {
     public void test() {
         IgnoreProcessor parser = new IgnoreProcessor(".ignore.yml");
         parser.processIgnore();
-        System.out.println(parser.getMapKey());
     }
 }

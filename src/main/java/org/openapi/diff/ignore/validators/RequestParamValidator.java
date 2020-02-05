@@ -1,7 +1,7 @@
 package org.openapi.diff.ignore.validators;
 
-import org.openapi.diff.ignore.models.validations.RequestValidationResult;
-import org.openapi.diff.ignore.models.validations.enums.RequestSupport;
+import org.openapi.diff.ignore.models.validations.ValidationResult;
+import org.openapi.diff.ignore.models.validations.enums.RequestParameterSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
 import java.util.Arrays;
@@ -11,18 +11,18 @@ import java.util.stream.Collectors;
 
 public class RequestParamValidator {
 
-    private Map<String, Object> request;
-    private RequestValidationResult result;
+    private Map<String, Object> params;
+    private ValidationResult result;
 
     public boolean validate() {
-        List<String> supported = Arrays.stream(RequestSupport.values())
-                .map(RequestSupport::getValue)
+        List<String> supported = Arrays.stream(RequestParameterSupport.values())
+                .map(RequestParameterSupport::getValue)
                 .collect(Collectors.toList());
 
 
-        for (Map.Entry<String, Object> entry : request.entrySet()) {
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
             if (supported.contains(entry.getKey())) {
-                result.setMessage(String.format("value : %s not supported", entry.getKey()))
+                result.setMessage(String.format("value %s not supported", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
@@ -31,11 +31,11 @@ public class RequestParamValidator {
         return true;
     }
 
-    public void setRequst(Map<String, Object> request) {
-        this.request = request;
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
     }
 
-    public RequestValidationResult getResult() {
+    public ValidationResult getResult() {
         return result;
     }
 }

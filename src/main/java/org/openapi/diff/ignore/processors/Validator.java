@@ -1,4 +1,5 @@
 package org.openapi.diff.ignore.processors;
 
-public class ValidationProcessors {
+public interface Validator {
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.openapi.diff.ignore.models.ignore.GlobalIgnore;
+import org.openapi.diff.ignore.processors.ValidationProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +18,12 @@ public class MapKeyIgnore<K, V> {
 
     private Map<K, V> mapKey;
     private GlobalIgnore globalIgnore;
+    private ValidationProcessor<K, V> validationProcessor;
 
     public MapKeyIgnore() {
         this.mapKey = new HashMap<>();
         this.globalIgnore = new GlobalIgnore();
+        this.validationProcessor = new ValidationProcessor<>();
     }
 
     public void load(Map<K, V> map) {
@@ -35,7 +38,11 @@ public class MapKeyIgnore<K, V> {
         try {
             this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
         } catch (IllegalArgumentException e) {
-            log.error(e.getMessage());
+            if (this.mapKey != null)
+                validationProcessor.validate(this.mapKey);
+            else {
+                log.error(e.getMessage());
+            }
         }
     }
 }

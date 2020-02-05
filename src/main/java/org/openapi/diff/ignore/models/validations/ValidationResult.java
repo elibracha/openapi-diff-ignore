@@ -4,24 +4,16 @@ import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
 import java.util.Objects;
 
-public class RequestValidationResult {
+public class ValidationResult {
 
     private String message;
     private ValidationStatus validationStatus;
-
-    public RequestValidationResult() {
-    }
-
-    public RequestValidationResult(String message, ValidationStatus validationStatus) {
-        this.message = message;
-        this.validationStatus = validationStatus;
-    }
 
     public String getMessage() {
         return message;
     }
 
-    public RequestValidationResult setMessage(String message) {
+    public ValidationResult setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -30,7 +22,7 @@ public class RequestValidationResult {
         return validationStatus;
     }
 
-    public RequestValidationResult setValidationStatus(ValidationStatus validationStatus) {
+    public ValidationResult setValidationStatus(ValidationStatus validationStatus) {
         this.validationStatus = validationStatus;
         return this;
     }
@@ -39,7 +31,7 @@ public class RequestValidationResult {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RequestValidationResult that = (RequestValidationResult) o;
+        ValidationResult that = (ValidationResult) o;
         return Objects.equals(message, that.message) &&
                 validationStatus == that.validationStatus;
     }

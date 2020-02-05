@@ -2,8 +2,8 @@ package org.openapi.diff.ignore.models.validations.enums;
 
 public enum GlobalIgnoreSupport {
 
-    VERSION("ignore"),
-    INFO("ignore-type"),
+    VERSION("version"),
+    INFO("info"),
     PROJECT("project"),
     PATHS("paths");
 

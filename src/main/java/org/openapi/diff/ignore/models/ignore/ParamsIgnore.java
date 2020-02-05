@@ -9,15 +9,15 @@ public class ParamsIgnore {
     public ParamsIgnore() {
     }
 
+    public ParamsIgnore(String content) {
+        this.content = content;
+    }
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
-        this.content = content;
-    }
-
-    public ParamsIgnore(String content) {
         this.content = content;
     }
 
