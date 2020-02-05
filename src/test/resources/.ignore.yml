@@ -15,9 +15,6 @@ paths:
     ignore-type: single
     ignore:
       post:
-        response:
-          status:
-            - 400
         request:
           content-type:
             - application/json
@@ -32,14 +29,14 @@ paths:
           status:
             - default
             - 200
-            -
+
   /user/createWithList:
     ignore:
       post:
         response:
           status:
             - default
-            - 200
+
 
   /user/logout:
     ignore:

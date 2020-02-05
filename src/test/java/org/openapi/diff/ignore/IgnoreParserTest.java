@@ -11,6 +11,8 @@ import org.openapi.diff.ignore.processors.IgnoreProcessor;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static org.junit.Assert.assertTrue;
+
 public class IgnoreParserTest {
 
     private final String OPENAPI_GENERATED_PETSTORE = "petstore_v3_generated.yaml";
@@ -37,5 +39,7 @@ public class IgnoreParserTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        assertTrue(changedOpenApi.isUnchanged());
     }
 }
