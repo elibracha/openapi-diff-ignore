@@ -14,6 +14,10 @@ public class RequestParamValidator {
     private Map<String, Object> params;
     private ValidationResult result;
 
+    public RequestParamValidator() {
+        this.result = new ValidationResult();
+    }
+
     public boolean validate() {
         List<String> supported = Arrays.stream(RequestParameterSupport.values())
                 .map(RequestParameterSupport::getValue)
@@ -21,8 +25,8 @@ public class RequestParamValidator {
 
 
         for (Map.Entry<String, Object> entry : params.entrySet()) {
-            if (supported.contains(entry.getKey())) {
-                result.setMessage(String.format("value %s not supported", entry.getKey()))
+            if (!supported.contains(entry.getKey())) {
+                result.setMessage(String.format("value \"%s\" not supported in request parameters", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }

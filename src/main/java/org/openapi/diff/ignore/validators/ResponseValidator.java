@@ -9,10 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ReponseValidator {
+public class ResponseValidator {
 
     private Map<String, Object> response;
     private ValidationResult result;
+
+    public ResponseValidator() {
+        this.result = new ValidationResult();
+    }
 
     public boolean validate() {
         List<String> supported = Arrays.stream(ResponseSupport.values())
@@ -21,13 +25,12 @@ public class ReponseValidator {
 
 
         for (Map.Entry<String, Object> entry : response.entrySet()) {
-            if (supported.contains(entry.getKey())) {
-                result.setMessage(String.format("value %s not supported", entry.getKey()))
+            if (!supported.contains(entry.getKey())) {
+                result.setMessage(String.format("value \"%s\" not supported int response", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
         }
-
         return true;
     }
 

@@ -11,8 +11,14 @@ import java.util.stream.Collectors;
 
 public class RequestValidator {
 
+    private RequestParamValidator requestParamValidator;
     private Map<String, Object> request;
     private ValidationResult result;
+
+    public RequestValidator() {
+        this.result = new ValidationResult();
+        this.requestParamValidator = new RequestParamValidator();
+    }
 
     public boolean validate() {
         List<String> supported = Arrays.stream(RequestSupport.values())
@@ -20,9 +26,18 @@ public class RequestValidator {
                 .collect(Collectors.toList());
 
         for (Map.Entry<String, Object> entry : request.entrySet()) {
-            if (supported.contains(entry.getKey())) {
-                result.setMessage(String.format("value %s not supported", entry.getKey()))
+            if (!supported.contains(entry.getKey())) {
+                result.setMessage(String.format("value \"%s\" not supported in request", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                return false;
+            }
+        }
+
+        if (request.containsKey("parameters") && request.get("parameters") != null) {
+            requestParamValidator.setParams((Map<String, Object>) request.get("parameters"));
+
+            if (!requestParamValidator.validate()) {
+                this.result = requestParamValidator.getResult();
                 return false;
             }
         }
