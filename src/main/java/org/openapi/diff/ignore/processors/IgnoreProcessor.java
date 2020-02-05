@@ -13,7 +13,7 @@ import java.lang.invoke.MethodHandles;
 
 public class IgnoreProcessor {
 
-    static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
     private final static String DEFAULT_SEARCH_DIRECTORY = ".";
 
     private MapKeyIgnore<String, String> mapKey;
