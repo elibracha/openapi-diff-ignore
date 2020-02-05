@@ -17,7 +17,6 @@ paths:
       post:
         request:
           content-type:
-            - application/json
             - application/octet-stream
           parameters:
             content: application/octet-stream
