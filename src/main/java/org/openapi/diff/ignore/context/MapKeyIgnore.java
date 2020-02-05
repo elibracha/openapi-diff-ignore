@@ -26,6 +26,10 @@ public class MapKeyIgnore<K, V> {
         this.validationProcessor = new ValidationProcessor<>();
     }
 
+    public GlobalIgnore getGlobalIgnore() {
+        return globalIgnore;
+    }
+
     public void load(Map<K, V> map) {
         this.mapKey.putAll(map);
         this.buildMap();

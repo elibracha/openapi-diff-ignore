@@ -11,7 +11,7 @@ paths:
           status:
             - default
 
-  /pet:
+  /pet/{petId}/uploadImage:
     ignore-type: single
     ignore:
       post:
@@ -21,9 +21,41 @@ paths:
         request:
           content-type:
             - application/json
+            - application/octet-stream
           parameters:
-            content: octet-stream
+            content: application/octet-stream
 
+  /user:
+    ignore:
+      post:
+        response:
+          status:
+            - default
+            - 200
+            -
+  /user/createWithList:
+    ignore:
+      post:
+        response:
+          status:
+            - default
+            - 200
+
+  /user/logout:
+    ignore:
+      get:
+        response:
+          status:
+            - default
+            - 200
+
+  /user/{username}:
+    ignore:
+      put:
+        response:
+          status:
+            - default
+            - 200
   /store:
     ignore-type: all
 

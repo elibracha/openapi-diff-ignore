@@ -14,6 +14,19 @@ public class OperationIgnore {
     private PathIgnore options;
     private PathIgnore trace;
 
+    public PathIgnore checkIfIgnoreExist(String method) {
+        switch (method) {
+            case "post":
+                return this.post;
+            case "get":
+                return this.get;
+            case "put":
+                return this.put;
+            default:
+                return null;
+        }
+    }
+
     public PathIgnore getPost() {
         return post;
     }

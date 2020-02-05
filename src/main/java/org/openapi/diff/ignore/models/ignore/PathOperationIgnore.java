@@ -2,28 +2,27 @@ package org.openapi.diff.ignore.models.ignore;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 import java.util.Objects;
 
 public class PathOperationIgnore {
 
     @JsonProperty("ignore-type")
     private String ignoreType;
-    private List<OperationIgnore> ignore;
+    private OperationIgnore ignore;
 
     public PathOperationIgnore() {
     }
 
-    public PathOperationIgnore(List<OperationIgnore> ignore, String ignoreType) {
+    public PathOperationIgnore(OperationIgnore ignore, String ignoreType) {
         this.ignore = ignore;
         this.ignoreType = ignoreType;
     }
 
-    public List<OperationIgnore> getIgnore() {
+    public OperationIgnore getIgnore() {
         return ignore;
     }
 
-    public void setIgnore(List<OperationIgnore> ignore) {
+    public void setIgnore(OperationIgnore ignore) {
         this.ignore = ignore;
     }
 

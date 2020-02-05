@@ -2,6 +2,7 @@ package org.openapi.diff.ignore.processors;
 
 
 import org.openapi.diff.ignore.context.MapKeyIgnore;
+import org.openapi.diff.ignore.models.IgnoreOpenApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -29,13 +30,15 @@ public class IgnoreProcessor {
         this.ignorePath = path;
     }
 
-    public void processIgnore() {
+    public IgnoreOpenApi processIgnore() {
         try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(this.ignorePath)) {
             Yaml yaml = new Yaml();
             this.mapKey.load(yaml.load(inputStream));
         } catch (IOException | YAMLException e) {
             log.error(e.getMessage());
         }
+
+        return new IgnoreOpenApi(this.mapKey.getGlobalIgnore());
     }
 
     public MapKeyIgnore<String, String> getMapKey() {
