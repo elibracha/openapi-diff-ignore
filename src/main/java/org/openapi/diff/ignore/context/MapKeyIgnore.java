@@ -36,11 +36,12 @@ public class MapKeyIgnore<K, V> {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         try {
-            if (validationProcessor.validate(this.mapKey)) {
-                this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
-            }
+            validationProcessor.validate(this.mapKey);
+            this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
         } catch (IllegalArgumentException e) {
-            log.error(e.getMessage());
+            log.error(String.format("NOTICE! please save this trace if you need support:%s%s",
+                    System.lineSeparator() + System.lineSeparator(),
+                    e.getMessage()));
         }
     }
 }
