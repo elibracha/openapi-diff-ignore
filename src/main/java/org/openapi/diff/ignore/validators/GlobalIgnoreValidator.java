@@ -12,9 +12,11 @@ import java.util.stream.Collectors;
 public class GlobalIgnoreValidator<K, V> {
     private Map<K, V> ignore;
     private ValidationResult result;
+    private EndpointValidator endpointValidator;
 
     public GlobalIgnoreValidator() {
         this.result = new ValidationResult();
+        this.endpointValidator = new EndpointValidator();
     }
 
     public boolean validate() {
@@ -31,7 +33,13 @@ public class GlobalIgnoreValidator<K, V> {
             }
         }
 
-        return true;
+        endpointValidator.setEndpoints((Map<String, Object>) ignore.get("paths"));
+
+        boolean result = endpointValidator.validate();
+
+        this.result = endpointValidator.getResult();
+
+        return result;
     }
 
     public GlobalIgnoreValidator setIgnore(Map<K, V> ignore) {

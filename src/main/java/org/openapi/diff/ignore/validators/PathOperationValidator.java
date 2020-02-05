@@ -9,10 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class PathValidator {
+public class PathOperationValidator {
 
     private Map<String, Object> path;
     private ValidationResult result;
+
+    public PathOperationValidator() {
+        this.result = new ValidationResult();
+    }
 
     public boolean validate() {
         List<String> supported = Arrays.stream(PathOperationSupport.values())
@@ -21,8 +25,8 @@ public class PathValidator {
 
 
         for (Map.Entry<String, Object> entry : path.entrySet()) {
-            if (supported.contains(entry.getKey())) {
-                result.setMessage(String.format("value %s not supported", entry.getKey()))
+            if (!supported.contains(entry.getKey())) {
+                result.setMessage(String.format("value \"%s\" not supported", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
@@ -31,8 +35,9 @@ public class PathValidator {
         return true;
     }
 
-    public void setPath(Map<String, Object> path) {
+    public PathOperationValidator setPath(Map<String, Object> path) {
         this.path = path;
+        return this;
     }
 
     public ValidationResult getResult() {

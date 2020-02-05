@@ -36,13 +36,11 @@ public class MapKeyIgnore<K, V> {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         try {
-            this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
-        } catch (IllegalArgumentException e) {
-            if (this.mapKey != null)
-                validationProcessor.validate(this.mapKey);
-            else {
-                log.error(e.getMessage());
+            if (validationProcessor.validate(this.mapKey)) {
+                this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
             }
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
         }
     }
 }
