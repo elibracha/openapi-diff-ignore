@@ -48,7 +48,9 @@ paths:
   /user/login:
     ignore:
       get:
-        parameters: jdhfkjdsf
+        parameters:
+          - username
+          - password
 
   /user/{username}:
     ignore:
