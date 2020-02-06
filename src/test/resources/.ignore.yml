@@ -2,63 +2,33 @@ version: 1.0.0
 info: this is a sample ignore file to silence changes in openapi-diff
 project: sample-service
 paths:
-  /*:
-    ignore-type: single
-    ignore:
-      post:
-        response:
-          info: this will ignore any response from any endpoint
-          status:
-            - default
 
-  /pet/{petId}/uploadImage:
+  /*:
     ignore-type: single
     ignore:
       post:
         request:
           content-type:
             - application/octet-stream
-          parameters:
-            content: application/octet-stream
-
-  /user:
-    ignore:
-      post:
         response:
           status:
             - default
             - 200
-
-  /user/createWithList:
-    ignore:
-      post:
-        response:
-          status:
-            - default
-
-
-  /user/logout:
-    ignore:
-      get:
-        response:
-          status:
-            - default
-            - 200
-
-  /user/login:
-    ignore:
       get:
         parameters:
           - username
           - password
-
-  /user/{username}:
-    ignore:
+        response:
+          status:
+            - default
+            - 200
       put:
         response:
           status:
             - default
             - 200
+
+
   /store:
     ignore-type: all
 
