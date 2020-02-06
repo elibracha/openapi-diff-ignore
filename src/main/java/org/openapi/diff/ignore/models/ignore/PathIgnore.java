@@ -2,6 +2,7 @@ package org.openapi.diff.ignore.models.ignore;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Objects;
 
 public class PathIgnore {
@@ -10,11 +11,18 @@ public class PathIgnore {
     private RequestIgnore requestIgnore;
     @JsonProperty("response")
     private ResponseIgnore responseIgnore;
-    private String method;
-    private String type;
+    private List<String> parameters;
     private String info;
 
     public PathIgnore() {
+    }
+
+    public List<String> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<String> parameters) {
+        this.parameters = parameters;
     }
 
     public String getInfo() {
@@ -41,21 +49,6 @@ public class PathIgnore {
         this.responseIgnore = responseIgnore;
     }
 
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,14 +57,13 @@ public class PathIgnore {
         PathIgnore that = (PathIgnore) o;
         return Objects.equals(requestIgnore, that.requestIgnore) &&
                 Objects.equals(responseIgnore, that.responseIgnore) &&
-                Objects.equals(method, that.method) &&
-                Objects.equals(type, that.type) &&
+                Objects.equals(parameters, that.parameters) &&
                 Objects.equals(info, that.info);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(requestIgnore, responseIgnore, method, type, info);
+        return Objects.hash(requestIgnore, responseIgnore, parameters, info);
     }
 
     @Override
@@ -79,8 +71,7 @@ public class PathIgnore {
         return "PathIgnore{" +
                 "requestIgnore=" + requestIgnore +
                 ", responseIgnore=" + responseIgnore +
-                ", method='" + method + '\'' +
-                ", type='" + type + '\'' +
+                ", parameters=" + parameters +
                 ", info='" + info + '\'' +
                 '}';
     }

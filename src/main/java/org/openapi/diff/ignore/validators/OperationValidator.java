@@ -4,6 +4,7 @@ import org.openapi.diff.ignore.models.validations.ValidationResult;
 import org.openapi.diff.ignore.models.validations.enums.OperationSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,14 @@ public class OperationValidator {
                 result.setMessage(String.format("the method \"%s\" not a valid http method", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
+            }
+
+            if (((Map<String, Object>) entry.getValue()).containsKey("parameters")) {
+                if (!(((Map<String, Object>) entry.getValue()).get("parameters") instanceof ArrayList)) {
+                    result.setMessage(String.format("the parameters field most be a list", entry.getKey()))
+                            .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                    return false;
+                }
             }
 
             if (((Map<String, Object>) entry.getValue()).containsKey("request")) {

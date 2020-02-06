@@ -23,10 +23,12 @@ public class ApplyIgnorePostProcessor {
 
     public ChangedOpenApi applyIgnore() {
 
-        boolean requestClear = false;
-        boolean responseClear = false;
-
         for (ChangedOperation changedOperation : this.changedOpenApi.getChangedOperations()) {
+
+            boolean requestClear = false;
+            boolean responseClear = false;
+            boolean parametersClear = false;
+
             PathOperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(changedOperation.getPathUrl());
 
             if (pathOperationIgnore != null) {

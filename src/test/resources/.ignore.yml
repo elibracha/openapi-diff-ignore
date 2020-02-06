@@ -45,6 +45,11 @@ paths:
             - default
             - 200
 
+  /user/login:
+    ignore:
+      get:
+        parameters: jdhfkjdsf
+
   /user/{username}:
     ignore:
       put:
