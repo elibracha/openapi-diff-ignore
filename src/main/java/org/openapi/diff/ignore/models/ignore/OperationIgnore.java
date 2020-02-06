@@ -22,6 +22,18 @@ public class OperationIgnore {
                 return this.get;
             case "put":
                 return this.put;
+            case "delete":
+                return this.delete;
+            case "connect":
+                return this.connect;
+            case "head":
+                return this.head;
+            case "options":
+                return this.options;
+            case "trace":
+                return this.trace;
+            case "patch":
+                return this.patch;
             default:
                 return null;
         }

@@ -1,6 +1,5 @@
 package org.openapi.diff.ignore.processors;
 
-import com.qdesrame.openapi.diff.model.ChangedMediaType;
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.model.ChangedOperation;
 import org.openapi.diff.ignore.models.IgnoreOpenApi;
@@ -9,7 +8,6 @@ import org.openapi.diff.ignore.models.ignore.PathOperationIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ApplyIgnorePostProcessor {
 
@@ -25,22 +23,47 @@ public class ApplyIgnorePostProcessor {
 
     public ChangedOpenApi applyIgnore() {
 
+        boolean requestClear = false;
+        boolean responseClear = false;
+
         for (ChangedOperation changedOperation : this.changedOpenApi.getChangedOperations()) {
             PathOperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(changedOperation.getPathUrl());
-            if (pathOperationIgnore != null) {
-                String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
 
+            if (pathOperationIgnore != null) {
+
+                String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
                 PathIgnore pathIgnore = pathOperationIgnore.getIgnore().checkIfIgnoreExist(httpMethod);
 
                 if (pathIgnore != null) {
 
                     if (changedOperation.getRequestBody() != null) {
 
-                        for (Map.Entry<String, ChangedMediaType> changed : changedOperation.getRequestBody().getContent().getChanged().entrySet()) {
-                            if (pathIgnore.getRequestIgnore().getContentType().contains(changed.getKey())) {
-                                changedOperationsToRemove.add(changedOperation);
+                        if (changedOperation.getRequestBody().getContent().getMissing() != null) {
+                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                changedOperation.getRequestBody().getContent().getMissing().remove(contentType);
                             }
                         }
+
+                        if (changedOperation.getRequestBody().getContent().getIncreased() != null) {
+                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                changedOperation.getRequestBody().getContent().getIncreased().remove(contentType);
+                            }
+                        }
+
+                        if (changedOperation.getRequestBody().getContent().getChanged() != null) {
+                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                changedOperation.getRequestBody().getContent().getChanged().remove(contentType);
+                            }
+                        }
+
+                        if (changedOperation.getRequestBody().getContent().getChanged().size() == 0 &&
+                                changedOperation.getRequestBody().getContent().getIncreased().size() == 0 &&
+                                changedOperation.getRequestBody().getContent().getMissing().size() == 0) {
+                            requestClear = true;
+                        }
+
+                    } else {
+                        requestClear = true;
                     }
 
                     if (changedOperation.getApiResponses() != null) {
@@ -61,9 +84,15 @@ public class ApplyIgnorePostProcessor {
 
                         if (changedOperation.getApiResponses().getIncreased().size() == 0 &&
                                 changedOperation.getApiResponses().getMissing().size() == 0 &&
-                                changedOperation.getApiResponses().getChanged().size() == 0)
-                            changedOperationsToRemove.add(changedOperation);
+                                changedOperation.getApiResponses().getChanged().size() == 0) {
+                            responseClear = true;
+                        }
+                    } else {
+                        responseClear = true;
                     }
+
+                    if (requestClear && responseClear)
+                        changedOperationsToRemove.add(changedOperation);
                 }
             }
         }
