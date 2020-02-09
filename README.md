@@ -20,29 +20,9 @@ In the following description, if a field is not explicitly REQUIRED or described
 Field Name | Type | Description
 ---|:---:|---
 <a name="oasVersion"></a>version | `string` | **REQUIRED**. This string MUST be the [semantic version number](https://semver.org/spec/v2.0.0.html) of the [Ignore Specification version](#versions) that the OpenAPI ignore document uses. The `version` field SHOULD be used by tooling specifications and clients to interpret the OpenAPI ignore document.
-<a name="oasInfo"></a>info | `string` | Provides metadata about the API ignore. The metadata MAY be used by tooling as required.
-<a name="paths"></a>paths | [Paths Object](#pathObject) |  The available paths and operations for the API.
-
-
-
-#### <a name="pathObject"></a>Path Object
-
-The object provides metadata about the API.
-The metadata MAY be used by the clients if needed, and MAY be presented in editing or documentation generation tools for convenience.
-
-##### Fixed Fields
-
-Field Name | Type | Description
----|:---:|---
-<a name="infoTitle"></a>title | `string` | **REQUIRED**. The title of the application.
-<a name="infoDescription"></a>description | `string` | A short description of the application. [CommonMark syntax](http://spec.commonmark.org/) MAY be used for rich text representation.
-<a name="infoTermsOfService"></a>termsOfService | `string` | A URL to the Terms of Service for the API. MUST be in the format of a URL.
-<a name="infoContact"></a>contact | [Contact Object](#contactObject) | The contact information for the exposed API.
-<a name="infoLicense"></a>license | [License Object](#licenseObject) | The license information for the exposed API.
-<a name="infoVersion"></a>version | `string` | **REQUIRED**. The version of the OpenAPI document (which is distinct from the [OpenAPI Specification version](#oasVersion) or the API implementation version).
-
-
-This object MAY be extended with [Specification Extensions](#specificationExtensions).
+<a name="oasInfo"></a>info | `string` | Provides metadata about general info for the API ignore. The metadata MAY be used by tooling as required.
+<a name="oasInfo"></a>project | `string` | Provides metadata about the Project using the ignore file. The metadata MAY be used by tooling as required.
+<a name="paths"></a>paths | [Paths Object](#pathsObject) |  The available paths and operations for the API.
 
 #### <a name="pathsObject"></a>Paths Object
 
@@ -53,9 +33,7 @@ The path is appended to the URL from the [`Server Object`](#serverObject) in ord
 
 Field Pattern | Type | Description
 ---|:---:|---
-<a name="pathsPath"></a>/{path} | [Path Item Object](#pathItemObject) | A relative path to an individual endpoint. The field name MUST begin with a slash. The path is **appended** (no relative URL resolution) to the expanded URL from the [`Server Object`](#serverObject)'s `url` field in order to construct the full URL. [Path templating](#pathTemplating) is allowed. When matching URLs, concrete (non-templated) paths would be matched before their templated counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use.
-
-This object MAY be extended with [Specification Extensions](#specificationExtensions).
+<a name="pathsPath"></a>/{path} | [Path Item Object](#pathItemObject) | A relative path to an individual endpoint. The field name MUST begin with a slash. Wildcard is allowed. When matching URLs, concrete (non-wildcard) paths would be matched before their wildcard counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use.
 
 ##### Path Templating Matching
 
@@ -63,22 +41,10 @@ Assuming the following paths, the concrete definition, `/pets/mine`, will be mat
 
 ```
   /pets/{petId}
-  /pets/mine
+  /pets/*         # matches all pets endpoints
+ /*              # match all endpoints
 ```
-
-The following paths are considered identical and invalid:
-
-```
-  /pets/{petId}
-  /pets/{name}
-```
-
-The following may lead to ambiguous resolution:
-
-```
-  /{entity}/me
-  /books/{id}
-```
+NOTICE! When using wildcards all all endpoints matching the wildcard will apply the ignore specified.
 
 ##### Paths Object Example
 
