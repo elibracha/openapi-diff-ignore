@@ -12,7 +12,7 @@ If you think you have found a bug, please file an issue in the [Github Issues](h
 Ignore Specification
 ------------------------
 
-###Schema
+### Schema
 In the following description, if a field is not explicitly REQUIRED or described with a MUST or SHALL, it can be considered OPTIONAL.
 
 ##### Fixed Fields
