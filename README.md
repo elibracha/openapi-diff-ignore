@@ -80,9 +80,6 @@ Field Name | Type | Description
 <a name="pathItemPatch"></a>patch | [Operation Object](#operationObject) | A definition of a PATCH operation on this path.
 <a name="pathItemTrace"></a>trace | [Operation Object](#operationObject) | A definition of a TRACE operation on this path.
 
-
-This object MAY be extended with [Specification Extensions](#specificationExtensions).
-
 ##### Path Item Object Example
 
 
@@ -109,8 +106,6 @@ Field Name | Type | Description
 <a name="operationParameters"></a>parameters | [[Parameter Object](#parameterObject) \| [Reference Object](#referenceObject)] | A list of parameters that are applicable for this operation. If a parameter is already defined at the [Path Item](#pathItemParameters), the new definition will override it but can never remove it. The list MUST NOT include duplicated parameters. A unique parameter is defined by a combination of a [name](#parameterName) and [location](#parameterIn). The list can use the [Reference Object](#referenceObject) to link to parameters that are defined at the [OpenAPI Object's components/parameters](#componentsParameters).
 <a name="operationRequestBody"></a>request | [Request Body Object](#requestBodyObject) \| [Reference Object](#referenceObject) | The request body applicable for this operation.  The `requestBody` is only supported in HTTP methods where the HTTP 1.1 specification [RFC7231](https://tools.ietf.org/html/rfc7231#section-4.3.1) has explicitly defined semantics for request bodies.  In other cases where the HTTP spec is vague, `requestBody` SHALL be ignored by consumers.
 <a name="operationResponses"></a>response | [Responses Object](#responsesObject) | **REQUIRED**. The list of possible responses as they are returned from executing this operation.
-
-This object MAY be extended with [Specification Extensions](#specificationExtensions).
 
 ##### Operation Object Example
 
