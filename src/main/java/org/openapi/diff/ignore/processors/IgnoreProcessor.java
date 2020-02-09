@@ -8,21 +8,25 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 
+import static java.lang.System.exit;
+
 public class IgnoreProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
-    private final static String DEFAULT_SEARCH_DIRECTORY = ".";
+    private final static String DEFAULT_SEARCH = ".diffignore";
 
     private MapKeyIgnore<String, String> mapKey;
     private String ignorePath;
 
     public IgnoreProcessor() {
         this.mapKey = new MapKeyIgnore<>();
-        this.ignorePath = DEFAULT_SEARCH_DIRECTORY;
+        this.ignorePath = DEFAULT_SEARCH;
     }
 
     public IgnoreProcessor(String path) {
@@ -31,11 +35,12 @@ public class IgnoreProcessor {
     }
 
     public IgnoreOpenApi processIgnore() {
-        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(this.ignorePath)) {
+        try (InputStream inputStream = new FileInputStream(new File(this.ignorePath))) {
             Yaml yaml = new Yaml();
             this.mapKey.load(yaml.load(inputStream));
         } catch (IOException | YAMLException e) {
             log.error(e.getMessage());
+            exit(1);
         }
 
         return new IgnoreOpenApi(this.mapKey.getGlobalIgnore());

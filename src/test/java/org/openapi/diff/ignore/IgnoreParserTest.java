@@ -20,7 +20,7 @@ public class IgnoreParserTest {
 
     @Test
     public void test() {
-        IgnoreProcessor parser = new IgnoreProcessor(".ignore.yml");
+        IgnoreProcessor parser = new IgnoreProcessor();
 
         IgnoreOpenApi ignoreOpenApi = parser.processIgnore();
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
