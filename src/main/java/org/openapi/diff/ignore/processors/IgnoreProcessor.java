@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static java.lang.System.exit;
 
@@ -24,38 +28,44 @@ public class IgnoreProcessor {
     private final static String URL_PATTERN = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
     private MapKeyIgnore<String, String> mapKey;
-    private String ignorePath;
+    private List<String> ignoresPaths;
 
     public IgnoreProcessor() {
         this.mapKey = new MapKeyIgnore<>();
-        this.ignorePath = DEFAULT_SEARCH;
+        this.ignoresPaths = Collections.singletonList(DEFAULT_SEARCH);
     }
 
-    public IgnoreProcessor(String path) {
+    public IgnoreProcessor(String... ignoresPaths) {
         this.mapKey = new MapKeyIgnore<>();
-        this.ignorePath = path;
+        this.ignoresPaths = Arrays.asList(ignoresPaths);
     }
 
-    public IgnoreOpenApi processIgnore() {
-        if (this.ignorePath.matches(URL_PATTERN)) {
-            try (InputStream inputStream = new URL(this.ignorePath).openStream()) {
-                Yaml yaml = new Yaml();
-                this.mapKey.load(yaml.load(inputStream));
-            } catch (IOException e) {
-                log.error(e.getMessage());
-                exit(1);
+    public List<IgnoreOpenApi> processIgnore() {
+        List<IgnoreOpenApi> ignores = new ArrayList<>();
+
+        for (String path : this.ignoresPaths) {
+            if (path.matches(URL_PATTERN)) {
+                try (InputStream inputStream = new URL(path).openStream()) {
+                    Yaml yaml = new Yaml();
+                    this.mapKey.load(yaml.load(inputStream));
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                    exit(1);
+                }
+            } else {
+                try (InputStream inputStream = new FileInputStream(new File(path))) {
+                    Yaml yaml = new Yaml();
+                    this.mapKey.load(yaml.load(inputStream));
+                } catch (IOException | YAMLException e) {
+                    log.error(e.getMessage());
+                    exit(1);
+                }
             }
-        } else {
-            try (InputStream inputStream = new FileInputStream(new File(this.ignorePath))) {
-                Yaml yaml = new Yaml();
-                this.mapKey.load(yaml.load(inputStream));
-            } catch (IOException | YAMLException e) {
-                log.error(e.getMessage());
-                exit(1);
-            }
+
+            ignores.add(new IgnoreOpenApi(this.mapKey.getGlobalIgnore()));
         }
 
-        return new IgnoreOpenApi(this.mapKey.getGlobalIgnore());
+        return ignores;
     }
 
     public MapKeyIgnore<String, String> getMapKey() {
