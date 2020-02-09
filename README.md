@@ -51,14 +51,25 @@ NOTICE! When using wildcards all all endpoints matching the wildcard will apply 
 paths:
   /*:
     ignore:
-      post:
-        request:
-          content-type:
-            - application/octet-stream
+      get:
+        parameters:
+          - username
+          - password
         response:
           status:
             - default
             - 200
+
+
+  /store:
+    post:
+      request:
+        content-type:
+          - application/octet-stream
+        response:
+          status:
+              - default
+               - 200
 ```
 
 #### <a name="pathItemObject"></a>Path Item Object
