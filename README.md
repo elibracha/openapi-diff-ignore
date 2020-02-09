@@ -113,10 +113,10 @@ Describes a single API operation on a path.
 
 Field Name | Type | Description
 ---|:---:|---
-<a name="operationDescription"></a>info | `string` | A verbose explanation of the operation behavior. [CommonMark syntax](http://spec.commonmark.org/) MAY be used for rich text representation.
-<a name="operationParameters"></a>parameters | [[Parameter Object](#parameterObject) \| [Reference Object](#referenceObject)] | A list of parameters that are applicable for this operation. If a parameter is already defined at the [Path Item](#pathItemParameters), the new definition will override it but can never remove it. The list MUST NOT include duplicated parameters. A unique parameter is defined by a combination of a [name](#parameterName) and [location](#parameterIn). The list can use the [Reference Object](#referenceObject) to link to parameters that are defined at the [OpenAPI Object's components/parameters](#componentsParameters).
-<a name="operationRequestBody"></a>request | [Request Body Object](#requestBodyObject) \| [Reference Object](#referenceObject) | The request body applicable for this operation.  The `requestBody` is only supported in HTTP methods where the HTTP 1.1 specification [RFC7231](https://tools.ietf.org/html/rfc7231#section-4.3.1) has explicitly defined semantics for request bodies.  In other cases where the HTTP spec is vague, `requestBody` SHALL be ignored by consumers.
-<a name="operationResponses"></a>response | [Responses Object](#responsesObject) | **REQUIRED**. The list of possible responses as they are returned from executing this operation.
+<a name="operationDescription"></a>info | `string` | A verbose explanation of the operation behavior.
+<a name="operationParameters"></a>parameters | [Parameter Object](#parameterObject)| A list of parameters that are going to be ignored.
+<a name="operationRequestBody"></a>request | [Request Object](#requestBodyObject) | The request body applicable for this operation. can specify ignore for content-type and status codes.
+<a name="operationResponses"></a>response | [Response Object](#responsesObject) | The list of possible response statuses that are going to be ignored.
 
 ##### Operation Object Example
 
@@ -125,6 +125,7 @@ request:
   content-type:
     - application/octet-stream
   response:
+    info: this is going to ignore all status changes that marked as default or 200
     status:
       - default
       - 200
