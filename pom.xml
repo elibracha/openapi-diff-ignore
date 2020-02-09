@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.poalim.parsers</groupId>
+    <groupId>org.openapi.diff.ignore</groupId>
     <artifactId>openapi-diff-ignore</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -102,9 +102,9 @@
 
         <!-- START OPENAPI-DIFF DEPENDENCIES-->
         <dependency>
-            <groupId>com.qdesrame</groupId>
+            <groupId>com.elibracha</groupId>
             <artifactId>openapi-diff</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
