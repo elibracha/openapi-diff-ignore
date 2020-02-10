@@ -3,12 +3,11 @@ info: this is a sample ignore file to silence changes in openapi-diff
 project: sample-service
 paths:
   /*:
-    ignore:
-      post:
-        request:
-          content-type:
-            - application/octet-stream
-        response:
-          status:
-            - default
-            - 200
+    post:
+      request:
+        content-type:
+          - application/octet-stream
+      response:
+        status:
+          - default
+          - 200

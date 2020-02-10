@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class GlobalIgnore {
 
-    private Map<String, PathOperationIgnore> paths;
+    private Map<String, OperationIgnore> paths;
     private String info;
     private String project;
     private String version;
@@ -13,18 +13,18 @@ public class GlobalIgnore {
     public GlobalIgnore() {
     }
 
-    public GlobalIgnore(Map<String, PathOperationIgnore> paths, String info, String project, String version) {
+    public GlobalIgnore(Map<String, OperationIgnore> paths, String info, String project, String version) {
         this.paths = paths;
         this.info = info;
         this.project = project;
         this.version = version;
     }
 
-    public Map<String, PathOperationIgnore> getPaths() {
+    public Map<String, OperationIgnore> getPaths() {
         return paths;
     }
 
-    public void setPaths(Map<String, PathOperationIgnore> paths) {
+    public void setPaths(Map<String, OperationIgnore> paths) {
         this.paths = paths;
     }
 

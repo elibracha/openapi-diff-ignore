@@ -30,22 +30,25 @@ public class MapKeyIgnore<K, V> {
         return globalIgnore;
     }
 
-    public void load(Map<K, V> map) {
+    public boolean load(Map<K, V> map) {
         this.mapKey.putAll(map);
-        this.buildMap();
+        return this.buildMap();
     }
 
-    private void buildMap() {
+    private boolean buildMap() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         try {
-            validationProcessor.validate(this.mapKey);
-            this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
+            if (validationProcessor.validate(this.mapKey)) {
+                this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
+                return true;
+            }
         } catch (IllegalArgumentException e) {
             log.error(String.format("NOTICE! please save this trace if you need support:%s%s",
                     System.lineSeparator() + System.lineSeparator(),
                     e.getMessage()));
         }
+        return false;
     }
 }

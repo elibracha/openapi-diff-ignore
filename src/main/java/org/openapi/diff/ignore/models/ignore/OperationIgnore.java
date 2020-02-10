@@ -1,9 +1,13 @@
 package org.openapi.diff.ignore.models.ignore;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class OperationIgnore {
 
+    @JsonProperty("ignore-type")
+    private String ignoreType;
     private PathIgnore post;
     private PathIgnore get;
     private PathIgnore put;
@@ -37,6 +41,14 @@ public class OperationIgnore {
             default:
                 return null;
         }
+    }
+
+    public String getIgnoreType() {
+        return ignoreType;
+    }
+
+    public void setIgnoreType(String ignoreType) {
+        this.ignoreType = ignoreType;
     }
 
     public PathIgnore getPost() {
@@ -116,7 +128,8 @@ public class OperationIgnore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OperationIgnore that = (OperationIgnore) o;
-        return Objects.equals(post, that.post) &&
+        return Objects.equals(ignoreType, that.ignoreType) &&
+                Objects.equals(post, that.post) &&
                 Objects.equals(get, that.get) &&
                 Objects.equals(put, that.put) &&
                 Objects.equals(delete, that.delete) &&
@@ -129,13 +142,14 @@ public class OperationIgnore {
 
     @Override
     public int hashCode() {
-        return Objects.hash(post, get, put, delete, patch, head, connect, options, trace);
+        return Objects.hash(ignoreType, post, get, put, delete, patch, head, connect, options, trace);
     }
 
     @Override
     public String toString() {
         return "OperationIgnore{" +
-                "post=" + post +
+                "ignoreType='" + ignoreType + '\'' +
+                ", post=" + post +
                 ", get=" + get +
                 ", put=" + put +
                 ", delete=" + delete +

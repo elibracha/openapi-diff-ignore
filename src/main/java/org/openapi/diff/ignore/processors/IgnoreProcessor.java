@@ -44,10 +44,11 @@ public class IgnoreProcessor {
         List<IgnoreOpenApi> ignores = new ArrayList<>();
 
         for (String path : this.ignoresPaths) {
+            boolean result = false;
             if (path.matches(URL_PATTERN)) {
                 try (InputStream inputStream = new URL(path).openStream()) {
                     Yaml yaml = new Yaml();
-                    this.mapKey.load(yaml.load(inputStream));
+                    result = this.mapKey.load(yaml.load(inputStream));
                 } catch (IOException e) {
                     log.error(e.getMessage());
                     exit(1);
@@ -55,14 +56,14 @@ public class IgnoreProcessor {
             } else {
                 try (InputStream inputStream = new FileInputStream(new File(path))) {
                     Yaml yaml = new Yaml();
-                    this.mapKey.load(yaml.load(inputStream));
+                    result = this.mapKey.load(yaml.load(inputStream));
                 } catch (IOException | YAMLException e) {
                     log.error(e.getMessage());
                     exit(1);
                 }
             }
 
-            ignores.add(new IgnoreOpenApi(this.mapKey.getGlobalIgnore()));
+            ignores.add(new IgnoreOpenApi(this.mapKey.getGlobalIgnore()).setValidIgnore(result));
         }
 
         return ignores;

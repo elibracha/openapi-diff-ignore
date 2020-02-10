@@ -30,6 +30,8 @@ public class IgnoreParserTest {
         List<IgnoreOpenApi> ignoreOpenApi = parser.processIgnore();
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
 
+        for (IgnoreOpenApi ignore : ignoreOpenApi) assertTrue(ignore.isValidIgnore());
+
         ApplyIgnorePostProcessor applyIgnorePostProcessor = new ApplyIgnorePostProcessor(changedOpenApi, ignoreOpenApi);
         applyIgnorePostProcessor.applyIgnore();
 

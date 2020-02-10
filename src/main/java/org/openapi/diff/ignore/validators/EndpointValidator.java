@@ -9,13 +9,13 @@ public class EndpointValidator {
 
     private static final String ENDPOINT_PATTERN = "(\\/[a-zA-Z{}1-9$*\\/]+)";
 
-    private PathOperationValidator pathOperationValidator;
+    private OperationValidator pathOperationValidator;
     private Map<String, Object> endpoints;
     private ValidationResult result;
 
     public EndpointValidator() {
         this.result = new ValidationResult();
-        this.pathOperationValidator = new PathOperationValidator();
+        this.pathOperationValidator = new OperationValidator();
     }
 
     public boolean validate() {
@@ -27,7 +27,7 @@ public class EndpointValidator {
                 return false;
             }
 
-            pathOperationValidator.setPath((Map<String, Object>) entry.getValue());
+            pathOperationValidator.setOperations((Map<String, Object>) entry.getValue());
 
             if (!pathOperationValidator.validate()) {
                 this.result = pathOperationValidator.getResult();

@@ -2,6 +2,8 @@ package org.openapi.diff.ignore.models.validations.enums;
 
 public enum OperationSupport {
 
+    IGNORE_TYPE("ignore-type"),
+
     POST("post"),
     GET("get"),
     PUT("put"),

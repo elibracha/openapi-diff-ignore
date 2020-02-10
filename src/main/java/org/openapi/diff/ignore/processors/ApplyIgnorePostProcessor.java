@@ -5,8 +5,8 @@ import com.qdesrame.openapi.diff.model.ChangedOperation;
 import com.qdesrame.openapi.diff.model.ChangedParameter;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.openapi.diff.ignore.models.IgnoreOpenApi;
+import org.openapi.diff.ignore.models.ignore.OperationIgnore;
 import org.openapi.diff.ignore.models.ignore.PathIgnore;
-import org.openapi.diff.ignore.models.ignore.PathOperationIgnore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,10 +97,10 @@ public class ApplyIgnorePostProcessor {
 
                     if (match) {
 
-                        PathOperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
+                        OperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
 
                         String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
-                        PathIgnore pathIgnore = pathOperationIgnore.getIgnore().checkIfIgnoreExist(httpMethod);
+                        PathIgnore pathIgnore = pathOperationIgnore.checkIfIgnoreExist(httpMethod);
 
                         if (pathIgnore != null) {
 

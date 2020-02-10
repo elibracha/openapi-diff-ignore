@@ -3,9 +3,9 @@ info: this is a sample ignore file to silence changes in openapi-diff
 project: sample-service
 paths:
   /*:
-    ignore:
-      put:
-        response:
-          status:
-            - default
-            - 200
+    ignore-type: single
+    put:
+      response:
+        status:
+          - default
+          - 200

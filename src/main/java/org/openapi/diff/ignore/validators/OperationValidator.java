@@ -32,33 +32,42 @@ public class OperationValidator {
 
         for (Map.Entry<String, Object> entry : operations.entrySet()) {
             if (!supported.contains(entry.getKey())) {
-                result.setMessage(String.format("the method \"%s\" not a valid http method", entry.getKey()))
+                result.setMessage(String.format("the method \"%s\" not a valid entry in operation method", entry.getKey()))
                         .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
 
-            if (((Map<String, Object>) entry.getValue()).containsKey("parameters")) {
-                if (!(((Map<String, Object>) entry.getValue()).get("parameters") instanceof ArrayList)) {
-                    result.setMessage(String.format("the parameters field most be a list", entry.getKey()))
+            if (entry.getValue() instanceof Map) {
+                if (((Map<String, Object>) entry.getValue()).containsKey("parameters")) {
+                    if (!(((Map<String, Object>) entry.getValue()).get("parameters") instanceof ArrayList)) {
+                        result.setMessage(String.format("the parameters field most be a list", entry.getKey()))
+                                .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                        return false;
+                    }
+                }
+
+                if (((Map<String, Object>) entry.getValue()).containsKey("request")) {
+                    requestValidator.setRequest((Map<String, Object>) ((Map<String, Object>) entry.getValue()).get("request"));
+
+                    if (!requestValidator.validate()) {
+                        this.result = requestValidator.getResult();
+                        return false;
+                    }
+                }
+
+                if (((Map<String, Object>) entry.getValue()).containsKey("response")) {
+                    responseValidator.setResponse((Map<String, Object>) ((Map<String, Object>) entry.getValue()).get("response"));
+
+                    if (!responseValidator.validate()) {
+                        this.result = responseValidator.getResult();
+                        return false;
+                    }
+                }
+            } else {
+                if (!entry.getKey().equals("ignore-type") || !(entry.getValue().equals("single") || entry.getValue().equals("all"))) {
+                    result.setMessage(String.format("invalid entry \"%s\" value, or value might not be allowed \"%s\"." +
+                            " (only \"single\" or \"all\")", entry.getKey(), entry.getValue()))
                             .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
-                    return false;
-                }
-            }
-
-            if (((Map<String, Object>) entry.getValue()).containsKey("request")) {
-                requestValidator.setRequest((Map<String, Object>) ((Map<String, Object>) entry.getValue()).get("request"));
-
-                if (!requestValidator.validate()) {
-                    this.result = requestValidator.getResult();
-                    return false;
-                }
-            }
-
-            if (((Map<String, Object>) entry.getValue()).containsKey("response")) {
-                responseValidator.setResponse((Map<String, Object>) ((Map<String, Object>) entry.getValue()).get("response"));
-
-                if (!responseValidator.validate()) {
-                    this.result = responseValidator.getResult();
                     return false;
                 }
             }
