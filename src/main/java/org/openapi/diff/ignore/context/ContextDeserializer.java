@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.exceptions.InvalidVersionException;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
-import org.openapi.diff.ignore.models.ignore.GlobalIgnore;
-import org.openapi.diff.ignore.models.ignore.OperationIgnore;
-import org.openapi.diff.ignore.models.ignore.PathIgnore;
-import org.openapi.diff.ignore.models.ignore.SecurityIgnore;
+import org.openapi.diff.ignore.models.ignore.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -57,7 +54,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                 case "info":
                     globalIgnore.setInfo(globalScope.getValue().asText());
                 case "paths":
-                    pathParsing(globalScope);
+                    pathsParsing(globalScope);
                     break;
                 default:
                     throw new SpecificationSupportException(String.format(
@@ -72,7 +69,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
     }
 
 
-    private void pathParsing(Map.Entry<String, JsonNode> globalScope) throws SpecificationSupportException {
+    private void pathsParsing(Map.Entry<String, JsonNode> globalScope) throws SpecificationSupportException {
         if (globalScope.getValue().isContainerNode()) {
             for (Iterator<Map.Entry<String, JsonNode>> pathsScope = globalScope.getValue().fields(); pathsScope.hasNext(); ) {
 
@@ -143,7 +140,6 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                             ignoresIt.getKey()));
             }
 
-            operationIgnore.setPost(pathIgnore);
             this.globalIgnore.getPaths().put(pathIt.getKey(), (operationIgnore));
         }
     }
@@ -153,14 +149,40 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
 
         if (ignoreType.getValue().elements().hasNext()) {
             for (Iterator<JsonNode> it = ignoreType.getValue().elements(); it.hasNext(); ) {
-                paramsIgnore.add(it.next().textValue());
+                paramsIgnore.add(it.next().asText());
             }
         }
 
         pathIgnore.setParameters(paramsIgnore);
     }
 
-    private void responseParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) {
+    private void responseParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) throws SpecificationSupportException {
+        ResponseIgnore responseIgnore = new ResponseIgnore();
+        List<String> status = new ArrayList<>();
+
+        if (ignoreType.getValue().elements().hasNext()) {
+            for (Iterator<Map.Entry<String, JsonNode>> responseScope = ignoreType.getValue().fields(); responseScope.hasNext(); ) {
+                Map.Entry<String, JsonNode> responseIgnoreItem = responseScope.next();
+
+                switch (responseIgnoreItem.getKey()) {
+                    case "status":
+                        for (Iterator<JsonNode> it = responseIgnoreItem.getValue().elements(); it.hasNext(); ) {
+                            status.add(it.next().asText());
+                        }
+                        responseIgnore.setStatus(status);
+                        break;
+                    case "info":
+                        responseIgnore.setInfo(responseIgnoreItem.getValue().asText());
+                        break;
+                    default:
+                        throw new SpecificationSupportException(String.format(
+                                "Specification does not support value \"%s\" as response ignore type, please referenced the documentation for supported entries.",
+                                responseIgnoreItem.getKey()));
+                }
+            }
+        }
+
+        pathIgnore.setResponseIgnore(responseIgnore);
     }
 
     private void requestParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) {
@@ -192,7 +214,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
 
                     for (Iterator<JsonNode> securityReqIt = securityReq.getValue().elements(); securityReqIt.hasNext(); ) {
                         JsonNode requirement = securityReqIt.next();
-                        securityReqList.add(requirement.textValue());
+                        securityReqList.add(requirement.asText());
                     }
                     securityMap.put(securityReq.getKey(), securityReqList);
                 }
