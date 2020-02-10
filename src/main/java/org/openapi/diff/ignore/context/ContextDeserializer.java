@@ -8,10 +8,16 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.models.ignore.GlobalIgnore;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
+
+    private static final List<String> versions = Arrays.asList(
+            "1.0.0"
+    );
 
     protected ContextDeserializer(Class<?> vc) {
         super(vc);
@@ -28,23 +34,28 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
     @Override
     public GlobalIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+        GlobalIgnore globalIgnore = new GlobalIgnore();
 
         for (Iterator<Map.Entry<String, JsonNode>> globalIt = node.fields(); globalIt.hasNext(); ) {
-            Map.Entry<String, JsonNode> Globallt = globalIt.next();
-            if (Globallt.getKey().equals("project")) {
-                System.out.println(Globallt.getValue());
+            Map.Entry<String, JsonNode> global = globalIt.next();
+            if (global.getKey().equals("version")) {
+                if (versions.contains(global.getValue().asText())) {
+                    globalIgnore.setVersion(global.getValue().asText());
+                } else {
+            
+                }
             }
 
-            if (Globallt.getKey().equals("version")) {
-                System.out.println(Globallt.getValue());
+            if (global.getKey().equals("project")) {
+                System.out.println(global.getValue());
             }
 
-            if (Globallt.getKey().equals("info")) {
-                System.out.println(Globallt.getValue());
+            if (global.getKey().equals("info")) {
+                System.out.println(global.getValue());
             }
 
-            if (Globallt.getKey().equals("paths") && Globallt.getValue().isContainerNode()) {
-                for (Iterator<Map.Entry<String, JsonNode>> pathsIt = Globallt.getValue().fields(); pathsIt.hasNext(); ) {
+            if (global.getKey().equals("paths") && global.getValue().isContainerNode()) {
+                for (Iterator<Map.Entry<String, JsonNode>> pathsIt = global.getValue().fields(); pathsIt.hasNext(); ) {
 
                     Map.Entry<String, JsonNode> pathElt = pathsIt.next();
                     JsonNode operations = pathElt.getValue();
@@ -56,7 +67,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
 
                         for (Iterator<Map.Entry<String, JsonNode>> ignoresIt = operationIgnores.fields(); ignoresIt.hasNext(); ) {
                             Map.Entry<String, JsonNode> ignores = ignoresIt.next();
-                            System.out.println(ignores);
+
                         }
                     }
                 }
