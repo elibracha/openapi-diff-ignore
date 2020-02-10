@@ -199,9 +199,10 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
         SecurityIgnore securityIgnore = new SecurityIgnore();
 
         if (ignoreType.getValue().elements().hasNext()) {
+            Map<String, SecurityOperationIgnore> securityMap = new HashMap<>();
+
             for (Iterator<JsonNode> it = ignoreType.getValue().elements(); it.hasNext(); ) {
                 JsonNode securityNode = it.next();
-                Map<String, SecurityOperationIgnore> securityMap = new HashMap<>();
 
                 for (Iterator<Map.Entry<String, JsonNode>> securityScope = securityNode.fields(); securityScope.hasNext(); ) {
                     Map.Entry<String, JsonNode> securityReq = securityScope.next();
@@ -212,12 +213,11 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                         JsonNode requirement = securityReqIt.next();
                         securityOperationIgnore.getSecurities().add(requirement.asText());
                     }
+
                     securityMap.put(securityReq.getKey(), securityOperationIgnore);
                 }
-
-                securityIgnore.setSecurities(securityMap);
             }
-
+            securityIgnore.setSecurities(securityMap);
         }
         pathIgnore.setSecurityIgnore(securityIgnore);
     }

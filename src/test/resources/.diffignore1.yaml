@@ -11,6 +11,27 @@ paths:
         status:
           - default
           - 200
+    post:
+      request:
+        content-type:
+          - application/octet-stream
+      response:
+        status:
+          - default
+          - 200
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'write:pests'
+            - 'read:pets'
+        - sadsadsadsa:
+            - 'asddsadsa'
+            - 'asdsadsadsad'
+    put:
+      response:
+        status:
+          - default
+          - 200
 
 
   /store:

@@ -16,12 +16,12 @@ import java.util.Map;
 public class ApplyIgnorePostProcessor {
 
     private ChangedOpenApi changedOpenApi;
-    private List<IgnoreOpenApi> ignoreOpenApis;
+    private IgnoreOpenApi ignoreOpenApi;
     private List<ChangedOperation> changedOperationsToRemove;
 
-    public ApplyIgnorePostProcessor(ChangedOpenApi changedOpenApi, List<IgnoreOpenApi> ignoreOpenApis) {
+    public ApplyIgnorePostProcessor(ChangedOpenApi changedOpenApi, IgnoreOpenApi ignoreOpenApi) {
         this.changedOpenApi = changedOpenApi;
-        this.ignoreOpenApis = ignoreOpenApis;
+        this.ignoreOpenApi = ignoreOpenApi;
         this.changedOperationsToRemove = new ArrayList<>();
     }
 
@@ -81,226 +81,246 @@ public class ApplyIgnorePostProcessor {
 
         for (ChangedOperation changedOperation : this.changedOpenApi.getChangedOperations()) {
 
-            for (IgnoreOpenApi ignoreOpenApi : this.ignoreOpenApis) {
 
-                boolean requestClear = false;
-                boolean responseClear = false;
-                boolean parametersClear = false;
-                boolean securityClear = false;
+            boolean requestClear = false;
+            boolean responseClear = false;
+            boolean parametersClear = false;
+            boolean securityClear = false;
 
-                String pathUrl = changedOperation.getPathUrl();
+            String pathUrl = changedOperation.getPathUrl();
 
-                if (ignoreOpenApi.isValidIgnore() && ignoreOpenApi.getIgnore().getPaths() != null) {
-                    for (String path : ignoreOpenApi.getIgnore().getPaths().keySet()) {
-                        boolean match = strmatch(
-                                pathUrl,
-                                path,
-                                pathUrl.length(),
-                                path.length()
-                        );
+            if (ignoreOpenApi.isValidIgnore() && ignoreOpenApi.getIgnore().getPaths() != null) {
+                for (String path : ignoreOpenApi.getIgnore().getPaths().keySet()) {
+                    boolean match = strmatch(
+                            pathUrl,
+                            path,
+                            pathUrl.length(),
+                            path.length()
+                    );
 
-                        if (match) {
+                    if (match) {
 
-                            OperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
+                        OperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
 
-                            String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
-                            PathIgnore pathIgnore = pathOperationIgnore.checkIfIgnoreExist(httpMethod);
+                        String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
+                        PathIgnore pathIgnore = pathOperationIgnore.checkIfIgnoreExist(httpMethod);
 
-                            if (pathIgnore != null) {
+                        if (pathIgnore != null) {
 
-                                if (pathIgnore.getParameters() != null) {
-                                    if (changedOperation.getParameters() != null) {
+                            if (pathIgnore.getParameters() != null) {
+                                if (changedOperation.getParameters() != null) {
 
-                                        if (changedOperation.getParameters().getChanged() != null) {
-                                            List<ChangedParameter> changedParametersToRemove = new ArrayList<>();
+                                    if (changedOperation.getParameters().getChanged() != null) {
+                                        List<ChangedParameter> changedParametersToRemove = new ArrayList<>();
 
-                                            for (String ignoreParameter : pathIgnore.getParameters()) {
-                                                for (ChangedParameter changedParameter : changedOperation.getParameters().getChanged()) {
-                                                    if (ignoreParameter.equals(changedParameter.getName())) {
-                                                        changedParametersToRemove.add(changedParameter);
-                                                    }
+                                        for (String ignoreParameter : pathIgnore.getParameters()) {
+                                            for (ChangedParameter changedParameter : changedOperation.getParameters().getChanged()) {
+                                                if (ignoreParameter.equals(changedParameter.getName())) {
+                                                    changedParametersToRemove.add(changedParameter);
                                                 }
                                             }
-
-                                            changedOperation.getParameters().getChanged().removeAll(changedParametersToRemove);
                                         }
 
-                                        if (changedOperation.getParameters().getIncreased() != null) {
-                                            List<Parameter> increasedParametersToRemove = new ArrayList<>();
+                                        changedOperation.getParameters().getChanged().removeAll(changedParametersToRemove);
+                                    }
 
-                                            for (String ignoreParameter : pathIgnore.getParameters()) {
-                                                for (Parameter increasedParameter : changedOperation.getParameters().getIncreased()) {
-                                                    if (ignoreParameter.equals(increasedParameter.getName())) {
-                                                        increasedParametersToRemove.add(increasedParameter);
-                                                    }
+                                    if (changedOperation.getParameters().getIncreased() != null) {
+                                        List<Parameter> increasedParametersToRemove = new ArrayList<>();
+
+                                        for (String ignoreParameter : pathIgnore.getParameters()) {
+                                            for (Parameter increasedParameter : changedOperation.getParameters().getIncreased()) {
+                                                if (ignoreParameter.equals(increasedParameter.getName())) {
+                                                    increasedParametersToRemove.add(increasedParameter);
                                                 }
                                             }
-
-                                            changedOperation.getParameters().getIncreased().removeAll(increasedParametersToRemove);
                                         }
 
-                                        if (changedOperation.getParameters().getMissing() != null) {
-                                            List<Parameter> missingParametersToRemove = new ArrayList<>();
+                                        changedOperation.getParameters().getIncreased().removeAll(increasedParametersToRemove);
+                                    }
 
-                                            for (String ignoreParameter : pathIgnore.getParameters()) {
-                                                for (Parameter missingParameter : changedOperation.getParameters().getMissing()) {
-                                                    if (ignoreParameter.equals(missingParameter.getName())) {
-                                                        missingParametersToRemove.add(missingParameter);
-                                                    }
+                                    if (changedOperation.getParameters().getMissing() != null) {
+                                        List<Parameter> missingParametersToRemove = new ArrayList<>();
+
+                                        for (String ignoreParameter : pathIgnore.getParameters()) {
+                                            for (Parameter missingParameter : changedOperation.getParameters().getMissing()) {
+                                                if (ignoreParameter.equals(missingParameter.getName())) {
+                                                    missingParametersToRemove.add(missingParameter);
                                                 }
                                             }
-
-                                            changedOperation.getParameters().getMissing().removeAll(missingParametersToRemove);
                                         }
 
-                                        if (changedOperation.getParameters().getMissing().size() == 0 &&
-                                                changedOperation.getParameters().getIncreased().size() == 0 &&
-                                                changedOperation.getParameters().getChanged().size() == 0) {
-                                            parametersClear = true;
-                                        }
+                                        changedOperation.getParameters().getMissing().removeAll(missingParametersToRemove);
+                                    }
 
-                                    } else {
+                                    if (changedOperation.getParameters().getMissing().size() == 0 &&
+                                            changedOperation.getParameters().getIncreased().size() == 0 &&
+                                            changedOperation.getParameters().getChanged().size() == 0) {
                                         parametersClear = true;
                                     }
-                                } else if (changedOperation.getParameters() == null) {
+
+                                } else {
                                     parametersClear = true;
                                 }
+                            } else if (changedOperation.getParameters() == null) {
+                                parametersClear = true;
+                            }
 
-                                if (pathIgnore.getRequestIgnore() != null) {
-                                    if (changedOperation.getRequestBody() != null) {
+                            if (pathIgnore.getRequestIgnore() != null) {
+                                if (changedOperation.getRequestBody() != null) {
 
-                                        if (changedOperation.getRequestBody().getContent().getMissing() != null) {
-                                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
-                                                changedOperation.getRequestBody().getContent().getMissing().remove(contentType);
-                                            }
+                                    if (changedOperation.getRequestBody().getContent().getMissing() != null) {
+                                        for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                            changedOperation.getRequestBody().getContent().getMissing().remove(contentType);
                                         }
+                                    }
 
-                                        if (changedOperation.getRequestBody().getContent().getIncreased() != null) {
-                                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
-                                                changedOperation.getRequestBody().getContent().getIncreased().remove(contentType);
-                                            }
+                                    if (changedOperation.getRequestBody().getContent().getIncreased() != null) {
+                                        for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                            changedOperation.getRequestBody().getContent().getIncreased().remove(contentType);
                                         }
+                                    }
 
-                                        if (changedOperation.getRequestBody().getContent().getChanged() != null) {
-                                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
-                                                changedOperation.getRequestBody().getContent().getChanged().remove(contentType);
-                                            }
+                                    if (changedOperation.getRequestBody().getContent().getChanged() != null) {
+                                        for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                            changedOperation.getRequestBody().getContent().getChanged().remove(contentType);
                                         }
+                                    }
 
-                                        if (changedOperation.getRequestBody().getContent().getChanged().size() == 0 &&
-                                                changedOperation.getRequestBody().getContent().getIncreased().size() == 0 &&
-                                                changedOperation.getRequestBody().getContent().getMissing().size() == 0) {
-                                            requestClear = true;
-                                        }
-
-                                    } else {
+                                    if (changedOperation.getRequestBody().getContent().getChanged().size() == 0 &&
+                                            changedOperation.getRequestBody().getContent().getIncreased().size() == 0 &&
+                                            changedOperation.getRequestBody().getContent().getMissing().size() == 0) {
                                         requestClear = true;
                                     }
-                                } else if (changedOperation.getRequestBody() == null) {
+
+                                } else {
                                     requestClear = true;
                                 }
+                            } else if (changedOperation.getRequestBody() == null) {
+                                requestClear = true;
+                            }
 
-                                if (pathIgnore.getResponseIgnore() != null) {
-                                    if (changedOperation.getApiResponses() != null) {
-                                        if (changedOperation.getApiResponses().getMissing() != null) {
-                                            for (String status : pathIgnore.getResponseIgnore().getStatus())
-                                                changedOperation.getApiResponses().getMissing().remove(status);
-                                        }
+                            if (pathIgnore.getResponseIgnore() != null) {
+                                if (changedOperation.getApiResponses() != null) {
+                                    if (changedOperation.getApiResponses().getMissing() != null) {
+                                        for (String status : pathIgnore.getResponseIgnore().getStatus())
+                                            changedOperation.getApiResponses().getMissing().remove(status);
+                                    }
 
-                                        if (changedOperation.getApiResponses().getChanged() != null) {
-                                            for (String status : pathIgnore.getResponseIgnore().getStatus())
-                                                changedOperation.getApiResponses().getChanged().remove(status);
-                                        }
+                                    if (changedOperation.getApiResponses().getChanged() != null) {
+                                        for (String status : pathIgnore.getResponseIgnore().getStatus())
+                                            changedOperation.getApiResponses().getChanged().remove(status);
+                                    }
 
-                                        if (changedOperation.getApiResponses().getIncreased() != null) {
-                                            for (String status : pathIgnore.getResponseIgnore().getStatus())
-                                                changedOperation.getApiResponses().getIncreased().remove(status);
-                                        }
+                                    if (changedOperation.getApiResponses().getIncreased() != null) {
+                                        for (String status : pathIgnore.getResponseIgnore().getStatus())
+                                            changedOperation.getApiResponses().getIncreased().remove(status);
+                                    }
 
-                                        if (changedOperation.getApiResponses().getIncreased().size() == 0 &&
-                                                changedOperation.getApiResponses().getMissing().size() == 0 &&
-                                                changedOperation.getApiResponses().getChanged().size() == 0) {
-                                            responseClear = true;
-                                        }
-                                    } else {
+                                    if (changedOperation.getApiResponses().getIncreased().size() == 0 &&
+                                            changedOperation.getApiResponses().getMissing().size() == 0 &&
+                                            changedOperation.getApiResponses().getChanged().size() == 0) {
                                         responseClear = true;
                                     }
-                                } else if (changedOperation.getApiResponses() == null) {
+                                } else {
                                     responseClear = true;
                                 }
+                            } else if (changedOperation.getApiResponses() == null) {
+                                responseClear = true;
+                            }
 
-                                if (pathIgnore.getSecurityIgnore() != null) {
-                                    if (changedOperation.getSecurityRequirements() != null) {
-                                        if (changedOperation.getSecurityRequirements().getMissing() != null) {
-                                            for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
-                                                for (String ignoreReq : entry.getValue().getSecurities()) {
-                                                    for (SecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getMissing()) {
-                                                        if (securityRequirement.containsKey(entry.getKey())) {
-                                                            securityRequirement.get(entry.getKey()).removeIf(changeReq -> changeReq.equals(ignoreReq));
+                            if (pathIgnore.getSecurityIgnore() != null) {
+                                if (changedOperation.getSecurityRequirements() != null) {
+                                    if (changedOperation.getSecurityRequirements().getMissing() != null) {
+                                        for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
+                                            for (String ignoreReq : entry.getValue().getSecurities()) {
+                                                List<SecurityRequirement> securityRequirementList = new ArrayList<>();
+
+                                                for (SecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getMissing()) {
+                                                    if (securityRequirement.containsKey(entry.getKey())) {
+                                                        securityRequirement.get(entry.getKey()).removeIf(changeReq -> changeReq.equals(ignoreReq));
+
+                                                        if (securityRequirement.get(entry.getKey()).size() == 0) {
+                                                            securityRequirementList.add(securityRequirement);
                                                         }
                                                     }
                                                 }
+
+                                                changedOperation.getSecurityRequirements().getIncreased().removeAll(securityRequirementList);
                                             }
                                         }
+                                    }
 
-                                        if (changedOperation.getSecurityRequirements().getChanged() != null) {
-                                            for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
-                                                for (String ignoreReq : entry.getValue().getSecurities()) {
-                                                    List<ChangedSecurityRequirement> changedSecurityReqToRemove = new ArrayList<>();
+                                    if (changedOperation.getSecurityRequirements().getChanged() != null) {
+                                        for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
+                                            for (String ignoreReq : entry.getValue().getSecurities()) {
+                                                List<ChangedSecurityRequirement> changedSecurityReqToRemove = new ArrayList<>();
 
-                                                    for (ChangedSecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getChanged()) {
-                                                        List<ChangedSecurityScheme> changedSecuritySchemesToRemove = new ArrayList<>();
+                                                for (ChangedSecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getChanged()) {
+                                                    List<ChangedSecurityScheme> changedSecuritySchemesToRemove = new ArrayList<>();
 
-                                                        for (ChangedSecurityScheme changedSecurityScheme : securityRequirement.getChanged()) {
-                                                            changedSecurityScheme.getChangedScopes().getMissing().removeIf(changedScope -> changedScope.equals(ignoreReq));
-                                                            changedSecurityScheme.getChangedScopes().getIncreased().removeIf(changedScope -> changedScope.equals(ignoreReq));
+                                                    for (ChangedSecurityScheme changedSecurityScheme : securityRequirement.getChanged()) {
+                                                        changedSecurityScheme.getChangedScopes().getMissing().removeIf(changedScope -> changedScope.equals(ignoreReq));
+                                                        changedSecurityScheme.getChangedScopes().getIncreased().removeIf(changedScope -> changedScope.equals(ignoreReq));
 
-                                                            if (changedSecurityScheme.getChangedScopes().getIncreased().size() == 0 &&
-                                                                    changedSecurityScheme.getChangedScopes().getMissing().size() == 0) {
-                                                                changedSecuritySchemesToRemove.add(changedSecurityScheme);
-                                                            }
-                                                        }
-                                                        securityRequirement.getChanged().removeAll(changedSecuritySchemesToRemove);
-
-                                                        if (securityRequirement.getChanged().size() == 0 &&
-                                                                securityRequirement.getMissing().size() == 0 &&
-                                                                securityRequirement.getIncreased().size() == 0) {
-                                                            changedSecurityReqToRemove.add(securityRequirement);
+                                                        if (changedSecurityScheme.getChangedScopes().getIncreased().size() == 0 &&
+                                                                changedSecurityScheme.getChangedScopes().getMissing().size() == 0) {
+                                                            changedSecuritySchemesToRemove.add(changedSecurityScheme);
                                                         }
                                                     }
+                                                    securityRequirement.getChanged().removeAll(changedSecuritySchemesToRemove);
 
-                                                    changedOperation.getSecurityRequirements().getChanged().removeAll(changedSecurityReqToRemove);
+                                                    if ((securityRequirement.getChanged() == null ||
+                                                            securityRequirement.getChanged().size() == 0) &&
+                                                            (securityRequirement.getMissing() == null ||
+                                                                    securityRequirement.getMissing().size() == 0) &&
+                                                            (securityRequirement.getIncreased() == null ||
+                                                                    securityRequirement.getIncreased().size() == 0)) {
+
+                                                        changedSecurityReqToRemove.add(securityRequirement);
+                                                    }
                                                 }
+
+                                                changedOperation.getSecurityRequirements().getChanged().removeAll(changedSecurityReqToRemove);
                                             }
                                         }
+                                    }
 
-                                        if (changedOperation.getSecurityRequirements().getIncreased() != null) {
-                                            for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
-                                                for (String ignoreReq : entry.getValue().getSecurities()) {
-                                                    for (SecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getIncreased()) {
-                                                        if (securityRequirement.containsKey(entry.getKey())) {
-                                                            securityRequirement.get(entry.getKey()).removeIf(changeReq -> changeReq.equals(ignoreReq));
+                                    if (changedOperation.getSecurityRequirements().getIncreased() != null) {
+                                        for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
+                                            for (String ignoreReq : entry.getValue().getSecurities()) {
+                                                List<SecurityRequirement> securityRequirementList = new ArrayList<>();
+
+                                                for (SecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getIncreased()) {
+                                                    if (securityRequirement.containsKey(entry.getKey())) {
+                                                        securityRequirement.get(entry.getKey()).removeIf(changeReq -> changeReq.equals(ignoreReq));
+
+                                                        if (securityRequirement.get(entry.getKey()).size() == 0) {
+                                                            securityRequirementList.add(securityRequirement);
                                                         }
                                                     }
                                                 }
+                                                changedOperation.getSecurityRequirements().getIncreased().removeAll(securityRequirementList);
                                             }
                                         }
+                                    }
 
-                                        if (changedOperation.getSecurityRequirements().getIncreased().size() == 0 &&
-                                                changedOperation.getSecurityRequirements().getMissing().size() == 0 &&
-                                                changedOperation.getSecurityRequirements().getChanged().size() == 0) {
-                                            securityClear = true;
-                                        }
-                                    } else {
+                                    if ((changedOperation.getSecurityRequirements().getIncreased() == null ||
+                                            changedOperation.getSecurityRequirements().getIncreased().size() == 0) &&
+                                            (changedOperation.getSecurityRequirements().getMissing() == null ||
+                                                    changedOperation.getSecurityRequirements().getMissing().size() == 0) &&
+                                            (changedOperation.getSecurityRequirements().getChanged() == null ||
+                                                    changedOperation.getSecurityRequirements().getChanged().size() == 0)) {
                                         securityClear = true;
                                     }
-                                } else if (changedOperation.getSecurityRequirements() == null) {
+                                } else {
                                     securityClear = true;
                                 }
-
-                                if (requestClear && responseClear && parametersClear && securityClear)
-                                    changedOperationsToRemove.add(changedOperation);
+                            } else if (changedOperation.getSecurityRequirements() == null) {
+                                securityClear = true;
                             }
+
+                            if (requestClear && responseClear && parametersClear && securityClear)
+                                changedOperationsToRemove.add(changedOperation);
                         }
                     }
                 }

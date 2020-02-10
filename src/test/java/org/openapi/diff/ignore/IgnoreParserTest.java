@@ -10,7 +10,6 @@ import org.openapi.diff.ignore.processors.IgnoreProcessor;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -22,12 +21,10 @@ public class IgnoreParserTest {
     @Test
     public void test() {
         IgnoreProcessor parser = new IgnoreProcessor(
-                getClass().getClassLoader().getResource(".diffignore1.yaml").getFile(),
-                getClass().getClassLoader().getResource(".diffignore2.yaml").getFile(),
-                getClass().getClassLoader().getResource(".diffignore3.yaml").getFile()
+                getClass().getClassLoader().getResource(".diffignore1.yaml").getFile()
         );
 
-        List<IgnoreOpenApi> ignoreOpenApi = parser.processIgnore();
+        IgnoreOpenApi ignoreOpenApi = parser.processIgnore();
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
 
         ApplyIgnorePostProcessor applyIgnorePostProcessor = new ApplyIgnorePostProcessor(changedOpenApi, ignoreOpenApi);
