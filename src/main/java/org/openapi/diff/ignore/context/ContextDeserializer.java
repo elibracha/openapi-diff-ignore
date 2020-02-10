@@ -45,10 +45,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                     throw new SpecificationSupportException(String.format(
                             "Specification does not support value \"%s\" please referenced the documentation for supported entries.",
                             globalScope.getKey()));
-
-
             }
-
         }
         return this.globalIgnore;
     }

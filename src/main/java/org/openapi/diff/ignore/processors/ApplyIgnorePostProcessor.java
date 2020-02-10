@@ -1,16 +1,17 @@
 package org.openapi.diff.ignore.processors;
 
-import com.qdesrame.openapi.diff.model.ChangedOpenApi;
-import com.qdesrame.openapi.diff.model.ChangedOperation;
-import com.qdesrame.openapi.diff.model.ChangedParameter;
+import com.qdesrame.openapi.diff.model.*;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.openapi.diff.ignore.models.IgnoreOpenApi;
 import org.openapi.diff.ignore.models.ignore.OperationIgnore;
 import org.openapi.diff.ignore.models.ignore.PathIgnore;
+import org.openapi.diff.ignore.models.ignore.SecurityOperationIgnore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ApplyIgnorePostProcessor {
 
@@ -85,6 +86,7 @@ public class ApplyIgnorePostProcessor {
                 boolean requestClear = false;
                 boolean responseClear = false;
                 boolean parametersClear = false;
+                boolean securityClear = false;
 
                 String pathUrl = changedOperation.getPathUrl();
 
@@ -227,7 +229,76 @@ public class ApplyIgnorePostProcessor {
                                     responseClear = true;
                                 }
 
-                                if (requestClear && responseClear && parametersClear)
+                                if (pathIgnore.getSecurityIgnore() != null) {
+                                    if (changedOperation.getSecurityRequirements() != null) {
+                                        if (changedOperation.getSecurityRequirements().getMissing() != null) {
+                                            for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
+                                                for (String ignoreReq : entry.getValue().getSecurities()) {
+                                                    for (SecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getMissing()) {
+                                                        if (securityRequirement.containsKey(entry.getKey())) {
+                                                            securityRequirement.get(entry.getKey()).removeIf(changeReq -> changeReq.equals(ignoreReq));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (changedOperation.getSecurityRequirements().getChanged() != null) {
+                                            for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
+                                                for (String ignoreReq : entry.getValue().getSecurities()) {
+                                                    List<ChangedSecurityRequirement> changedSecurityReqToRemove = new ArrayList<>();
+
+                                                    for (ChangedSecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getChanged()) {
+                                                        List<ChangedSecurityScheme> changedSecuritySchemesToRemove = new ArrayList<>();
+
+                                                        for (ChangedSecurityScheme changedSecurityScheme : securityRequirement.getChanged()) {
+                                                            changedSecurityScheme.getChangedScopes().getMissing().removeIf(changedScope -> changedScope.equals(ignoreReq));
+                                                            changedSecurityScheme.getChangedScopes().getIncreased().removeIf(changedScope -> changedScope.equals(ignoreReq));
+
+                                                            if (changedSecurityScheme.getChangedScopes().getIncreased().size() == 0 &&
+                                                                    changedSecurityScheme.getChangedScopes().getMissing().size() == 0) {
+                                                                changedSecuritySchemesToRemove.add(changedSecurityScheme);
+                                                            }
+                                                        }
+                                                        securityRequirement.getChanged().removeAll(changedSecuritySchemesToRemove);
+
+                                                        if (securityRequirement.getChanged().size() == 0 &&
+                                                                securityRequirement.getMissing().size() == 0 &&
+                                                                securityRequirement.getIncreased().size() == 0) {
+                                                            changedSecurityReqToRemove.add(securityRequirement);
+                                                        }
+                                                    }
+
+                                                    changedOperation.getSecurityRequirements().getChanged().removeAll(changedSecurityReqToRemove);
+                                                }
+                                            }
+                                        }
+
+                                        if (changedOperation.getSecurityRequirements().getIncreased() != null) {
+                                            for (Map.Entry<String, SecurityOperationIgnore> entry : pathIgnore.getSecurityIgnore().getSecurities().entrySet()) {
+                                                for (String ignoreReq : entry.getValue().getSecurities()) {
+                                                    for (SecurityRequirement securityRequirement : changedOperation.getSecurityRequirements().getIncreased()) {
+                                                        if (securityRequirement.containsKey(entry.getKey())) {
+                                                            securityRequirement.get(entry.getKey()).removeIf(changeReq -> changeReq.equals(ignoreReq));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (changedOperation.getSecurityRequirements().getIncreased().size() == 0 &&
+                                                changedOperation.getSecurityRequirements().getMissing().size() == 0 &&
+                                                changedOperation.getSecurityRequirements().getChanged().size() == 0) {
+                                            securityClear = true;
+                                        }
+                                    } else {
+                                        securityClear = true;
+                                    }
+                                } else if (changedOperation.getSecurityRequirements() == null) {
+                                    securityClear = true;
+                                }
+
+                                if (requestClear && responseClear && parametersClear && securityClear)
                                     changedOperationsToRemove.add(changedOperation);
                             }
                         }

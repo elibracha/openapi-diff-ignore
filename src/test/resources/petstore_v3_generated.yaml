@@ -290,7 +290,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModelApiResponse'
-
+      security:
+        - sadsadsadsa:
+            - 'asddsadsa'
+            - 'asdsadsadsad'
+        - petstore_auth:
+            - 'write:pests'
+            - 'read:pets'
   '/store/order/{orderId}':
     get:
       tags:
@@ -709,6 +715,14 @@ components:
       type: apiKey
       name: api_key
       in: header
+    sadsadsadsa:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://petstore3.swagger.io/oauth/authorize'
+          scopes:
+            'write:pets': modify pets in your account
+            'read:pets': read your pets
     petstore_auth:
       type: oauth2
       flows:

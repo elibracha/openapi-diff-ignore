@@ -15,3 +15,6 @@ paths:
         - petstore_auth:
             - 'write:pets'
             - 'read:pets'
+        - sadsadsadsa:
+            - 'asddsadsa'
+            - 'asdsadsadsad'
