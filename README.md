@@ -34,14 +34,15 @@ Field Pattern | Type | Description
 ---|:---:|---
 <a name="pathsPath"></a>/{path} | [Path Item Object](#pathItemObject) | A relative path to an individual endpoint. The field name MUST begin with a slash. Wildcard is allowed. When matching URLs, concrete (non-wildcard) paths would be matched before their wildcard counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use.
 
-##### Path Templating Matching
+##### Path Wildcard Matching
 
 Assuming the following paths, the concrete definition, `/pets/mine`, will be matched first if used:
 
 ```
-  /pets/{petId}
-  /pets/*         # matches all pets endpoints
-  /*              # match all endpoints
+  /pets/{petId}   # will noy be matched
+
+  /pets/*         # will match and also match all pets endpoints
+  /*              # will match and also will match all endpoints
 ```
 NOTICE! When using wildcards all all endpoints matching the wildcard will apply the ignore specified.
 
