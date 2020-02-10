@@ -9,15 +9,12 @@ public class RequestIgnore {
 
     @JsonProperty("content-type")
     private List<String> contentType;
-    @JsonProperty("parameters")
-    private ParamsIgnore params;
 
     public RequestIgnore() {
     }
 
-    public RequestIgnore(List<String> contentType, ParamsIgnore params) {
+    public RequestIgnore(List<String> contentType) {
         this.contentType = contentType;
-        this.params = params;
     }
 
     public List<String> getContentType() {
@@ -33,20 +30,18 @@ public class RequestIgnore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RequestIgnore that = (RequestIgnore) o;
-        return Objects.equals(contentType, that.contentType) &&
-                Objects.equals(params, that.params);
+        return Objects.equals(contentType, that.contentType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contentType, params);
+        return Objects.hash(contentType);
     }
 
     @Override
     public String toString() {
         return "RequestIgnore{" +
                 "contentType='" + contentType + '\'' +
-                ", params=" + params +
                 '}';
     }
 }
