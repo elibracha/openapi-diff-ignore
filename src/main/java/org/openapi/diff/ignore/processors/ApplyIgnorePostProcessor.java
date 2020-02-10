@@ -87,150 +87,152 @@ public class ApplyIgnorePostProcessor {
                 boolean parametersClear = false;
 
                 String pathUrl = changedOperation.getPathUrl();
-                for (String path : ignoreOpenApi.getIgnore().getPaths().keySet()) {
-                    boolean match = strmatch(
-                            pathUrl,
-                            path,
-                            pathUrl.length(),
-                            path.length()
-                    );
 
-                    if (match) {
+                if (ignoreOpenApi.isValidIgnore() && ignoreOpenApi.getIgnore().getPaths() != null) {
+                    for (String path : ignoreOpenApi.getIgnore().getPaths().keySet()) {
+                        boolean match = strmatch(
+                                pathUrl,
+                                path,
+                                pathUrl.length(),
+                                path.length()
+                        );
 
-                        OperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
+                        if (match) {
 
-                        String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
-                        PathIgnore pathIgnore = pathOperationIgnore.checkIfIgnoreExist(httpMethod);
+                            OperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
 
-                        if (pathIgnore != null) {
+                            String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
+                            PathIgnore pathIgnore = pathOperationIgnore.checkIfIgnoreExist(httpMethod);
 
-                            if (pathIgnore.getParameters() != null) {
-                                if (changedOperation.getParameters() != null) {
+                            if (pathIgnore != null) {
 
-                                    if (changedOperation.getParameters().getChanged() != null) {
-                                        List<ChangedParameter> changedParametersToRemove = new ArrayList<>();
+                                if (pathIgnore.getParameters() != null) {
+                                    if (changedOperation.getParameters() != null) {
 
-                                        for (String ignoreParameter : pathIgnore.getParameters()) {
-                                            for (ChangedParameter changedParameter : changedOperation.getParameters().getChanged()) {
-                                                if (ignoreParameter.equals(changedParameter.getName())) {
-                                                    changedParametersToRemove.add(changedParameter);
+                                        if (changedOperation.getParameters().getChanged() != null) {
+                                            List<ChangedParameter> changedParametersToRemove = new ArrayList<>();
+
+                                            for (String ignoreParameter : pathIgnore.getParameters()) {
+                                                for (ChangedParameter changedParameter : changedOperation.getParameters().getChanged()) {
+                                                    if (ignoreParameter.equals(changedParameter.getName())) {
+                                                        changedParametersToRemove.add(changedParameter);
+                                                    }
                                                 }
                                             }
+
+                                            changedOperation.getParameters().getChanged().removeAll(changedParametersToRemove);
                                         }
 
-                                        changedOperation.getParameters().getChanged().removeAll(changedParametersToRemove);
-                                    }
+                                        if (changedOperation.getParameters().getIncreased() != null) {
+                                            List<Parameter> increasedParametersToRemove = new ArrayList<>();
 
-                                    if (changedOperation.getParameters().getIncreased() != null) {
-                                        List<Parameter> increasedParametersToRemove = new ArrayList<>();
-
-                                        for (String ignoreParameter : pathIgnore.getParameters()) {
-                                            for (Parameter increasedParameter : changedOperation.getParameters().getIncreased()) {
-                                                if (ignoreParameter.equals(increasedParameter.getName())) {
-                                                    increasedParametersToRemove.add(increasedParameter);
+                                            for (String ignoreParameter : pathIgnore.getParameters()) {
+                                                for (Parameter increasedParameter : changedOperation.getParameters().getIncreased()) {
+                                                    if (ignoreParameter.equals(increasedParameter.getName())) {
+                                                        increasedParametersToRemove.add(increasedParameter);
+                                                    }
                                                 }
                                             }
+
+                                            changedOperation.getParameters().getIncreased().removeAll(increasedParametersToRemove);
                                         }
 
-                                        changedOperation.getParameters().getIncreased().removeAll(increasedParametersToRemove);
-                                    }
+                                        if (changedOperation.getParameters().getMissing() != null) {
+                                            List<Parameter> missingParametersToRemove = new ArrayList<>();
 
-                                    if (changedOperation.getParameters().getMissing() != null) {
-                                        List<Parameter> missingParametersToRemove = new ArrayList<>();
-
-                                        for (String ignoreParameter : pathIgnore.getParameters()) {
-                                            for (Parameter missingParameter : changedOperation.getParameters().getMissing()) {
-                                                if (ignoreParameter.equals(missingParameter.getName())) {
-                                                    missingParametersToRemove.add(missingParameter);
+                                            for (String ignoreParameter : pathIgnore.getParameters()) {
+                                                for (Parameter missingParameter : changedOperation.getParameters().getMissing()) {
+                                                    if (ignoreParameter.equals(missingParameter.getName())) {
+                                                        missingParametersToRemove.add(missingParameter);
+                                                    }
                                                 }
                                             }
+
+                                            changedOperation.getParameters().getMissing().removeAll(missingParametersToRemove);
                                         }
 
-                                        changedOperation.getParameters().getMissing().removeAll(missingParametersToRemove);
-                                    }
+                                        if (changedOperation.getParameters().getMissing().size() == 0 &&
+                                                changedOperation.getParameters().getIncreased().size() == 0 &&
+                                                changedOperation.getParameters().getChanged().size() == 0) {
+                                            parametersClear = true;
+                                        }
 
-                                    if (changedOperation.getParameters().getMissing().size() == 0 &&
-                                            changedOperation.getParameters().getIncreased().size() == 0 &&
-                                            changedOperation.getParameters().getChanged().size() == 0) {
+                                    } else {
                                         parametersClear = true;
                                     }
-
-                                } else {
+                                } else if (changedOperation.getParameters() == null) {
                                     parametersClear = true;
                                 }
-                            } else if (changedOperation.getParameters() == null) {
-                                parametersClear = true;
-                            }
 
-                            if (pathIgnore.getRequestIgnore() != null) {
-                                if (changedOperation.getRequestBody() != null) {
+                                if (pathIgnore.getRequestIgnore() != null) {
+                                    if (changedOperation.getRequestBody() != null) {
 
-                                    if (changedOperation.getRequestBody().getContent().getMissing() != null) {
-                                        for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
-                                            changedOperation.getRequestBody().getContent().getMissing().remove(contentType);
+                                        if (changedOperation.getRequestBody().getContent().getMissing() != null) {
+                                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                                changedOperation.getRequestBody().getContent().getMissing().remove(contentType);
+                                            }
                                         }
-                                    }
 
-                                    if (changedOperation.getRequestBody().getContent().getIncreased() != null) {
-                                        for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
-                                            changedOperation.getRequestBody().getContent().getIncreased().remove(contentType);
+                                        if (changedOperation.getRequestBody().getContent().getIncreased() != null) {
+                                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                                changedOperation.getRequestBody().getContent().getIncreased().remove(contentType);
+                                            }
                                         }
-                                    }
 
-                                    if (changedOperation.getRequestBody().getContent().getChanged() != null) {
-                                        for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
-                                            changedOperation.getRequestBody().getContent().getChanged().remove(contentType);
+                                        if (changedOperation.getRequestBody().getContent().getChanged() != null) {
+                                            for (String contentType : pathIgnore.getRequestIgnore().getContentType()) {
+                                                changedOperation.getRequestBody().getContent().getChanged().remove(contentType);
+                                            }
                                         }
-                                    }
 
-                                    if (changedOperation.getRequestBody().getContent().getChanged().size() == 0 &&
-                                            changedOperation.getRequestBody().getContent().getIncreased().size() == 0 &&
-                                            changedOperation.getRequestBody().getContent().getMissing().size() == 0) {
+                                        if (changedOperation.getRequestBody().getContent().getChanged().size() == 0 &&
+                                                changedOperation.getRequestBody().getContent().getIncreased().size() == 0 &&
+                                                changedOperation.getRequestBody().getContent().getMissing().size() == 0) {
+                                            requestClear = true;
+                                        }
+
+                                    } else {
                                         requestClear = true;
                                     }
-
-                                } else {
+                                } else if (changedOperation.getRequestBody() == null) {
                                     requestClear = true;
                                 }
-                            } else if (changedOperation.getRequestBody() == null) {
-                                requestClear = true;
-                            }
 
-                            if (pathIgnore.getResponseIgnore() != null) {
-                                if (changedOperation.getApiResponses() != null) {
-                                    if (changedOperation.getApiResponses().getMissing() != null) {
-                                        for (String status : pathIgnore.getResponseIgnore().getStatus())
-                                            changedOperation.getApiResponses().getMissing().remove(status);
-                                    }
+                                if (pathIgnore.getResponseIgnore() != null) {
+                                    if (changedOperation.getApiResponses() != null) {
+                                        if (changedOperation.getApiResponses().getMissing() != null) {
+                                            for (String status : pathIgnore.getResponseIgnore().getStatus())
+                                                changedOperation.getApiResponses().getMissing().remove(status);
+                                        }
 
-                                    if (changedOperation.getApiResponses().getChanged() != null) {
-                                        for (String status : pathIgnore.getResponseIgnore().getStatus())
-                                            changedOperation.getApiResponses().getChanged().remove(status);
-                                    }
+                                        if (changedOperation.getApiResponses().getChanged() != null) {
+                                            for (String status : pathIgnore.getResponseIgnore().getStatus())
+                                                changedOperation.getApiResponses().getChanged().remove(status);
+                                        }
 
-                                    if (changedOperation.getApiResponses().getIncreased() != null) {
-                                        for (String status : pathIgnore.getResponseIgnore().getStatus())
-                                            changedOperation.getApiResponses().getIncreased().remove(status);
-                                    }
+                                        if (changedOperation.getApiResponses().getIncreased() != null) {
+                                            for (String status : pathIgnore.getResponseIgnore().getStatus())
+                                                changedOperation.getApiResponses().getIncreased().remove(status);
+                                        }
 
-                                    if (changedOperation.getApiResponses().getIncreased().size() == 0 &&
-                                            changedOperation.getApiResponses().getMissing().size() == 0 &&
-                                            changedOperation.getApiResponses().getChanged().size() == 0) {
+                                        if (changedOperation.getApiResponses().getIncreased().size() == 0 &&
+                                                changedOperation.getApiResponses().getMissing().size() == 0 &&
+                                                changedOperation.getApiResponses().getChanged().size() == 0) {
+                                            responseClear = true;
+                                        }
+                                    } else {
                                         responseClear = true;
                                     }
-                                } else {
+                                } else if (changedOperation.getApiResponses() == null) {
                                     responseClear = true;
                                 }
-                            } else if (changedOperation.getApiResponses() == null) {
-                                responseClear = true;
-                            }
 
-                            if (requestClear && responseClear && parametersClear)
-                                changedOperationsToRemove.add(changedOperation);
+                                if (requestClear && responseClear && parametersClear)
+                                    changedOperationsToRemove.add(changedOperation);
+                            }
                         }
                     }
                 }
-
             }
         }
 

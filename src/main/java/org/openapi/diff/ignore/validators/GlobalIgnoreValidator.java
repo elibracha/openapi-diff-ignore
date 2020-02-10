@@ -33,13 +33,17 @@ public class GlobalIgnoreValidator<K, V> {
             }
         }
 
-        endpointValidator.setEndpoints((Map<String, Object>) ignore.get("paths"));
+        if (ignore.entrySet().contains("paths")) {
+            endpointValidator.setEndpoints((Map<String, Object>) ignore.get("paths"));
 
-        boolean result = endpointValidator.validate();
+            boolean result = endpointValidator.validate();
 
-        this.result = endpointValidator.getResult();
+            this.result = endpointValidator.getResult();
 
-        return result;
+            return result;
+        }
+
+        return true;
     }
 
     public GlobalIgnoreValidator setIgnore(Map<K, V> ignore) {
