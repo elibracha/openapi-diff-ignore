@@ -34,16 +34,31 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
             if (Globallt.getKey().equals("project")) {
                 System.out.println(Globallt.getValue());
             }
+
             if (Globallt.getKey().equals("version")) {
                 System.out.println(Globallt.getValue());
             }
+
             if (Globallt.getKey().equals("info")) {
                 System.out.println(Globallt.getValue());
             }
+
             if (Globallt.getKey().equals("paths") && Globallt.getValue().isContainerNode()) {
                 for (Iterator<Map.Entry<String, JsonNode>> pathsIt = Globallt.getValue().fields(); pathsIt.hasNext(); ) {
+
                     Map.Entry<String, JsonNode> pathElt = pathsIt.next();
-                    System.out.println(pathElt);
+                    JsonNode operations = pathElt.getValue();
+
+                    for (Iterator<Map.Entry<String, JsonNode>> operationIt = operations.fields(); operationIt.hasNext(); ) {
+                        Map.Entry<String, JsonNode> operation = operationIt.next();
+                        JsonNode operationIgnores = operation.getValue();
+
+
+                        for (Iterator<Map.Entry<String, JsonNode>> ignoresIt = operationIgnores.fields(); ignoresIt.hasNext(); ) {
+                            Map.Entry<String, JsonNode> ignores = ignoresIt.next();
+                            System.out.println(ignores);
+                        }
+                    }
                 }
             }
         }
