@@ -1,7 +1,7 @@
 package org.openapi.diff.ignore.processors;
 
 
-import org.openapi.diff.ignore.context.MapKeyIgnore;
+import org.openapi.diff.ignore.context.ContextMapKey;
 import org.openapi.diff.ignore.models.IgnoreOpenApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,16 +27,16 @@ public class IgnoreProcessor {
     private final static String DEFAULT_SEARCH = ".diffignore";
     private final static String URL_PATTERN = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-    private MapKeyIgnore<String, String> mapKey;
+    private ContextMapKey<String, String> mapKey;
     private List<String> ignoresPaths;
 
     public IgnoreProcessor() {
-        this.mapKey = new MapKeyIgnore<>();
+        this.mapKey = new ContextMapKey<>();
         this.ignoresPaths = Collections.singletonList(DEFAULT_SEARCH);
     }
 
     public IgnoreProcessor(String... ignoresPaths) {
-        this.mapKey = new MapKeyIgnore<>();
+        this.mapKey = new ContextMapKey<>();
         this.ignoresPaths = Arrays.asList(ignoresPaths);
     }
 
@@ -69,7 +69,7 @@ public class IgnoreProcessor {
         return ignores;
     }
 
-    public MapKeyIgnore<String, String> getMapKey() {
+    public ContextMapKey<String, String> getMapKey() {
         return mapKey;
     }
 }

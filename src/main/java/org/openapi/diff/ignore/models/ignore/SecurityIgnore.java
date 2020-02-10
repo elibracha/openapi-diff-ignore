@@ -1,23 +1,24 @@
 package org.openapi.diff.ignore.models.ignore;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class SecurityIgnore {
-    private List<SecurityOperationIgnore> securityOperationIgnoreList;
+    private List<Map<String, Object>> securityOperationIgnoreList;
 
     public SecurityIgnore() {
     }
 
-    public SecurityIgnore(List<SecurityOperationIgnore> securities) {
+    public SecurityIgnore(List<Map<String, Object>> securities) {
         this.securityOperationIgnoreList = securities;
     }
 
-    public List<SecurityOperationIgnore> getSecurities() {
+    public List<Map<String, Object>> getSecurities() {
         return securityOperationIgnoreList;
     }
 
-    public void setSecurities(List<SecurityOperationIgnore> securities) {
+    public void setSecurities(List<Map<String, Object>> securities) {
         this.securityOperationIgnoreList = securities;
     }
 

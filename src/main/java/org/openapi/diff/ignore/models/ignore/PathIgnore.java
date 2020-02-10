@@ -1,6 +1,8 @@
 package org.openapi.diff.ignore.models.ignore;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.openapi.diff.ignore.context.ContextDeserializer;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class PathIgnore {
     private List<String> parameters;
     private String info;
     @JsonProperty("security")
+    @JsonDeserialize(using = ContextDeserializer.class)
     private SecurityIgnore securityIgnore;
 
     public PathIgnore() {
@@ -76,6 +79,5 @@ public class PathIgnore {
     public int hashCode() {
         return Objects.hash(requestIgnore, responseIgnore, parameters, info, securityIgnore);
     }
-
 
 }

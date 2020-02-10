@@ -2,6 +2,7 @@ package org.openapi.diff.ignore.context;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.openapi.diff.ignore.models.ignore.GlobalIgnore;
 import org.openapi.diff.ignore.processors.ValidationProcessor;
@@ -12,7 +13,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapKeyIgnore<K, V> {
+public class ContextMapKey<K, V> {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
@@ -20,7 +21,7 @@ public class MapKeyIgnore<K, V> {
     private GlobalIgnore globalIgnore;
     private ValidationProcessor<K, V> validationProcessor;
 
-    public MapKeyIgnore() {
+    public ContextMapKey() {
         this.mapKey = new HashMap<>();
         this.globalIgnore = new GlobalIgnore();
         this.validationProcessor = new ValidationProcessor<>();
@@ -38,6 +39,10 @@ public class MapKeyIgnore<K, V> {
     private boolean buildMap() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(GlobalIgnore.class, new ContextDeserializer(GlobalIgnore.class));
+        mapper.registerModule(module);
 
         try {
             if (validationProcessor.validate(this.mapKey)) {
