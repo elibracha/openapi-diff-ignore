@@ -1,5 +1,6 @@
 package org.openapi.diff.ignore.models.ignore;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ public class GlobalIgnore {
     private String version;
 
     public GlobalIgnore() {
+        this.paths = new HashMap<>();
     }
 
     public GlobalIgnore(Map<String, OperationIgnore> paths, String info, String project, String version) {

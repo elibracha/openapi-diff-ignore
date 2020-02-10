@@ -5,20 +5,20 @@ import java.util.Map;
 import java.util.Objects;
 
 public class SecurityIgnore {
-    private List<Map<String, Object>> securityOperationIgnoreList;
+    private Map<String, List<String>> securityOperationIgnoreList;
 
     public SecurityIgnore() {
     }
 
-    public SecurityIgnore(List<Map<String, Object>> securities) {
+    public SecurityIgnore(Map<String, List<String>> securities) {
         this.securityOperationIgnoreList = securities;
     }
 
-    public List<Map<String, Object>> getSecurities() {
+    public Map<String, List<String>> getSecurities() {
         return securityOperationIgnoreList;
     }
 
-    public void setSecurities(List<Map<String, Object>> securities) {
+    public void setSecurities(Map<String, List<String>> securities) {
         this.securityOperationIgnoreList = securities;
     }
 
