@@ -39,7 +39,7 @@ Field Pattern | Type | Description
 Assuming the following paths, the concrete definition, `/pets/mine`, will be matched first if used:
 
 ```
-  /pets/{petId}   # will noy be matched
+  /pets/{petId}   # will not be matched
 
   /pets/*         # will match and also match all pets endpoints
   /*              # will match and also will match all endpoints
