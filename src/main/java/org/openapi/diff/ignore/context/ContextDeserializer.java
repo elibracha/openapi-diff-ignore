@@ -39,7 +39,6 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
     @Override
     public GlobalIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        GlobalIgnore globalIgnore = new GlobalIgnore();
 
         for (Iterator<Map.Entry<String, JsonNode>> globalIt = node.fields(); globalIt.hasNext(); ) {
             Map.Entry<String, JsonNode> globalScope = globalIt.next();
@@ -49,10 +48,11 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                     validateVersion(globalScope);
                     break;
                 case "project":
-                    globalIgnore.setProject(globalScope.getValue().asText());
+                    this.globalIgnore.setProject(globalScope.getValue().asText());
                     break;
                 case "info":
-                    globalIgnore.setInfo(globalScope.getValue().asText());
+                    this.globalIgnore.setInfo(globalScope.getValue().asText());
+                    break;
                 case "paths":
                     pathsParsing(globalScope);
                     break;
@@ -65,7 +65,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
             }
 
         }
-        return globalIgnore;
+        return this.globalIgnore;
     }
 
 
@@ -95,8 +95,10 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
             switch (ignoreType.getKey()) {
                 case "response":
                     responseParsing(ignoreType, pathIgnore);
+                    break;
                 case "request":
                     requestParsing(ignoreType, pathIgnore);
+                    break;
                 case "security":
                     securityParsing(ignoreType, pathIgnore);
                     break;
@@ -140,7 +142,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                             ignoresIt.getKey()));
             }
 
-            this.globalIgnore.getPaths().put(pathIt.getKey(), (operationIgnore));
+            this.globalIgnore.getPaths().put(pathIt.getKey(), operationIgnore);
         }
     }
 

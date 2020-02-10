@@ -3,23 +3,15 @@ info: this is a sample ignore file to silence changes in openapi-diff
 project: sample-service
 paths:
   /*:
-    post:
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
-      request:
-        content-type:
-          - application/octet-stream
+    get:
+      parameters:
+        - username
+        - password
       response:
         status:
           - default
           - 200
 
-    get:
-      parameters:
-        - username
-        - password
 
   /store:
     ignore-type: all

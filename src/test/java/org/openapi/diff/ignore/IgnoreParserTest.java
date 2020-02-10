@@ -22,7 +22,9 @@ public class IgnoreParserTest {
     @Test
     public void test() {
         IgnoreProcessor parser = new IgnoreProcessor(
-                getClass().getClassLoader().getResource(".diffignore1.yaml").getFile()
+                getClass().getClassLoader().getResource(".diffignore1.yaml").getFile(),
+                getClass().getClassLoader().getResource(".diffignore2.yaml").getFile(),
+                getClass().getClassLoader().getResource(".diffignore3.yaml").getFile()
         );
 
         List<IgnoreOpenApi> ignoreOpenApi = parser.processIgnore();
