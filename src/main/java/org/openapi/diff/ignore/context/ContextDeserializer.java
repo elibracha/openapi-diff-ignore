@@ -185,7 +185,31 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
         pathIgnore.setResponseIgnore(responseIgnore);
     }
 
-    private void requestParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) {
+    private void requestParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) throws SpecificationSupportException {
+
+        RequestIgnore requestIgnore = new RequestIgnore();
+        List<String> contentTypes = new ArrayList<>();
+
+        if (ignoreType.getValue().elements().hasNext()) {
+            for (Iterator<Map.Entry<String, JsonNode>> requestScope = ignoreType.getValue().fields(); requestScope.hasNext(); ) {
+                Map.Entry<String, JsonNode> requestIgnoreItem = requestScope.next();
+
+                switch (requestIgnoreItem.getKey()) {
+                    case "content-type":
+                        for (Iterator<JsonNode> it = requestIgnoreItem.getValue().elements(); it.hasNext(); ) {
+                            contentTypes.add(it.next().asText());
+                        }
+                        requestIgnore.setContentType(contentTypes);
+                        break;
+                    default:
+                        throw new SpecificationSupportException(String.format(
+                                "Specification does not support value \"%s\" as request ignore type, please referenced the documentation for supported entries.",
+                                requestIgnoreItem.getKey()));
+                }
+            }
+        }
+
+        pathIgnore.setRequestIgnore(requestIgnore);
     }
 
 
