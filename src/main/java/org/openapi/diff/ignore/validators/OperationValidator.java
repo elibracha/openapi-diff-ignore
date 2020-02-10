@@ -38,10 +38,16 @@ public class OperationValidator {
             }
 
             if (entry.getValue() instanceof Map) {
+                if (((Map<String, Object>) entry.getValue()).containsKey("security")) {
+                    if (!(((Map<String, Object>) entry.getValue()).get("security") instanceof ArrayList)) {
+                        result.setMessage("the security field most be a list").setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                        return false;
+                    }
+                }
+
                 if (((Map<String, Object>) entry.getValue()).containsKey("parameters")) {
                     if (!(((Map<String, Object>) entry.getValue()).get("parameters") instanceof ArrayList)) {
-                        result.setMessage(String.format("the parameters field most be a list", entry.getKey()))
-                                .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                        result.setMessage("the parameters field most be a list").setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                         return false;
                     }
                 }

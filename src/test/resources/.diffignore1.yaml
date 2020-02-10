@@ -11,7 +11,11 @@ paths:
         status:
           - default
           - 200
-
+    put:
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
 
   /store:
     ignore-type: all

@@ -13,8 +13,18 @@ public class PathIgnore {
     private ResponseIgnore responseIgnore;
     private List<String> parameters;
     private String info;
+    @JsonProperty("security")
+    private SecurityIgnore securityIgnore;
 
     public PathIgnore() {
+    }
+
+    public SecurityIgnore getSecurityIgnore() {
+        return securityIgnore;
+    }
+
+    public void setSecurityIgnore(SecurityIgnore securityIgnore) {
+        this.securityIgnore = securityIgnore;
     }
 
     public List<String> getParameters() {
@@ -58,21 +68,14 @@ public class PathIgnore {
         return Objects.equals(requestIgnore, that.requestIgnore) &&
                 Objects.equals(responseIgnore, that.responseIgnore) &&
                 Objects.equals(parameters, that.parameters) &&
-                Objects.equals(info, that.info);
+                Objects.equals(info, that.info) &&
+                Objects.equals(securityIgnore, that.securityIgnore);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(requestIgnore, responseIgnore, parameters, info);
+        return Objects.hash(requestIgnore, responseIgnore, parameters, info, securityIgnore);
     }
 
-    @Override
-    public String toString() {
-        return "PathIgnore{" +
-                "requestIgnore=" + requestIgnore +
-                ", responseIgnore=" + responseIgnore +
-                ", parameters=" + parameters +
-                ", info='" + info + '\'' +
-                '}';
-    }
+
 }
