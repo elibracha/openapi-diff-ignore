@@ -49,13 +49,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
 
             switch (globalScope.getKey()) {
                 case "version":
-                    if (versions.contains(globalScope.getValue().asText())) {
-                        globalIgnore.setVersion(globalScope.getValue().asText());
-                    } else {
-                        throw new InvalidVersionException(String.format(
-                                "Version \"%s\" that was specified is invalid.",
-                                globalScope.getValue().asText()));
-                    }
+                    validateVersion(globalScope);
                     break;
                 case "project":
                     globalIgnore.setProject(globalScope.getValue().asText());
@@ -63,35 +57,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                 case "info":
                     globalIgnore.setInfo(globalScope.getValue().asText());
                 case "paths":
-                    if (globalScope.getValue().isContainerNode()) {
-                        for (Iterator<Map.Entry<String, JsonNode>> pathsScope = globalScope.getValue().fields(); pathsScope.hasNext(); ) {
-
-                            Map.Entry<String, JsonNode> pathIt = pathsScope.next();
-                            OperationIgnore operationIgnore = new OperationIgnore();
-
-                            for (Iterator<Map.Entry<String, JsonNode>> operationScope = pathIt.getValue().fields(); operationScope.hasNext(); ) {
-                                Map.Entry<String, JsonNode> ignoresIt = operationScope.next();
-                                PathIgnore pathIgnore = new PathIgnore();
-
-                                switch (ignoresIt.getKey()) {
-                                    case "post":
-                                        postParsing(ignoresIt, operationIgnore, pathIt, pathIgnore);
-                                        break;
-                                    case "put":
-                                    case "delete":
-                                    case "get":
-                                    case "trace":
-                                    case "head":
-                                    case "options":
-                                    case "patch":
-                                    default:
-                                        throw new SpecificationSupportException(String.format(
-                                                "Specification does not support value \"%s\" please referenced the documentation for supported entries.",
-                                                ignoresIt.getKey()));
-                                }
-                            }
-                        }
-                    }
+                    pathParsing(globalScope);
                     break;
                 default:
                     throw new SpecificationSupportException(String.format(
@@ -105,9 +71,26 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
         return globalIgnore;
     }
 
+    
+    private void pathParsing(Map.Entry<String, JsonNode> globalScope) throws SpecificationSupportException {
+        if (globalScope.getValue().isContainerNode()) {
+            for (Iterator<Map.Entry<String, JsonNode>> pathsScope = globalScope.getValue().fields(); pathsScope.hasNext(); ) {
 
-    private void postParsing(Map.Entry<String, JsonNode> ignoresIt, OperationIgnore operationIgnore,
-                             Map.Entry<String, JsonNode> pathIt, PathIgnore pathIgnore) throws SpecificationSupportException {
+                Map.Entry<String, JsonNode> pathIt = pathsScope.next();
+                OperationIgnore operationIgnore = new OperationIgnore();
+
+                for (Iterator<Map.Entry<String, JsonNode>> operationScope = pathIt.getValue().fields(); operationScope.hasNext(); ) {
+                    Map.Entry<String, JsonNode> ignoresIt = operationScope.next();
+                    PathIgnore pathIgnore = new PathIgnore();
+
+                    methodParsing(ignoresIt, operationIgnore, pathIt, pathIgnore);
+                }
+            }
+        }
+    }
+
+    private void methodParsing(Map.Entry<String, JsonNode> ignoresIt, OperationIgnore operationIgnore,
+                               Map.Entry<String, JsonNode> pathIt, PathIgnore pathIgnore) throws SpecificationSupportException {
 
         for (Iterator<Map.Entry<String, JsonNode>> ignoresScope = ignoresIt.getValue().fields(); ignoresScope.hasNext(); ) {
             Map.Entry<String, JsonNode> ignoreType = ignoresScope.next();
@@ -124,11 +107,53 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                             "Specification does not support value \"%s\" as ignore type please referenced the documentation for supported entries.",
                             ignoreType.getKey()));
             }
+
+            switch (ignoresIt.getKey()) {
+                case "post":
+                    operationIgnore.setPost(pathIgnore);
+                    break;
+                case "put":
+                    operationIgnore.setPut(pathIgnore);
+                    break;
+                case "delete":
+                    operationIgnore.setDelete(pathIgnore);
+                    break;
+                case "get":
+                    operationIgnore.setGet(pathIgnore);
+                    break;
+                case "trace":
+                    operationIgnore.setTrace(pathIgnore);
+                    break;
+                case "head":
+                    operationIgnore.setHead(pathIgnore);
+                    break;
+                case "options":
+                    operationIgnore.setOptions(pathIgnore);
+                    break;
+                case "patch":
+                    operationIgnore.setPatch(pathIgnore);
+                    break;
+                default:
+                    throw new SpecificationSupportException(String.format(
+                            "Specification does not support value \"%s\" please referenced the documentation for supported entries.",
+                            ignoresIt.getKey()));
+            }
+
             operationIgnore.setPost(pathIgnore);
             this.globalIgnore.getPaths().put(pathIt.getKey(), (operationIgnore));
         }
     }
 
+
+    private void validateVersion(Map.Entry<String, JsonNode> globalScope) throws InvalidVersionException {
+        if (versions.contains(globalScope.getValue().asText())) {
+            globalIgnore.setVersion(globalScope.getValue().asText());
+        } else {
+            throw new InvalidVersionException(String.format(
+                    "Version \"%s\" that was specified is invalid.",
+                    globalScope.getValue().asText()));
+        }
+    }
 
     private void securityParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) {
         SecurityIgnore securityIgnore = new SecurityIgnore();
