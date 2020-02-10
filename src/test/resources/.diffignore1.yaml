@@ -8,6 +8,18 @@ paths:
         - petstore_auth:
             - 'write:pets'
             - 'read:pets'
+      request:
+        content-type:
+          - application/octet-stream
+      response:
+        status:
+          - default
+          - 200
+
+    get:
+      parameters:
+        - username
+        - password
 
   /store:
     ignore-type: all

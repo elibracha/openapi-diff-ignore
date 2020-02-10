@@ -71,7 +71,7 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
         return globalIgnore;
     }
 
-    
+
     private void pathParsing(Map.Entry<String, JsonNode> globalScope) throws SpecificationSupportException {
         if (globalScope.getValue().isContainerNode()) {
             for (Iterator<Map.Entry<String, JsonNode>> pathsScope = globalScope.getValue().fields(); pathsScope.hasNext(); ) {
@@ -97,11 +97,15 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
 
             switch (ignoreType.getKey()) {
                 case "response":
+                    responseParsing(ignoreType, pathIgnore);
                 case "request":
+                    requestParsing(ignoreType, pathIgnore);
                 case "security":
                     securityParsing(ignoreType, pathIgnore);
                     break;
                 case "parameters":
+                    parameterParsing(ignoreType, pathIgnore);
+                    break;
                 default:
                     throw new SpecificationSupportException(String.format(
                             "Specification does not support value \"%s\" as ignore type please referenced the documentation for supported entries.",
@@ -142,6 +146,24 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
             operationIgnore.setPost(pathIgnore);
             this.globalIgnore.getPaths().put(pathIt.getKey(), (operationIgnore));
         }
+    }
+
+    private void parameterParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) {
+        List<String> paramsIgnore = new ArrayList<>();
+
+        if (ignoreType.getValue().elements().hasNext()) {
+            for (Iterator<JsonNode> it = ignoreType.getValue().elements(); it.hasNext(); ) {
+                paramsIgnore.add(it.next().textValue());
+            }
+        }
+
+        pathIgnore.setParameters(paramsIgnore);
+    }
+
+    private void responseParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) {
+    }
+
+    private void requestParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) {
     }
 
 
