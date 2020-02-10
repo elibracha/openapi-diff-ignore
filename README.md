@@ -50,26 +50,19 @@ NOTICE! When using wildcards all all endpoints matching the wildcard will apply 
 ```yaml
 paths:
   /*:
-    ignore:
-      get:
-        parameters:
-          - username
-          - password
-        response:
-          status:
-            - default
-            - 200
+    ignore-type: single # by default single no need to specify
+    get:
+      parameters:
+        - username
+        - password
+      response:
+        status:
+          - default
+          - 200
 
 
   /store:
-    post:
-      request:
-        content-type:
-          - application/octet-stream
-        response:
-          status:
-              - default
-               - 200
+    ignore-type: single # will ignore any change to the endpoint
 ```
 
 #### <a name="pathItemObject"></a>Path Item Object
@@ -82,6 +75,7 @@ The path itself is still exposed to the documentation viewer but they will not k
 
 Field Name | Type | Description
 ---|:---:|---
+<a name="pathItemIgnoreType"></a>ignore-type | `string`| A definition of ignore type possible values are "single" or "all" all will ignore any change to the endpoint and by default the value i single with will ignore only what you defined.
 <a name="pathItemGet"></a>get | [Operation Object](#operationObject) | A definition of a GET operation on this path.
 <a name="pathItemPut"></a>put | [Operation Object](#operationObject) | A definition of a PUT operation on this path.
 <a name="pathItemPost"></a>post | [Operation Object](#operationObject) | A definition of a POST operation on this path.
