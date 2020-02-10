@@ -11,3 +11,7 @@ paths:
         status:
           - default
           - 200
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'

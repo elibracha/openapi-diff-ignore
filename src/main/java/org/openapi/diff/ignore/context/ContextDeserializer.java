@@ -53,7 +53,6 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
         return this.globalIgnore;
     }
 
-
     private void setGlobalPaths(Map.Entry<String, JsonNode> globalScope) throws SpecificationSupportException {
         if (globalScope.getValue().isContainerNode()) {
             for (Iterator<Map.Entry<String, JsonNode>> pathsScope = globalScope.getValue().fields(); pathsScope.hasNext(); ) {
@@ -205,18 +204,18 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
         if (ignoreType.getValue().elements().hasNext()) {
             for (Iterator<JsonNode> it = ignoreType.getValue().elements(); it.hasNext(); ) {
                 JsonNode securityNode = it.next();
-                Map<String, List<String>> securityMap = new HashMap<>();
+                Map<String, SecurityOperationIgnore> securityMap = new HashMap<>();
 
                 for (Iterator<Map.Entry<String, JsonNode>> securityScope = securityNode.fields(); securityScope.hasNext(); ) {
                     Map.Entry<String, JsonNode> securityReq = securityScope.next();
 
-                    List<String> securityReqList = new ArrayList<>();
+                    SecurityOperationIgnore securityOperationIgnore = new SecurityOperationIgnore();
 
                     for (Iterator<JsonNode> securityReqIt = securityReq.getValue().elements(); securityReqIt.hasNext(); ) {
                         JsonNode requirement = securityReqIt.next();
-                        securityReqList.add(requirement.asText());
+                        securityOperationIgnore.getSecurities().add(requirement.asText());
                     }
-                    securityMap.put(securityReq.getKey(), securityReqList);
+                    securityMap.put(securityReq.getKey(), securityOperationIgnore);
                 }
 
                 securityIgnore.setSecurities(securityMap);
@@ -225,7 +224,6 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
         }
         pathIgnore.setSecurityIgnore(securityIgnore);
     }
-
 
     private void setGlobalVersion(Map.Entry<String, JsonNode> globalScope) throws InvalidVersionException {
         if (SpecConstants.VERSIONS.contains(globalScope.getValue().asText())) {

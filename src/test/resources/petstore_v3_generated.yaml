@@ -290,10 +290,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModelApiResponse'
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+
   '/store/order/{orderId}':
     get:
       tags:
