@@ -102,7 +102,7 @@ Field Name | Type | Description
 
 #### <a name="operationObject"></a>Operation Object
 
-Describes a single API operation on a path.
+Describes a single API ignore operation on a path.
 
 ##### Fixed Fields
 
