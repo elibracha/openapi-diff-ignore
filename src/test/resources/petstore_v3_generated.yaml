@@ -390,7 +390,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/Pet'
         '405':
           description: Invalid input
   /user/logout:

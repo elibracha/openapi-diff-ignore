@@ -141,7 +141,9 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
 
     private void responseParsing(Map.Entry<String, JsonNode> ignoreType, PathIgnore pathIgnore) throws SpecificationSupportException {
         ResponseIgnore responseIgnore = new ResponseIgnore();
+
         List<String> status = new ArrayList<>();
+        List<String> content = new ArrayList<>();
 
         if (ignoreType.getValue().elements().hasNext()) {
             for (Iterator<Map.Entry<String, JsonNode>> responseScope = ignoreType.getValue().fields(); responseScope.hasNext(); ) {
@@ -154,6 +156,11 @@ public class ContextDeserializer extends StdDeserializer<GlobalIgnore> {
                         }
                         responseIgnore.setStatus(status);
                         break;
+                    case "content":
+                        for (Iterator<JsonNode> it = responseIgnoreItem.getValue().elements(); it.hasNext(); ) {
+                            content.add(it.next().asText());
+                        }
+                        responseIgnore.setContent(content);
                     case "info":
                         responseIgnore.setInfo(responseIgnoreItem.getValue().asText());
                         break;

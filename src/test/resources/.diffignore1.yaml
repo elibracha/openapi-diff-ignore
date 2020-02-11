@@ -18,7 +18,8 @@ paths:
       response:
         status:
           - default
-          - 200
+        content:
+          - petId
       security:
         - petstore_auth:
             - 'write:pets'

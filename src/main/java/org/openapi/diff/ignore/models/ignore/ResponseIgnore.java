@@ -7,13 +7,17 @@ public class ResponseIgnore {
 
     private String info;
     private List<String> status;
+    private List<String> content;
 
     public ResponseIgnore() {
     }
 
-    public ResponseIgnore(String info, List<String> status) {
-        this.info = info;
-        this.status = status;
+    public List<String> getContent() {
+        return content;
+    }
+
+    public void setContent(List<String> content) {
+        this.content = content;
     }
 
     public String getInfo() {
@@ -37,13 +41,14 @@ public class ResponseIgnore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResponseIgnore that = (ResponseIgnore) o;
-        return status == that.status &&
-                Objects.equals(info, that.info);
+        return Objects.equals(info, that.info) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(info, status);
+        return Objects.hash(info, status, content);
     }
 
     @Override
@@ -51,6 +56,7 @@ public class ResponseIgnore {
         return "ResponseIgnore{" +
                 "info='" + info + '\'' +
                 ", status=" + status +
+                ", content=" + content +
                 '}';
     }
 }

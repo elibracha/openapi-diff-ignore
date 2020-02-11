@@ -3,7 +3,8 @@ package org.openapi.diff.ignore.models.validations.enums;
 public enum ResponseSupport {
 
     INFO("info"),
-    STATUS("status");
+    STATUS("status"),
+    CONTENT("content");
 
     private String value;
 

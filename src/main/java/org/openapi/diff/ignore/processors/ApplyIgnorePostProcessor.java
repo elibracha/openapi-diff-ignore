@@ -146,17 +146,23 @@ public class ApplyIgnorePostProcessor {
 
                             if (pathIgnore.getResponseIgnore() != null) {
                                 if (changedOperation.getApiResponses() != null) {
-                                    if (changedOperation.getApiResponses().getMissing() != null) {
+                                    if (changedOperation.getApiResponses().getMissing() != null && changedOperation.getApiResponses().getMissing().size() > 0) {
                                         for (String status : pathIgnore.getResponseIgnore().getStatus())
                                             changedOperation.getApiResponses().getMissing().remove(status);
                                     }
 
-                                    if (changedOperation.getApiResponses().getChanged() != null) {
+                                    if (changedOperation.getApiResponses().getChanged() != null && changedOperation.getApiResponses().getChanged().size() > 0) {
                                         for (String status : pathIgnore.getResponseIgnore().getStatus())
                                             changedOperation.getApiResponses().getChanged().remove(status);
+                                        for (String content : pathIgnore.getResponseIgnore().getContent())
+                                            for (Map.Entry<String, ChangedResponse> entry : changedOperation.getApiResponses().getChanged().entrySet()) {
+                                                entry.getValue().getContent().getChanged().remove(content); // TODO: fix and rebuild and structure like openapi
+                                                entry.getValue().getContent().getIncreased().remove(content);
+                                                entry.getValue().getContent().getMissing().remove(content);
+                                            }
                                     }
 
-                                    if (changedOperation.getApiResponses().getIncreased() != null) {
+                                    if (changedOperation.getApiResponses().getIncreased() != null && changedOperation.getApiResponses().getIncreased().size() > 0) {
                                         for (String status : pathIgnore.getResponseIgnore().getStatus())
                                             changedOperation.getApiResponses().getIncreased().remove(status);
                                     }
