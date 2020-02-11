@@ -41,8 +41,8 @@ Assuming the following paths, the concrete definition, `/pets/mine`, will be mat
 ```
   /pets/{petId}   # will not be matched
 
-  /pets/*         # will match and also match all pets endpoints
-  /*              # will match and also will match all endpoints
+  /pets/**        # will match and also match all pets endpoints
+  /**             # will match and also will match all endpoints
 ```
 NOTICE! When using wildcards all all endpoints matching the wildcard will apply the ignore specified.
 
@@ -50,7 +50,7 @@ NOTICE! When using wildcards all all endpoints matching the wildcard will apply 
 
 ```yaml
 paths:
-  /*:
+  /**:
     ignore-type: single # by default single no need to specify
     get:
       parameters:
