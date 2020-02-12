@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore.context;
+package org.openapi.diff.ignore.deserializes;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
