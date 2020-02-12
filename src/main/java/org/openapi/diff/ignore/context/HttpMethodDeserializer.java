@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
+import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.HttpMethodIgnore;
 import org.openapi.diff.ignore.models.ignore.OperationIgnore;
 
@@ -31,31 +32,28 @@ public class HttpMethodDeserializer extends StdDeserializer<HttpMethodIgnore> {
             OperationIgnore operationIgnore = ObjectMapperFactory.createYaml().convertValue(it.next().getValue(), OperationIgnore.class);
 
             switch (operationScope.getKey()) {
-                case "post":
+                case SpecConstants.HttpMethods.POST:
                     httpMethodIgnore.setPost(operationIgnore);
                     break;
-                case "get":
+                case SpecConstants.HttpMethods.GET:
                     httpMethodIgnore.setGet(operationIgnore);
                     break;
-                case "put":
+                case SpecConstants.HttpMethods.PUT:
                     httpMethodIgnore.setPut(operationIgnore);
                     break;
-                case "delete":
+                case SpecConstants.HttpMethods.DELETE:
                     httpMethodIgnore.setDelete(operationIgnore);
                     break;
-                case "connect":
-                    httpMethodIgnore.setConnect(operationIgnore);
-                    break;
-                case "head":
+                case SpecConstants.HttpMethods.HEAD:
                     httpMethodIgnore.setHead(operationIgnore);
                     break;
-                case "options":
+                case SpecConstants.HttpMethods.OPTIONS:
                     httpMethodIgnore.setOptions(operationIgnore);
                     break;
-                case "trace":
+                case SpecConstants.HttpMethods.TRACE:
                     httpMethodIgnore.setTrace(operationIgnore);
                     break;
-                case "patch":
+                case SpecConstants.HttpMethods.PATCH:
                     httpMethodIgnore.setPatch(operationIgnore);
                     break;
                 default:
