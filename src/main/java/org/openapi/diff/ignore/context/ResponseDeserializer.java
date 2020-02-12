@@ -24,6 +24,11 @@ public class ResponseDeserializer extends StdDeserializer<ResponseIgnore> {
         JsonNode response = jsonParser.getCodec().readTree(jsonParser);
         ResponseIgnore responseIgnore = new ResponseIgnore();
 
+        if (!response.isContainerNode()) {
+            responseIgnore.setIgnoreAll(true);
+            return responseIgnore;
+        }
+
         Map<String, Content> responseContent = new HashMap<>();
         for (Iterator<Map.Entry<String, JsonNode>> it = response.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> responseScope = it.next();

@@ -24,6 +24,11 @@ public class PathsDeserializer extends StdDeserializer<PathsIgnore> {
         JsonNode paths = jsonParser.getCodec().readTree(jsonParser);
         PathsIgnore pathsIgnore = new PathsIgnore();
 
+        if (!paths.isContainerNode()) {
+            pathsIgnore.setIgnoreAll(true);
+            return pathsIgnore;
+        }
+
         Map<String, HttpMethodIgnore> map = new HashMap<>();
 
         for (Iterator<Map.Entry<String, JsonNode>> it = paths.fields(); it.hasNext(); ) {

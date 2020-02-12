@@ -21,6 +21,11 @@ public class SecurityDeserializer extends StdDeserializer<SecurityIgnore> {
         JsonNode securities = jsonParser.getCodec().readTree(jsonParser);
         SecurityIgnore securityIgnore = new SecurityIgnore();
 
+        if (!securities.isContainerNode()) {
+            securityIgnore.setIgnoreAll(true);
+            return securityIgnore;
+        }
+
         Map<String, SecurityProperty> requirements = new HashMap<>();
 
         for (Iterator<Map.Entry<String, JsonNode>> it = securities.fields(); it.hasNext(); ) {
