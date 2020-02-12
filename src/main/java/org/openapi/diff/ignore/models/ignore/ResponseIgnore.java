@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.openapi.diff.ignore.context.ResponseDeserializer;
+import org.openapi.diff.ignore.models.IgnoreElemnt;
 
 import java.util.Map;
 

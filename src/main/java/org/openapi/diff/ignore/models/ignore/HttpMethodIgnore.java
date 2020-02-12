@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.openapi.diff.ignore.context.HttpMethodDeserializer;
+import org.openapi.diff.ignore.models.IgnoreElemnt;
 import org.openapi.diff.ignore.models.SpecConstants;
 
 @AllArgsConstructor

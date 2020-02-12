@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore.models.ignore;
+package org.openapi.diff.ignore.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
