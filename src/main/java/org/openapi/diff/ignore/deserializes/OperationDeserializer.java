@@ -38,7 +38,7 @@ public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
                     operationIgnore.setParameters(parametersIgnore);
                     break;
                 case SpecConstants.OperationIgnoresEntries.REQUEST:
-                    RequestIgnore requestIgnore = ObjectMapperFactory.createYaml().convertValue(operationScope, RequestIgnore.class);
+                    RequestIgnore requestIgnore = ObjectMapperFactory.createYaml().convertValue(operationScope.getValue(), RequestIgnore.class);
                     operationIgnore.setRequest(requestIgnore);
                     break;
                 case SpecConstants.OperationIgnoresEntries.RESPONSE:
