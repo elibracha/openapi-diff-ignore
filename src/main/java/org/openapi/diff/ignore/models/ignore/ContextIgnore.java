@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.openapi.diff.ignore.context.ContextDeserializer;
 
-import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +13,7 @@ import java.util.Map;
 @JsonDeserialize(using = ContextDeserializer.class)
 public class ContextIgnore {
 
-    private Map<String, HttpMethodIgnore> paths;
+    private PathsIgnore paths;
     private String info;
     private String project;
     private String version;

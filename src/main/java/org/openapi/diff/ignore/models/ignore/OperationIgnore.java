@@ -4,15 +4,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.openapi.diff.ignore.context.PathDeserializer;
+import org.openapi.diff.ignore.context.PathsDeserializer;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@JsonDeserialize(using = PathDeserializer.class)
-public class PathIgnore {
+@JsonDeserialize(using = PathsDeserializer.class)
+public class OperationIgnore {
 
     private RequestIgnore request;
     private ResponseIgnore response;

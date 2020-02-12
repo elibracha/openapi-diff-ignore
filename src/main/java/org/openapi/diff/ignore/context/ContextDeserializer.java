@@ -2,19 +2,56 @@ package org.openapi.diff.ignore.context;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import org.openapi.diff.ignore.ObjectMapperFactory;
+import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
+import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.ContextIgnore;
+import org.openapi.diff.ignore.models.ignore.PathsIgnore;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
 
-    protected ContextDeserializer(Class<?> vc) {
-        super(vc);
+    public ContextDeserializer() {
+        super(ContextIgnore.class);
     }
 
     @Override
     public ContextIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        return null;
+
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        ContextIgnore contextIgnore = new ContextIgnore();
+
+        JsonNode root = jsonParser.getCodec().readTree(jsonParser);
+
+        for (Iterator<Map.Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
+            Map.Entry<String, JsonNode> globalScope = it.next();
+
+            switch (globalScope.getKey()) {
+                case SpecConstants.RootIgnoreEntries.VERSION:
+                    contextIgnore.setVersion(globalScope.getValue().asText());
+                    break;
+                case SpecConstants.RootIgnoreEntries.PROJECT:
+                    contextIgnore.setProject(globalScope.getValue().asText());
+                    break;
+                case SpecConstants.RootIgnoreEntries.INFO:
+                    contextIgnore.setInfo(globalScope.getValue().asText());
+                    break;
+                case SpecConstants.RootIgnoreEntries.PATHS:
+                    contextIgnore.setPaths(objectMapper.convertValue(globalScope.getValue(), PathsIgnore.class));
+                    break;
+                default:
+                    throw new SpecificationSupportException(String.format(
+                            "Specification does not support value \"%s\", please referenced the documentation for supported entries.",
+                            globalScope.getKey()));
+            }
+        }
+
+        return contextIgnore;
     }
 }

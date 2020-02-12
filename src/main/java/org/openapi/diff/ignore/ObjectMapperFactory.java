@@ -10,23 +10,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class ObjectMapperFactory {
-    public static ObjectMapper createJson() {
-        return createJson(true, true);
-    }
 
-    protected static ObjectMapper createJson(boolean includePathDeserializer, boolean includeResponseDeserializer) {
-        return create(createJsonFactory(), includePathDeserializer, includeResponseDeserializer);
+    public static ObjectMapper createJson() {
+        return create(createJsonFactory());
     }
 
     public static ObjectMapper createYaml() {
-        return createYaml(true, true);
+        return create(createYamlFactory());
     }
 
-    protected static ObjectMapper createYaml(boolean includePathDeserializer, boolean includeResponseDeserializer) {
-        return create(createYamlFactory(), includePathDeserializer, includeResponseDeserializer);
-    }
 
-    private static ObjectMapper create(JsonFactory jsonFactory, boolean includePathDeserializer, boolean includeResponseDeserializer) {
+    private static ObjectMapper create(JsonFactory jsonFactory) {
         ObjectMapper mapper = new ObjectMapper(jsonFactory);
 
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

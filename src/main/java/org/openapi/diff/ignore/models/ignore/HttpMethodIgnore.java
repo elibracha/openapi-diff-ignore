@@ -12,17 +12,17 @@ import org.openapi.diff.ignore.context.HttpMethodDeserializer;
 @JsonDeserialize(using = HttpMethodDeserializer.class)
 public class HttpMethodIgnore {
 
-    private PathIgnore post;
-    private PathIgnore get;
-    private PathIgnore put;
-    private PathIgnore delete;
-    private PathIgnore patch;
-    private PathIgnore head;
-    private PathIgnore connect;
-    private PathIgnore options;
-    private PathIgnore trace;
+    private OperationIgnore post;
+    private OperationIgnore get;
+    private OperationIgnore put;
+    private OperationIgnore delete;
+    private OperationIgnore patch;
+    private OperationIgnore head;
+    private OperationIgnore connect;
+    private OperationIgnore options;
+    private OperationIgnore trace;
 
-    public PathIgnore checkIfIgnoreExist(String method) {
+    public OperationIgnore checkIfIgnoreExist(String method) {
         switch (method) {
             case "post":
                 return this.post;

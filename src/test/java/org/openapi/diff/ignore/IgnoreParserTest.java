@@ -5,7 +5,6 @@ import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.output.HtmlRender;
 import org.junit.Test;
 import org.openapi.diff.ignore.models.OpenApiIgnore;
-import org.openapi.diff.ignore.processors.ApplyIgnorePostProcessor;
 import org.openapi.diff.ignore.processors.IgnoreProcessor;
 
 import java.io.FileWriter;
@@ -27,8 +26,8 @@ public class IgnoreParserTest {
         OpenApiIgnore ignoreOpenApi = parser.processIgnore();
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
 
-        ApplyIgnorePostProcessor applyIgnorePostProcessor = new ApplyIgnorePostProcessor(changedOpenApi, ignoreOpenApi);
-        applyIgnorePostProcessor.applyIgnore();
+//        ApplyIgnorePostProcessor applyIgnorePostProcessor = new ApplyIgnorePostProcessor(changedOpenApi, ignoreOpenApi);
+//        applyIgnorePostProcessor.applyIgnore();
 
         String html =
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
