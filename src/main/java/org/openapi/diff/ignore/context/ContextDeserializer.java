@@ -9,17 +9,12 @@ import java.io.IOException;
 
 public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
 
-    private ContextIgnore contextIgnore;
-
     protected ContextDeserializer(Class<?> vc) {
         super(vc);
-        this.contextIgnore = new ContextIgnore();
     }
 
     @Override
     public ContextIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-
-
         return null;
     }
 }
