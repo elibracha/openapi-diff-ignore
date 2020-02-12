@@ -4,7 +4,7 @@ import com.qdesrame.openapi.diff.OpenApiCompare;
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.output.HtmlRender;
 import org.junit.Test;
-import org.openapi.diff.ignore.models.IgnoreOpenApi;
+import org.openapi.diff.ignore.models.OpenApiIgnore;
 import org.openapi.diff.ignore.processors.ApplyIgnorePostProcessor;
 import org.openapi.diff.ignore.processors.IgnoreProcessor;
 
@@ -24,7 +24,7 @@ public class IgnoreParserTest {
                 getClass().getClassLoader().getResource(".diffignore1.yaml").getFile()
         );
 
-        IgnoreOpenApi ignoreOpenApi = parser.processIgnore();
+        OpenApiIgnore ignoreOpenApi = parser.processIgnore();
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
 
         ApplyIgnorePostProcessor applyIgnorePostProcessor = new ApplyIgnorePostProcessor(changedOpenApi, ignoreOpenApi);

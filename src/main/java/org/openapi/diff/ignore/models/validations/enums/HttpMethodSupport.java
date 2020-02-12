@@ -1,8 +1,6 @@
 package org.openapi.diff.ignore.models.validations.enums;
 
-public enum OperationSupport {
-
-    IGNORE_TYPE("ignore-type"),
+public enum HttpMethodSupport {
 
     POST("post"),
     GET("get"),
@@ -16,7 +14,7 @@ public enum OperationSupport {
 
     private String value;
 
-    OperationSupport(String value) {
+    HttpMethodSupport(String value) {
         this.value = value;
     }
 

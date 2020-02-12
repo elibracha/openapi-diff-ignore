@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore.context;
+package org.openapi.diff.ignore;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;

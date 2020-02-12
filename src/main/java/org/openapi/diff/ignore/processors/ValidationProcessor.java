@@ -12,7 +12,7 @@ public class ValidationProcessor<K, V> {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
     private GlobalIgnoreValidator<K, V> globalIgnoreValidator;
-
+    private
     public ValidationProcessor() {
         this.globalIgnoreValidator = new GlobalIgnoreValidator<>();
     }

@@ -1,9 +1,10 @@
-package org.openapi.diff.ignore.context;
+package org.openapi.diff.ignore;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.openapi.diff.ignore.context.ContextDeserializer;
 import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 import org.openapi.diff.ignore.processors.ValidationProcessor;
 import org.slf4j.Logger;

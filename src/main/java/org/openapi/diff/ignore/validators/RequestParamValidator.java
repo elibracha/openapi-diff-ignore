@@ -1,7 +1,6 @@
 package org.openapi.diff.ignore.validators;
 
 import org.openapi.diff.ignore.models.validations.ValidationResult;
-import org.openapi.diff.ignore.models.validations.enums.RequestParameterSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
 import java.util.Arrays;

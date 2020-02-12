@@ -1,7 +1,7 @@
 package org.openapi.diff.ignore.validators;
 
 import org.openapi.diff.ignore.models.validations.ValidationResult;
-import org.openapi.diff.ignore.models.validations.enums.OperationSupport;
+import org.openapi.diff.ignore.models.validations.enums.HttpMethodSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
 import java.util.ArrayList;
@@ -25,8 +25,8 @@ public class OperationValidator {
     }
 
     public boolean validate() {
-        List<String> supported = Arrays.stream(OperationSupport.values())
-                .map(OperationSupport::getValue)
+        List<String> supported = Arrays.stream(HttpMethodSupport.values())
+                .map(HttpMethodSupport::getValue)
                 .collect(Collectors.toList());
 
 

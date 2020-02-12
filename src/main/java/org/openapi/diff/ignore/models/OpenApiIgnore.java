@@ -2,12 +2,12 @@ package org.openapi.diff.ignore.models;
 
 import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 
-public class IgnoreOpenApi {
+public class OpenApiIgnore {
 
     private boolean validIgnore;
     private ContextIgnore ignore;
 
-    public IgnoreOpenApi(ContextIgnore ignore) {
+    public OpenApiIgnore(ContextIgnore ignore) {
         this.ignore = ignore;
     }
 
@@ -19,7 +19,7 @@ public class IgnoreOpenApi {
         return validIgnore;
     }
 
-    public IgnoreOpenApi setValidIgnore(boolean validIgnore) {
+    public OpenApiIgnore setValidIgnore(boolean validIgnore) {
         this.validIgnore = validIgnore;
         return this;
     }

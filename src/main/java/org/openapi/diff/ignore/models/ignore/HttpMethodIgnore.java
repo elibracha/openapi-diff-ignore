@@ -9,17 +9,17 @@ import lombok.NoArgsConstructor;
 @Data
 public class HttpMethodIgnore {
 
-    private PathsIgnore post;
-    private PathsIgnore get;
-    private PathsIgnore put;
-    private PathsIgnore delete;
-    private PathsIgnore patch;
-    private PathsIgnore head;
-    private PathsIgnore connect;
-    private PathsIgnore options;
-    private PathsIgnore trace;
+    private PathIgnore post;
+    private PathIgnore get;
+    private PathIgnore put;
+    private PathIgnore delete;
+    private PathIgnore patch;
+    private PathIgnore head;
+    private PathIgnore connect;
+    private PathIgnore options;
+    private PathIgnore trace;
 
-    public PathsIgnore checkIfIgnoreExist(String method) {
+    public PathIgnore checkIfIgnoreExist(String method) {
         switch (method) {
             case "post":
                 return this.post;

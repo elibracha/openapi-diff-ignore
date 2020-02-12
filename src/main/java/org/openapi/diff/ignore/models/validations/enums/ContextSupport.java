@@ -1,12 +1,15 @@
 package org.openapi.diff.ignore.models.validations.enums;
 
-public enum RequestParameterSupport {
+public enum ContextSupport {
 
-    CONTENT("content");
+    VERSION("version"),
+    INFO("info"),
+    PROJECT("project"),
+    PATHS("paths");
 
     private String value;
 
-    RequestParameterSupport(String value) {
+    ContextSupport(String value) {
         this.value = value;
     }
 

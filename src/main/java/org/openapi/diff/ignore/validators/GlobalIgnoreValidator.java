@@ -1,7 +1,7 @@
 package org.openapi.diff.ignore.validators;
 
 import org.openapi.diff.ignore.models.validations.ValidationResult;
-import org.openapi.diff.ignore.models.validations.enums.GlobalIgnoreSupport;
+import org.openapi.diff.ignore.models.validations.enums.ContextSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
 import java.util.Arrays;
@@ -20,8 +20,8 @@ public class GlobalIgnoreValidator<K, V> {
     }
 
     public boolean validate() {
-        List<String> supported = Arrays.stream(GlobalIgnoreSupport.values())
-                .map(GlobalIgnoreSupport::getValue)
+        List<String> supported = Arrays.stream(ContextSupport.values())
+                .map(ContextSupport::getValue)
                 .collect(Collectors.toList());
 
 
