@@ -21,12 +21,17 @@ public class ContentDeserializer extends StdDeserializer<Content> {
 
     @Override
     public Content deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        JsonNode contentSchemas = jsonParser.getCodec().readTree(jsonParser);
+        JsonNode contentScope = jsonParser.getCodec().readTree(jsonParser);
         Content content = new Content();
+
+        if (!contentScope.isContainerNode()) {
+            content.setIgnoreAll(true);
+            return content;
+        }
 
         Map<String, ContentSchema> contentSchemaMap = new HashMap<>();
 
-        for (Iterator<Map.Entry<String, JsonNode>> it = contentSchemas.fields(); it.hasNext(); ) {
+        for (Iterator<Map.Entry<String, JsonNode>> it = contentScope.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> contentSchemaScope = it.next();
             ContentSchema contentSchemaIgnore = ObjectMapperFactory.createYaml().convertValue(contentSchemaScope.getValue(), ContentSchema.class);
 
