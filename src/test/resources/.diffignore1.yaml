@@ -12,7 +12,10 @@ paths:
           - default
           - 200
     post:
-      requestBody:
+      parameters:
+        - username
+        - password
+      request:
         content:
           application/json:
             schema:

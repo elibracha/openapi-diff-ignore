@@ -4,9 +4,8 @@ import com.qdesrame.openapi.diff.model.*;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.openapi.diff.ignore.models.IgnoreOpenApi;
-import org.openapi.diff.ignore.models.ignore.OperationIgnore;
-import org.openapi.diff.ignore.models.ignore.PathIgnore;
-import org.openapi.diff.ignore.models.ignore.SecurityOperationIgnore;
+import org.openapi.diff.ignore.models.ignore.HttpMethodIgnore;
+import org.openapi.diff.ignore.models.ignore.PathsIgnore;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.ArrayList;
@@ -45,10 +44,10 @@ public class ApplyIgnorePostProcessor {
 
                     if (match) {
 
-                        OperationIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
+                        HttpMethodIgnore pathOperationIgnore = ignoreOpenApi.getIgnore().getPaths().get(path);
 
                         String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
-                        PathIgnore pathIgnore = pathOperationIgnore.checkIfIgnoreExist(httpMethod);
+                        PathsIgnore pathIgnore = pathOperationIgnore.checkIfIgnoreExist(httpMethod);
 
                         if (pathIgnore != null) {
 

@@ -1,17 +1,19 @@
 package org.openapi.diff.ignore.models.ignore;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RequestIgnore {
+public class ContextIgnore {
 
-    @JsonProperty("content-type")
-    private List<String> contentType;
+    private Map<String, HttpMethodIgnore> paths;
+    private String info;
+    private String project;
+    private String version;
+
 }

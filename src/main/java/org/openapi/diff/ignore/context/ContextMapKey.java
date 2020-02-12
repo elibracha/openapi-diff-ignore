@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.openapi.diff.ignore.models.ignore.GlobalIgnore;
+import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 import org.openapi.diff.ignore.processors.ValidationProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +18,17 @@ public class ContextMapKey<K, V> {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
     private Map<K, V> mapKey;
-    private GlobalIgnore globalIgnore;
+    private ContextIgnore contextIgnore;
     private ValidationProcessor<K, V> validationProcessor;
 
     public ContextMapKey() {
         this.mapKey = new HashMap<>();
-        this.globalIgnore = new GlobalIgnore();
+        this.contextIgnore = new ContextIgnore();
         this.validationProcessor = new ValidationProcessor<>();
     }
 
-    public GlobalIgnore getGlobalIgnore() {
-        return globalIgnore;
+    public ContextIgnore getContextIgnore() {
+        return contextIgnore;
     }
 
     public boolean load(Map<K, V> map) {
@@ -41,12 +41,12 @@ public class ContextMapKey<K, V> {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         SimpleModule module = new SimpleModule();
-        module.addDeserializer(GlobalIgnore.class, new ContextDeserializer(GlobalIgnore.class));
+        module.addDeserializer(ContextIgnore.class, new ContextDeserializer(ContextIgnore.class));
         mapper.registerModule(module);
 
         try {
             if (validationProcessor.validate(this.mapKey)) {
-                this.globalIgnore = mapper.convertValue(this.mapKey, GlobalIgnore.class);
+                this.contextIgnore = mapper.convertValue(this.mapKey, ContextIgnore.class);
                 return true;
             }
         } catch (IllegalArgumentException e) {

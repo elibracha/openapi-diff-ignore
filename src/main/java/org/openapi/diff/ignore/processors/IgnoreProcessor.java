@@ -57,7 +57,7 @@ public class IgnoreProcessor {
             }
         }
 
-        return new IgnoreOpenApi(this.mapKey.getGlobalIgnore()).setValidIgnore(result);
+        return new IgnoreOpenApi(this.mapKey.getContextIgnore()).setValidIgnore(result);
     }
 
     public ContextMapKey<String, String> getMapKey() {

@@ -7,7 +7,7 @@ import org.openapi.diff.ignore.context.ContextDeserializer;
 import java.util.List;
 import java.util.Objects;
 
-public class PathIgnore {
+public class PathsIgnore {
 
     @JsonProperty("request")
     private RequestIgnore requestIgnore;
@@ -19,7 +19,7 @@ public class PathIgnore {
     @JsonDeserialize(using = ContextDeserializer.class)
     private SecurityIgnore securityIgnore;
 
-    public PathIgnore() {
+    public PathsIgnore() {
     }
 
     public SecurityIgnore getSecurityIgnore() {
@@ -67,7 +67,7 @@ public class PathIgnore {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PathIgnore that = (PathIgnore) o;
+        PathsIgnore that = (PathsIgnore) o;
         return Objects.equals(requestIgnore, that.requestIgnore) &&
                 Objects.equals(responseIgnore, that.responseIgnore) &&
                 Objects.equals(parameters, that.parameters) &&

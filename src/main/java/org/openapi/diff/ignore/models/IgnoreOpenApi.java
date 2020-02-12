@@ -1,17 +1,17 @@
 package org.openapi.diff.ignore.models;
 
-import org.openapi.diff.ignore.models.ignore.GlobalIgnore;
+import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 
 public class IgnoreOpenApi {
 
     private boolean validIgnore;
-    private GlobalIgnore ignore;
+    private ContextIgnore ignore;
 
-    public IgnoreOpenApi(GlobalIgnore ignore) {
+    public IgnoreOpenApi(ContextIgnore ignore) {
         this.ignore = ignore;
     }
 
-    public GlobalIgnore getIgnore() {
+    public ContextIgnore getIgnore() {
         return ignore;
     }
 
