@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.openapi.diff.ignore.context.SecurityDeserializer;
 
-import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -14,7 +13,5 @@ import java.util.Map;
 @Data
 @JsonDeserialize(using = SecurityDeserializer.class)
 public class SecurityIgnore {
-
-    private Map<String, List<String>> securityOperationIgnoreList;
-
+    private Map<String, SecurityProperty> security;
 }

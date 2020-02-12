@@ -6,15 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.openapi.diff.ignore.context.ResponseDeserializer;
 
-import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @JsonDeserialize(using = ResponseDeserializer.class)
 public class ResponseIgnore {
-
-    private String info;
-    private List<String> status;
-    private List<String> content;
+    private Map<String, Content> response;
 }

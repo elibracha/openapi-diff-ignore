@@ -27,11 +27,11 @@ public class HttpMethodDeserializer extends StdDeserializer<HttpMethodIgnore> {
         HttpMethodIgnore httpMethodIgnore = new HttpMethodIgnore();
 
         for (Iterator<Map.Entry<String, JsonNode>> it = httpMethods.fields(); it.hasNext(); ) {
-            Map.Entry<String, JsonNode> HttpMethodnScope = it.next();
+            Map.Entry<String, JsonNode> HttpMethodScope = it.next();
 
-            OperationIgnore operationIgnore = ObjectMapperFactory.createYaml().convertValue(it.next().getValue(), OperationIgnore.class);
+            OperationIgnore operationIgnore = ObjectMapperFactory.createYaml().convertValue(HttpMethodScope.getValue(), OperationIgnore.class);
 
-            switch (HttpMethodnScope.getKey()) {
+            switch (HttpMethodScope.getKey()) {
                 case SpecConstants.HttpMethods.POST:
                     httpMethodIgnore.setPost(operationIgnore);
                     break;
@@ -59,7 +59,7 @@ public class HttpMethodDeserializer extends StdDeserializer<HttpMethodIgnore> {
                 default:
                     throw new SpecificationSupportException(String.format(
                             "Specification does not support value \"%s\" as an http method, please referenced the documentation for supported entries.",
-                            HttpMethodnScope.getKey()));
+                            HttpMethodScope.getKey()));
             }
         }
 

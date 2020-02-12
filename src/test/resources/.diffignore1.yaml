@@ -7,10 +7,7 @@ paths:
       parameters:
         - username
         - password
-      response:
-        status:
-          - default
-          - 200
+
     post:
       parameters:
         - username
@@ -23,28 +20,29 @@ paths:
                 - petId
           application/x-www-form-urlencoded:
             schema:
-              proerties:
+              properties:
                 - orderId
-      responses:
-        '200':
+      response:
+        200:
           content:
             application/json:
-              properties:
-                - petId
+              schema:
+                properties:
+                  - petId
             application/xml:
               schema:
                 properties:
                   - orderId
       security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'write:pests'
-            - 'read:pets'
-        - sadsadsadsa:
-            - 'asddsadsa'
-            - 'asdsadsadsad'
-    put:
-      response:
-        status:
-          - default
-          - 200
+        petstore_auth:
+          - 'write:pets'
+          - 'write:pests'
+          - 'read:pets'
+        sadsadsadsa:
+          - 'asddsadsa'
+          - 'asdsadsadsad'
+#    put:
+#      response:
+#        status:
+#          - default
+#          - 200

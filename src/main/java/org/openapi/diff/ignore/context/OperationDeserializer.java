@@ -29,11 +29,11 @@ public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
 
             switch (operationScope.getKey()) {
                 case SpecConstants.OperationIgnoresEntries.PARAMETERS:
-                    ParametersIgnore parametersIgnore = ObjectMapperFactory.createYaml().convertValue(operationScope.getValue(), ParametersIgnore.class);
+                    ParametersIgnore parametersIgnore = ObjectMapperFactory.createYaml().convertValue(operationScope, ParametersIgnore.class);
                     operationIgnore.setParameters(parametersIgnore);
                     break;
                 case SpecConstants.OperationIgnoresEntries.REQUEST:
-                    RequestIgnore requestIgnore = ObjectMapperFactory.createYaml().convertValue(operationScope.getValue(), RequestIgnore.class);
+                    RequestIgnore requestIgnore = ObjectMapperFactory.createYaml().convertValue(operationScope, RequestIgnore.class);
                     operationIgnore.setRequest(requestIgnore);
                     break;
                 case SpecConstants.OperationIgnoresEntries.RESPONSE:
@@ -43,6 +43,7 @@ public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
                 case SpecConstants.OperationIgnoresEntries.SECURITY:
                     SecurityIgnore securityIgnore = ObjectMapperFactory.createYaml().convertValue(operationScope.getValue(), SecurityIgnore.class);
                     operationIgnore.setSecurity(securityIgnore);
+                    break;
                 default:
                     throw new SpecificationSupportException(String.format(
                             "Specification does not support value \"%s\" as an operation to ignore, please referenced the documentation for supported entries.",

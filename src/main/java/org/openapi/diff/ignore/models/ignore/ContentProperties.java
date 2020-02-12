@@ -9,6 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ParametersIgnore {
-    private List<String> parameters;
+public class ContentProperties {
+    private List<String> properties;
 }

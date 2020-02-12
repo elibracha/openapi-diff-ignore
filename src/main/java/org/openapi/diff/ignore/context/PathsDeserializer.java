@@ -27,8 +27,9 @@ public class PathsDeserializer extends StdDeserializer<PathsIgnore> {
         Map<String, HttpMethodIgnore> map = new HashMap<>();
 
         for (Iterator<Map.Entry<String, JsonNode>> it = paths.fields(); it.hasNext(); ) {
-            HttpMethodIgnore path = ObjectMapperFactory.createYaml().convertValue(it.next().getValue(), HttpMethodIgnore.class);
-            map.put(it.next().getKey(), path);
+            Map.Entry<String, JsonNode> pathScope = it.next();
+            HttpMethodIgnore path = ObjectMapperFactory.createYaml().convertValue(pathScope.getValue(), HttpMethodIgnore.class);
+            map.put(pathScope.getKey(), path);
         }
 
         pathsIgnore.setPaths(map);
