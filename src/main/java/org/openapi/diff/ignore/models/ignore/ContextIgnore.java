@@ -11,7 +11,7 @@ import org.openapi.diff.ignore.context.ContextDeserializer;
 @NoArgsConstructor
 @Data
 @JsonDeserialize(using = ContextDeserializer.class)
-public class ContextIgnore {
+public class ContextIgnore extends IgnoreElemnt {
 
     private PathsIgnore paths;
     private String info;

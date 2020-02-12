@@ -12,6 +12,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Data
 @JsonDeserialize(using = SecurityDeserializer.class)
-public class SecurityIgnore {
+public class SecurityIgnore extends IgnoreElemnt {
     private Map<String, SecurityProperty> security;
 }

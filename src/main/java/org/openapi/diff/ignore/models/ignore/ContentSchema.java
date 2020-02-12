@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ContentSchema {
+public class ContentSchema extends IgnoreElemnt {
     private ContentProperties schema;
 }

@@ -12,6 +12,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Data
 @JsonDeserialize(using = ResponseDeserializer.class)
-public class ResponseIgnore {
+public class ResponseIgnore extends IgnoreElemnt {
     private Map<String, Content> response;
 }

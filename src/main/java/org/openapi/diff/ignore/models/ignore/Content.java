@@ -9,6 +9,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Content {
+public class Content extends IgnoreElemnt {
     private Map<String, ContentSchema> content;
 }

@@ -8,10 +8,14 @@ import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.*;
+import org.openapi.diff.ignore.models.validations.enums.OperationSupport;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
 
@@ -19,10 +23,33 @@ public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
         super(OperationIgnore.class);
     }
 
+    public static void methodPostProcess(OperationIgnore operationIgnore) {
+        int operationCounter = 0;
+        int operationIgnoredCounter = 0;
+
+        List<String> supported = Arrays.stream(OperationSupport.values())
+                .map(OperationSupport::getValue)
+                .collect(Collectors.toList());
+
+        for (String type : supported) {
+            IgnoreElemnt ignoreElemnt = operationIgnore.checkIfIgnoreExist(type);
+            operationCounter += ignoreElemnt != null ? 1 : 0;
+            operationIgnoredCounter += ignoreElemnt != null && ignoreElemnt.isIgnoreAll() ? 1 : 0;
+        }
+
+        if (operationCounter == operationIgnoredCounter)
+            operationIgnore.setIgnoreAll(true);
+    }
+
     @Override
     public OperationIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode operation = jsonParser.getCodec().readTree(jsonParser);
         OperationIgnore operationIgnore = new OperationIgnore();
+
+        if (!operation.isContainerNode()) {
+            operationIgnore.setIgnoreAll(true);
+            return operationIgnore;
+        }
 
         for (Iterator<Map.Entry<String, JsonNode>> it = operation.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> operationScope = it.next();
@@ -50,6 +77,9 @@ public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
                             operationScope.getKey()));
             }
         }
+
+        methodPostProcess(operationIgnore);
+
         return operationIgnore;
     }
 }

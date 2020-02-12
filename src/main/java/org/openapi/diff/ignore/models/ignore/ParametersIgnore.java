@@ -9,6 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ParametersIgnore {
+public class ParametersIgnore extends IgnoreElemnt {
     private List<String> parameters;
 }

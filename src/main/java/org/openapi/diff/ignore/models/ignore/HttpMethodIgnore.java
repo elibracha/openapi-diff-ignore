@@ -11,7 +11,7 @@ import org.openapi.diff.ignore.models.SpecConstants;
 @NoArgsConstructor
 @Data
 @JsonDeserialize(using = HttpMethodDeserializer.class)
-public class HttpMethodIgnore {
+public class HttpMethodIgnore extends IgnoreElemnt {
 
     private OperationIgnore post;
     private OperationIgnore get;

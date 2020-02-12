@@ -9,11 +9,16 @@ import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.HttpMethodIgnore;
+import org.openapi.diff.ignore.models.ignore.IgnoreElemnt;
 import org.openapi.diff.ignore.models.ignore.OperationIgnore;
+import org.openapi.diff.ignore.models.validations.enums.HttpMethodSupport;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HttpMethodDeserializer extends StdDeserializer<HttpMethodIgnore> {
 
@@ -63,6 +68,26 @@ public class HttpMethodDeserializer extends StdDeserializer<HttpMethodIgnore> {
             }
         }
 
+        methodPostProcess(httpMethodIgnore);
+
         return httpMethodIgnore;
+    }
+
+    void methodPostProcess(HttpMethodIgnore httpMethodIgnore) {
+        int operationCounter = 0;
+        int operationIgnoredCounter = 0;
+
+        List<String> supported = Arrays.stream(HttpMethodSupport.values())
+                .map(HttpMethodSupport::getValue)
+                .collect(Collectors.toList());
+
+        for (String method : supported) {
+            IgnoreElemnt ignoreElemnt = httpMethodIgnore.checkIfIgnoreExist(method);
+            operationCounter += ignoreElemnt != null ? 1 : 0;
+            operationIgnoredCounter += ignoreElemnt != null && ignoreElemnt.isIgnoreAll() ? 1 : 0;
+        }
+
+        if (operationCounter == operationIgnoredCounter)
+            httpMethodIgnore.setIgnoreAll(true);
     }
 }

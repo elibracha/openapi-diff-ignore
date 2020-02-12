@@ -8,7 +8,6 @@ public enum HttpMethodSupport {
     DELETE("delete"),
     PATCH("patch"),
     HEAD("head"),
-    CONNECT("connect"),
     OPTIONS("options"),
     TRACE("trace");
 

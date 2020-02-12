@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RequestIgnore {
+public class RequestIgnore extends IgnoreElemnt {
     private Content request;
 }

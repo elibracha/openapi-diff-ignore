@@ -9,6 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class SecurityProperty {
+public class SecurityProperty extends IgnoreElemnt {
     private List<String> properties;
 }

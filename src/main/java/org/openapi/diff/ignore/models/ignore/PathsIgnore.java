@@ -12,7 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Data
 @JsonDeserialize(using = PathsDeserializer.class)
-public class PathsIgnore {
+public class PathsIgnore extends IgnoreElemnt {
 
     private Map<String, HttpMethodIgnore> paths;
 }
