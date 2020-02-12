@@ -15,7 +15,7 @@ public class SpecConstants {
         public final static String PATHS = "paths";
     }
 
-    public static class PathIgnoresEntries {
+    public static class OperationIgnoresEntries {
         public final static String REQUEST = "request";
         public final static String RESPONSE = "response";
         public final static String PARAMETERS = "parameters";
