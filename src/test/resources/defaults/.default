@@ -1,0 +1,10 @@
+version: 1.0.0
+info: this is the default ignore file that ignores common mismatch
+project: sample-service
+paths:
+  /**:
+    $:
+      response:
+        default, 200: $
+
+

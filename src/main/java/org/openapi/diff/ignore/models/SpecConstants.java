@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class SpecConstants {
+    public final static String DEFAULT_SEARCH = ".diffignore";
+
     public final static List<String> VERSIONS = Collections.singletonList(
             "1.0.0"
     );

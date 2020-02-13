@@ -23,10 +23,14 @@ public class IgnoreParserTest {
     private final String OPENAPI_GENERATED_PETSTORE = "petstore_v3_generated.yaml";
     private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_orignal.yaml";
 
-
+    
     public void test() {
+//        IgnoreProcessor parser = new IgnoreProcessor(
+//                getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
+//        );
+
         IgnoreProcessor parser = new IgnoreProcessor(
-                getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
+                getClass().getClassLoader().getResource("defaults/.default").getFile()
         );
 
         OpenApiIgnore ignoreOpenApi = parser.processIgnore();

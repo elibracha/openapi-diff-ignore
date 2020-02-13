@@ -20,7 +20,6 @@ public class HttpMethodIgnore extends IgnoreElemnt {
     private OperationIgnore delete;
     private OperationIgnore patch;
     private OperationIgnore head;
-    private OperationIgnore connect;
     private OperationIgnore options;
     private OperationIgnore trace;
 

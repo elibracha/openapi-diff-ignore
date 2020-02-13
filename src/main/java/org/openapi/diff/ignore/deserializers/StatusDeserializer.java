@@ -10,6 +10,7 @@ import org.openapi.diff.ignore.models.ignore.StatusIgnore;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class StatusDeserializer extends AbstractDeserializer<StatusIgnore> {
@@ -21,22 +22,37 @@ public class StatusDeserializer extends AbstractDeserializer<StatusIgnore> {
     @Override
     public StatusIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode statuses = jsonParser.getCodec().readTree(jsonParser);
-        StatusIgnore statusIgnore = (StatusIgnore) preProcess(new StatusIgnore(), statuses);
+        StatusIgnore statusIgnore = new StatusIgnore();
 
         Map<String, Content> st = new HashMap<>();
 
         for (Iterator<Map.Entry<String, JsonNode>> it = statuses.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> statusScope = it.next();
 
-            for (Iterator<Map.Entry<String, JsonNode>> contentIt = statusScope.getValue().fields(); contentIt.hasNext(); ) {
-                Map.Entry<String, JsonNode> contentScope = contentIt.next();
-                Content contentIgnore = ObjectMapperFactory.createYaml().convertValue(contentScope.getValue(), Content.class);
-                st.put(statusScope.getKey(), contentIgnore);
-            }
+            statusIgnore = (StatusIgnore) preProcess(statusIgnore, statusScope.getValue());
 
+            if (checkWildCards(statusScope.getKey())) {
+                List<String> keys = extractWildCards(statusScope.getKey());
+
+                for (String sup : keys)
+                    setMethod(sup, statusScope, st);
+            } else {
+                setMethod(statusScope.getKey(), statusScope, st);
+            }
         }
 
         statusIgnore.setStatus(st);
         return statusIgnore;
+    }
+
+    private void setMethod(String key, Map.Entry<String, JsonNode> statusScope, Map<String, Content> st) {
+        Content content = (Content) preProcess(new Content(), statusScope.getValue());
+        st.put(key, content);
+
+        for (Iterator<Map.Entry<String, JsonNode>> contentIt = statusScope.getValue().fields(); contentIt.hasNext(); ) {
+            Map.Entry<String, JsonNode> contentScope = contentIt.next();
+            Content contentIgnore = ObjectMapperFactory.createYaml().convertValue(contentScope.getValue(), Content.class);
+            st.put(key, contentIgnore);
+        }
     }
 }

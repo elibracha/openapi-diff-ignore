@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.models.IgnoreElemnt;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class AbstractDeserializer<T> extends StdDeserializer<T> {
 
     public AbstractDeserializer(Class<?> vc) {
@@ -25,5 +28,13 @@ public abstract class AbstractDeserializer<T> extends StdDeserializer<T> {
         }
 
         return elem;
+    }
+
+    protected boolean checkWildCards(String key) {
+        return key.contains(",") || key.equals("$");
+    }
+
+    protected List<String> extractWildCards(String key) {
+        return key.equals("$") ? null : Arrays.asList(key.split(","));
     }
 }
