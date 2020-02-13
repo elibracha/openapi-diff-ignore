@@ -1,0 +1,8 @@
+application/json:
+  schema:
+    properties:
+      - petId
+application/xml:
+  schema:
+    properties:
+      - orderId

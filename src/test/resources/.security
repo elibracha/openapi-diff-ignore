@@ -1,7 +1,6 @@
-security:
-  petstore_auth:
-    - 'write:pets'
-    - 'write:pests'
-    - 'read:pets'
-  random:
-    - 'write:random'
+petstore_auth:
+  - 'write:pets'
+  - 'write:pests'
+  - 'read:pets'
+random:
+  - 'write:random'

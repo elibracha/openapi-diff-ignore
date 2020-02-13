@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.openapi.diff.ignore.models.OpenApiIgnore;
 import org.openapi.diff.ignore.models.ignore.*;
 import org.openapi.diff.ignore.processors.IgnoreProcessor;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -181,7 +181,65 @@ public class IgnoreParserTest {
     }
 
     @Test
-    public void testSecurityDeserialization() {
+    public void testSecurityDeserialization() throws FileNotFoundException {
+        Map<String, Object> result = loadMap(".security");
 
+        SecurityIgnore securityIgnore = new SecurityIgnore();
+        SecurityIgnore securityIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(result, SecurityIgnore.class);
+
+        SecurityProperty securityPropertyPetAUth = new SecurityProperty();
+        SecurityProperty securityPropertyRandom = new SecurityProperty();
+
+        securityPropertyRandom.setProperties(Collections.singletonList("write:random"));
+        securityPropertyPetAUth.setProperties(Arrays.asList("write:pets", "write:pests", "read:pets"));
+
+        Map<String, SecurityProperty> security = new HashMap<String, SecurityProperty>() {
+            {
+                put("petstore_auth", securityPropertyPetAUth);
+                put("random", securityPropertyRandom);
+            }
+        };
+
+        securityIgnore.setSecurity(security);
+
+        assertEquals(securityIgnore, securityIgnoreFromFile);
+
+    }
+
+    @Test
+    public void testContentDeserialization() throws FileNotFoundException {
+        Map<String, Object> result = loadMap(".content");
+
+        Content contentIgnore = new Content();
+        Content securityIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(result, Content.class);
+
+        ContentSchema contentSchemaJson = new ContentSchema();
+        ContentProperties contentPropertiesJson = new ContentProperties();
+        contentPropertiesJson.setProperties(Collections.singletonList("petId"));
+        contentSchemaJson.setSchema(contentPropertiesJson);
+
+        ContentSchema contentSchemaXml = new ContentSchema();
+        ContentProperties contentPropertiesXml = new ContentProperties();
+        contentPropertiesXml.setProperties(Collections.singletonList("orderId"));
+        contentSchemaXml.setSchema(contentPropertiesXml);
+
+        Map<String, ContentSchema> response = new HashMap<String, ContentSchema>() {
+            {
+                put("application/json", contentSchemaJson);
+                put("application/xml", contentSchemaXml);
+            }
+        };
+
+        contentIgnore.setContent(response);
+
+        assertEquals(contentIgnore, securityIgnoreFromFile);
+
+    }
+
+    private Map<String, Object> loadMap(String path) throws FileNotFoundException {
+        InputStream inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource(path).getFile()));
+
+        Yaml yaml = new Yaml();
+        return yaml.load(inputStream);
     }
 }
