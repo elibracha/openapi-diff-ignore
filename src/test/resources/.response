@@ -1,0 +1,10 @@
+200:
+  content:
+    application/json:
+      schema:
+        properties:
+          - petId
+    application/xml:
+      schema:
+        properties:
+          - orderId

@@ -236,6 +236,83 @@ public class IgnoreParserTest {
 
     }
 
+    @Test
+    public void testRequestDeserialization() throws FileNotFoundException {
+        Map<String, Object> result = loadMap(".request");
+
+        RequestIgnore requestIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(result, RequestIgnore.class);
+        RequestIgnore requestIgnore = new RequestIgnore();
+
+        Content contentRequest = new Content();
+
+        ContentSchema contentSchemaRequestJson = new ContentSchema();
+        ContentProperties contentPropertiesRequestJson = new ContentProperties();
+        contentPropertiesRequestJson.setProperties(Collections.singletonList("petId"));
+        contentSchemaRequestJson.setSchema(contentPropertiesRequestJson);
+
+        ContentSchema contentSchemaRequestUrlEncoded = new ContentSchema();
+        ContentProperties contentPropertiesRequestUrlEncoded = new ContentProperties();
+        contentPropertiesRequestUrlEncoded.setProperties(Collections.singletonList("orderId"));
+        contentSchemaRequestUrlEncoded.setSchema(contentPropertiesRequestUrlEncoded);
+
+        Map<String, ContentSchema> request = new HashMap<String, ContentSchema>() {
+            {
+                put("application/json", contentSchemaRequestJson);
+                put("application/x-www-form-urlencoded", contentSchemaRequestUrlEncoded);
+            }
+        };
+
+        contentRequest.setContent(request);
+        requestIgnore.setRequest(contentRequest);
+
+
+        assertEquals(requestIgnore, requestIgnoreFromFile);
+
+    }
+
+    @Test
+    public void testResponseDeserialization() throws FileNotFoundException {
+        Map<String, Object> result = loadMap(".response");
+
+        ResponseIgnore responseIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(result, ResponseIgnore.class);
+        ResponseIgnore responseIgnore = new ResponseIgnore();
+
+        Content content = new Content();
+        StatusIgnore statusIgnore = new StatusIgnore();
+
+        ContentSchema contentSchemaJson = new ContentSchema();
+        ContentProperties contentPropertiesJson = new ContentProperties();
+        contentPropertiesJson.setProperties(Collections.singletonList("petId"));
+        contentSchemaJson.setSchema(contentPropertiesJson);
+
+        ContentSchema contentSchemaXml = new ContentSchema();
+        ContentProperties contentPropertiesXml = new ContentProperties();
+        contentPropertiesXml.setProperties(Collections.singletonList("orderId"));
+        contentSchemaXml.setSchema(contentPropertiesXml);
+
+        Map<String, ContentSchema> response = new HashMap<String, ContentSchema>() {
+            {
+                put("application/json", contentSchemaJson);
+                put("application/xml", contentSchemaXml);
+            }
+        };
+
+        content.setContent(response);
+
+        Map<String, Content> status = new HashMap<String, Content>() {
+            {
+                put("200", content);
+            }
+        };
+
+        statusIgnore.setStatus(status);
+        responseIgnore.setResponse(statusIgnore);
+
+
+        assertEquals(responseIgnore, responseIgnoreFromFile);
+
+    }
+
     private Map<String, Object> loadMap(String path) throws FileNotFoundException {
         InputStream inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource(path).getFile()));
 
