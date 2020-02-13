@@ -38,9 +38,9 @@ paths:
           - 'write:pets'
           - 'write:pests'
           - 'read:pets'
-        sadsadsadsa:
-          - 'asddsadsa'
-          - 'asdsadsadsad'
+        random:
+          - 'write:random'
+
 
 
     put: ''

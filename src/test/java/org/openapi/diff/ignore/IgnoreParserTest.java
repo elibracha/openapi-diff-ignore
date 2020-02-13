@@ -23,7 +23,7 @@ public class IgnoreParserTest {
     private final String OPENAPI_GENERATED_PETSTORE = "petstore_v3_generated.yaml";
     private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_orignal.yaml";
 
-    @Test
+    
     public void test() {
         IgnoreProcessor parser = new IgnoreProcessor(
                 getClass().getClassLoader().getResource(".diffignore1.yaml").getFile()
@@ -400,6 +400,8 @@ public class IgnoreParserTest {
 
         operationIgnorePost.setParameters(parametersIgnore);
         operationIgnorePost.setSecurity(securityIgnore);
+        operationIgnorePost.setRequest(requestIgnore);
+        operationIgnorePost.setResponse(responseIgnore);
 
         httpMethodIgnore.setPost(operationIgnorePost);
 
