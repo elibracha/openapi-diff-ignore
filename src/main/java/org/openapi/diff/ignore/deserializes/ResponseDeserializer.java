@@ -3,7 +3,6 @@ package org.openapi.diff.ignore.deserializes;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.models.ignore.ResponseIgnore;
 import org.openapi.diff.ignore.models.ignore.StatusIgnore;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ResponseDeserializer extends StdDeserializer<ResponseIgnore> {
+public class ResponseDeserializer extends AbstractDeserializer<ResponseIgnore> {
 
     public ResponseDeserializer() {
         super(ResponseIgnore.class);
@@ -22,12 +21,7 @@ public class ResponseDeserializer extends StdDeserializer<ResponseIgnore> {
     @Override
     public ResponseIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode response = jsonParser.getCodec().readTree(jsonParser);
-        ResponseIgnore responseIgnore = new ResponseIgnore();
-
-        if (!response.isContainerNode()) {
-            responseIgnore.setIgnoreAll(true);
-            return responseIgnore;
-        }
+        ResponseIgnore responseIgnore = (ResponseIgnore) preProcess(new ResponseIgnore(), response);
 
         Map<String, StatusIgnore> responseContent = new HashMap<>();
 

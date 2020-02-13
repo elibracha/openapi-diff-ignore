@@ -3,7 +3,6 @@ package org.openapi.diff.ignore.deserializes;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.models.ignore.HttpMethodIgnore;
 import org.openapi.diff.ignore.models.ignore.PathsIgnore;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class PathsDeserializer extends StdDeserializer<PathsIgnore> {
+public class PathsDeserializer extends AbstractDeserializer<PathsIgnore> {
 
     public PathsDeserializer() {
         super(PathsIgnore.class);
@@ -22,12 +21,7 @@ public class PathsDeserializer extends StdDeserializer<PathsIgnore> {
     @Override
     public PathsIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode paths = jsonParser.getCodec().readTree(jsonParser);
-        PathsIgnore pathsIgnore = new PathsIgnore();
-
-        if (!paths.isContainerNode()) {
-            pathsIgnore.setIgnoreAll(true);
-            return pathsIgnore;
-        }
+        PathsIgnore pathsIgnore = (PathsIgnore) preProcess(new PathsIgnore(), paths);
 
         Map<String, HttpMethodIgnore> map = new HashMap<>();
 

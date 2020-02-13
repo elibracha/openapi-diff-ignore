@@ -2,12 +2,14 @@ package org.openapi.diff.ignore.deserializes;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.openapi.diff.ignore.models.ignore.SecurityProperty;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SecurityPropertyDeserializer extends StdDeserializer<SecurityProperty> {
+public class SecurityPropertyDeserializer extends AbstractDeserializer<SecurityProperty> {
 
     public SecurityPropertyDeserializer() {
         super(SecurityProperty.class);
@@ -15,6 +17,16 @@ public class SecurityPropertyDeserializer extends StdDeserializer<SecurityProper
 
     @Override
     public SecurityProperty deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        return null;
+        JsonNode properties = jsonParser.getCodec().readTree(jsonParser);
+        SecurityProperty propertyIgnore = (SecurityProperty) preProcess(new SecurityProperty(), properties);
+
+        List<String> props = new ArrayList<>();
+
+        for (JsonNode prop : properties) {
+            props.add(prop.asText());
+        }
+
+        propertyIgnore.setProperties(props);
+        return propertyIgnore;
     }
 }

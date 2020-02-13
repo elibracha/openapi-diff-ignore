@@ -3,7 +3,6 @@ package org.openapi.diff.ignore.deserializes;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.ignore.ContentProperties;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ContentSchemaDeserializer extends StdDeserializer<ContentSchema> {
+public class ContentSchemaDeserializer extends AbstractDeserializer<ContentSchema> {
 
     public ContentSchemaDeserializer() {
         super(ContentSchema.class);
@@ -22,12 +21,8 @@ public class ContentSchemaDeserializer extends StdDeserializer<ContentSchema> {
     @Override
     public ContentSchema deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode contentSchemaScope = jsonParser.getCodec().readTree(jsonParser);
-        ContentSchema contentSchema = new ContentSchema();
+        ContentSchema contentSchema = (ContentSchema) preProcess(new ContentSchema(), contentSchemaScope);
 
-        if (!contentSchemaScope.isContainerNode()) {
-            contentSchema.setIgnoreAll(true);
-            return contentSchema;
-        }
 
         for (Iterator<Map.Entry<String, JsonNode>> it = contentSchemaScope.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> contentPropertiesScope = it.next();

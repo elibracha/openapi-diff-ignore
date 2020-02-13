@@ -3,7 +3,6 @@ package org.openapi.diff.ignore.deserializes;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.SpecConstants;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
+public class OperationDeserializer extends AbstractDeserializer<OperationIgnore> {
 
     public OperationDeserializer() {
         super(OperationIgnore.class);
@@ -22,12 +21,7 @@ public class OperationDeserializer extends StdDeserializer<OperationIgnore> {
     @Override
     public OperationIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode operation = jsonParser.getCodec().readTree(jsonParser);
-        OperationIgnore operationIgnore = new OperationIgnore();
-
-        if (!operation.isContainerNode()) {
-            operationIgnore.setIgnoreAll(true);
-            return operationIgnore;
-        }
+        OperationIgnore operationIgnore = (OperationIgnore) preProcess(new OperationIgnore(), operation);
 
         for (Iterator<Map.Entry<String, JsonNode>> it = operation.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> operationScope = it.next();

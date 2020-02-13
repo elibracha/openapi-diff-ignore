@@ -4,7 +4,6 @@ package org.openapi.diff.ignore.deserializes;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.SpecConstants;
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-public class HttpMethodDeserializer extends StdDeserializer<HttpMethodIgnore> {
+public class HttpMethodDeserializer extends AbstractDeserializer<HttpMethodIgnore> {
 
     public HttpMethodDeserializer() {
         super(HttpMethodIgnore.class);
@@ -24,12 +23,7 @@ public class HttpMethodDeserializer extends StdDeserializer<HttpMethodIgnore> {
     @Override
     public HttpMethodIgnore deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode httpMethods = jsonParser.getCodec().readTree(jsonParser);
-        HttpMethodIgnore httpMethodIgnore = new HttpMethodIgnore();
-
-        if (!httpMethods.isContainerNode()) {
-            httpMethodIgnore.setIgnoreAll(true);
-            return httpMethodIgnore;
-        }
+        HttpMethodIgnore httpMethodIgnore = (HttpMethodIgnore) preProcess(new HttpMethodIgnore(), httpMethods);
 
         for (Iterator<Map.Entry<String, JsonNode>> it = httpMethods.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> HttpMethodScope = it.next();

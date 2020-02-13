@@ -33,15 +33,14 @@ paths:
               schema:
                 properties:
                   - orderId
-      security: ''
-    #        petstore_auth:
-    #          - 'write:pets'
-    #          - 'write:pests'
-    #          - 'read:pets'
-    #        sadsadsadsa:
-    #          - 'asddsadsa'
-    #          - 'asdsadsadsad'
-    #          -
+      security:
+        petstore_auth:
+          - 'write:pets'
+          - 'write:pests'
+          - 'read:pets'
+        sadsadsadsa:
+          - 'asddsadsa'
+          - 'asdsadsadsad'
 
 
     put: ''
