@@ -8,7 +8,15 @@ public class SpecConstants {
             "1.0.0"
     );
 
-    public static class RootIgnoreEntries {
+    public static class ContentSchemaEntries {
+        public final static String SCHEMA = "schema";
+    }
+
+    public static class RequestEntries {
+        public final static String CONTENT = "content";
+    }
+
+    public static class ContextEntries {
         public final static String VERSION = "version";
         public final static String PROJECT = "project";
         public final static String INFO = "info";

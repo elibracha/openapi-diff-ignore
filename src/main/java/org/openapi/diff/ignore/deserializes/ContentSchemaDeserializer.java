@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
+import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.ContentProperties;
 import org.openapi.diff.ignore.models.ignore.ContentSchema;
 
@@ -28,7 +29,7 @@ public class ContentSchemaDeserializer extends AbstractDeserializer<ContentSchem
             Map.Entry<String, JsonNode> contentPropertiesScope = it.next();
 
             switch (contentPropertiesScope.getKey()) {
-                case "schema":
+                case SpecConstants.ContentSchemaEntries.SCHEMA:
                     ContentProperties contentIgnore = ObjectMapperFactory.createYaml().convertValue(contentPropertiesScope.getValue(), ContentProperties.class);
                     contentSchema.setSchema(contentIgnore);
                     break;

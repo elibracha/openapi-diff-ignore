@@ -33,16 +33,16 @@ public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
             Map.Entry<String, JsonNode> globalScope = it.next();
 
             switch (globalScope.getKey()) {
-                case SpecConstants.RootIgnoreEntries.VERSION:
+                case SpecConstants.ContextEntries.VERSION:
                     contextIgnore.setVersion(globalScope.getValue().asText());
                     break;
-                case SpecConstants.RootIgnoreEntries.PROJECT:
+                case SpecConstants.ContextEntries.PROJECT:
                     contextIgnore.setProject(globalScope.getValue().asText());
                     break;
-                case SpecConstants.RootIgnoreEntries.INFO:
+                case SpecConstants.ContextEntries.INFO:
                     contextIgnore.setInfo(globalScope.getValue().asText());
                     break;
-                case SpecConstants.RootIgnoreEntries.PATHS:
+                case SpecConstants.ContextEntries.PATHS:
                     contextIgnore.setPaths(objectMapper.convertValue(globalScope.getValue(), PathsIgnore.class));
                     break;
                 default:

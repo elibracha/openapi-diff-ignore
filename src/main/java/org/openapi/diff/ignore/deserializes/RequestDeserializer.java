@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
+import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.Content;
 import org.openapi.diff.ignore.models.ignore.RequestIgnore;
 
@@ -27,7 +28,7 @@ public class RequestDeserializer extends AbstractDeserializer<RequestIgnore> {
             Map.Entry<String, JsonNode> requestContentScope = it.next();
 
             switch (requestContentScope.getKey()) {
-                case "content":
+                case SpecConstants.RequestEntries.CONTENT:
                     Content contentIgnore = ObjectMapperFactory.createYaml().convertValue(requestContentScope.getValue(), Content.class);
                     requestIgnore.setRequest(contentIgnore);
                     break;
