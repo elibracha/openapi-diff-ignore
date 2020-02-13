@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.openapi.diff.ignore.deserializes.HttpMethodDeserializer;
+import org.openapi.diff.ignore.deserializers.HttpMethodDeserializer;
 import org.openapi.diff.ignore.models.IgnoreElemnt;
 import org.openapi.diff.ignore.models.SpecConstants;
 

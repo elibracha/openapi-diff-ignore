@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class GlobalIgnoreValidator<K, V> {
+public class GlobalIgnoreValidator<K, V> implements Validator{
     private Map<K, V> ignore;
     private ValidationResult result;
     private EndpointValidator endpointValidator;

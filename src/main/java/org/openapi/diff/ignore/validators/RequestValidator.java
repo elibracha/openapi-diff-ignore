@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class RequestValidator {
+public class RequestValidator implements Validator {
 
     private RequestParamValidator requestParamValidator;
     private Map<String, Object> request;

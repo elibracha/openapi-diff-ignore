@@ -4,7 +4,7 @@ import org.openapi.diff.ignore.models.validations.ValidationResult;
 
 import java.util.Map;
 
-public class RequestParamValidator {
+public class RequestParamValidator implements Validator {
 
     private Map<String, Object> params;
     private ValidationResult result;

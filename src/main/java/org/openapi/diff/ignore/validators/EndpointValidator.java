@@ -5,7 +5,7 @@ import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
 import java.util.Map;
 
-public class EndpointValidator {
+public class EndpointValidator implements Validator{
 
     private static final String ENDPOINT_PATTERN = "(\\/[a-zA-Z{}1-9$*\\/]+)";
 
