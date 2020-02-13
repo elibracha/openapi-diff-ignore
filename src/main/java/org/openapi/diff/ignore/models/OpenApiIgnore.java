@@ -1,26 +1,16 @@
 package org.openapi.diff.ignore.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class OpenApiIgnore {
 
     private boolean validIgnore;
     private ContextIgnore ignore;
 
-    public OpenApiIgnore(ContextIgnore ignore) {
-        this.ignore = ignore;
-    }
-
-    public ContextIgnore getIgnore() {
-        return ignore;
-    }
-
-    public boolean isValidIgnore() {
-        return validIgnore;
-    }
-
-    public OpenApiIgnore setValidIgnore(boolean validIgnore) {
-        this.validIgnore = validIgnore;
-        return this;
-    }
 }

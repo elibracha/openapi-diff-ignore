@@ -8,9 +8,6 @@ import org.openapi.diff.ignore.models.ignore.ResponseIgnore;
 import org.openapi.diff.ignore.models.ignore.StatusIgnore;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class ResponseDeserializer extends AbstractDeserializer<ResponseIgnore> {
 
@@ -23,17 +20,9 @@ public class ResponseDeserializer extends AbstractDeserializer<ResponseIgnore> {
         JsonNode response = jsonParser.getCodec().readTree(jsonParser);
         ResponseIgnore responseIgnore = (ResponseIgnore) preProcess(new ResponseIgnore(), response);
 
-        Map<String, StatusIgnore> responseContent = new HashMap<>();
+        StatusIgnore statusIgnore = ObjectMapperFactory.createYaml().convertValue(response, StatusIgnore.class);
 
-        for (Iterator<Map.Entry<String, JsonNode>> it = response.fields(); it.hasNext(); ) {
-            Map.Entry<String, JsonNode> responseScope = it.next();
-
-            StatusIgnore statusIgnore = ObjectMapperFactory.createYaml().convertValue(responseScope, StatusIgnore.class);
-            responseContent.put(responseScope.getKey(), statusIgnore);
-
-        }
-
-        responseIgnore.setResponse(responseContent);
+        responseIgnore.setResponse(statusIgnore);
         return responseIgnore;
     }
 }

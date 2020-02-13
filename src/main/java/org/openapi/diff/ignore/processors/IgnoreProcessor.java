@@ -3,6 +3,7 @@ package org.openapi.diff.ignore.processors;
 
 import org.openapi.diff.ignore.ContextMapKey;
 import org.openapi.diff.ignore.models.OpenApiIgnore;
+import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -57,7 +58,8 @@ public class IgnoreProcessor {
             }
         }
 
-        return new OpenApiIgnore(this.mapKey.getContextIgnore()).setValidIgnore(result);
+        ContextIgnore contextIgnore = this.mapKey.getContextIgnore();
+        return new OpenApiIgnore(result, contextIgnore);
     }
 
     public ContextMapKey<String, String> getMapKey() {

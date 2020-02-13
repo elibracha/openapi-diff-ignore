@@ -1,0 +1,45 @@
+version: 1.0.0
+info: this is a sample ignore file to silence changes in openapi-diff
+project: sample-service
+paths:
+  /**:
+    get:
+      parameters:
+        - username
+        - password
+
+    post:
+      parameters:
+        - username
+        - password
+      request:
+        content:
+          application/json:
+            schema:
+              properties:
+                - petId
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                - orderId
+      response:
+        200:
+          content:
+            application/json:
+              schema:
+                properties:
+                  - petId
+            application/xml:
+              schema:
+                properties:
+                  - orderId
+      security:
+        petstore_auth:
+          - 'write:pets'
+          - 'write:pests'
+          - 'read:pets'
+        random:
+          - 'write:random'
+
+
+    put: ''
