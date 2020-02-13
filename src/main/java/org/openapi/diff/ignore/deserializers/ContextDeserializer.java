@@ -5,17 +5,27 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import lombok.extern.slf4j.Slf4j;
 import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 import org.openapi.diff.ignore.models.ignore.PathsIgnore;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+@Slf4j
 public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
+
+    private PathsIgnore pathsIgnore;
+    private PathsIgnore pathsIgnoreExtended;
 
     public ContextDeserializer() {
         super(ContextIgnore.class);
@@ -43,7 +53,12 @@ public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
                     contextIgnore.setInfo(globalScope.getValue().asText());
                     break;
                 case SpecConstants.ContextEntries.PATHS:
-                    contextIgnore.setPaths(objectMapper.convertValue(globalScope.getValue(), PathsIgnore.class));
+                    pathsIgnore = objectMapper.convertValue(globalScope.getValue(), PathsIgnore.class);
+                    extendPostProcess();
+                    contextIgnore.setPaths(pathsIgnore);
+                    break;
+                case "extends":
+                    extend(globalScope);
                     break;
                 default:
                     throw new SpecificationSupportException(String.format(
@@ -53,5 +68,31 @@ public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
         }
 
         return contextIgnore;
+    }
+
+    private void extendPostProcess() {
+        if (pathsIgnoreExtended != null) {
+            HashSet<String> keys = new HashSet<>(pathsIgnoreExtended.getPaths().keySet());
+            HashSet<String> deletedKeys = new HashSet<>();
+
+            for (String key : keys) {
+                if (pathsIgnore.getPaths().containsKey(key)) {
+                    pathsIgnoreExtended.getPaths().remove(key);
+                    deletedKeys.add(key);
+                } else {
+                    pathsIgnore.getPaths().put(key, pathsIgnoreExtended.getPaths().get(key));
+                }
+            }
+
+            if (!keys.isEmpty()) {
+                log.warn(String.format("You are overriding default values from the ignore files you extended. (%s)", deletedKeys));
+            }
+        }
+    }
+
+    private void extend(Map.Entry<String, JsonNode> globalScope) throws IOException {
+        InputStream inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource(globalScope.getValue().asText()).getFile()));
+        ContextIgnore contextIgnoreExtended = ObjectMapperFactory.createJson().convertValue(new Yaml().load(inputStream), ContextIgnore.class);
+        this.pathsIgnoreExtended = contextIgnoreExtended.getPaths();
     }
 }

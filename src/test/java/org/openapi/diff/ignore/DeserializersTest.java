@@ -18,20 +18,21 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class IgnoreParserTest {
+public class DeserializersTest {
 
     private final String OPENAPI_GENERATED_PETSTORE = "petstore_v3_generated.yaml";
     private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_orignal.yaml";
 
-    
-    public void test() {
-//        IgnoreProcessor parser = new IgnoreProcessor(
-//                getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
-//        );
 
+    @Test
+    public void test() {
         IgnoreProcessor parser = new IgnoreProcessor(
-                getClass().getClassLoader().getResource("defaults/.default").getFile()
+                getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
         );
+
+//        IgnoreProcessor parser = new IgnoreProcessor(
+//                getClass().getClassLoader().getResource("defaults/.default").getFile()
+//        );
 
         OpenApiIgnore ignoreOpenApi = parser.processIgnore();
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);

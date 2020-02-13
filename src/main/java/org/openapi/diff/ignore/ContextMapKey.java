@@ -37,9 +37,7 @@ public class ContextMapKey<K, V> {
             this.contextIgnore = objectMapper.convertValue(this.mapKey, ContextIgnore.class);
             return true;
         } catch (IllegalArgumentException e) {
-            log.error(String.format("NOTICE! please save this trace if you need support:%s%s",
-                    System.lineSeparator() + System.lineSeparator(),
-                    e.getMessage()));
+            log.error(e.getMessage());
         }
         return false;
     }
