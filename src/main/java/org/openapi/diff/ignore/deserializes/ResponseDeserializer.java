@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.openapi.diff.ignore.ObjectMapperFactory;
-import org.openapi.diff.ignore.models.ignore.Content;
 import org.openapi.diff.ignore.models.ignore.ResponseIgnore;
+import org.openapi.diff.ignore.models.ignore.StatusIgnore;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,13 +29,14 @@ public class ResponseDeserializer extends StdDeserializer<ResponseIgnore> {
             return responseIgnore;
         }
 
-        Map<String, Content> responseContent = new HashMap<>();
+        Map<String, StatusIgnore> responseContent = new HashMap<>();
+
         for (Iterator<Map.Entry<String, JsonNode>> it = response.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> responseScope = it.next();
 
-            Content content = ObjectMapperFactory.createYaml().convertValue(responseScope.getValue(), Content.class);
+            StatusIgnore statusIgnore = ObjectMapperFactory.createYaml().convertValue(responseScope, StatusIgnore.class);
+            responseContent.put(responseScope.getKey(), statusIgnore);
 
-            responseContent.put(responseScope.getKey(), content);
         }
 
         responseIgnore.setResponse(responseContent);
