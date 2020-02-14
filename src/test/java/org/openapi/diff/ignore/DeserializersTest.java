@@ -24,7 +24,7 @@ public class DeserializersTest {
     private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_orignal.yaml";
 
 
-    @Test
+//    @Test
     public void test() {
         IgnoreProcessor parser = new IgnoreProcessor(
                 getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
