@@ -7,6 +7,7 @@ import org.openapi.diff.ignore.models.IgnoreElemnt;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractDeserializer<T> extends StdDeserializer<T> {
 
@@ -35,6 +36,6 @@ public abstract class AbstractDeserializer<T> extends StdDeserializer<T> {
     }
 
     protected List<String> extractWildCards(String key) {
-        return key.equals("$") ? null : Arrays.asList(key.split(","));
+        return key.equals("$") ? null : Arrays.stream(key.split(",")).map(String::trim).collect(Collectors.toList());
     }
 }
