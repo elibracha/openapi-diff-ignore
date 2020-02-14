@@ -57,7 +57,7 @@ public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
                     extendPostProcess();
                     contextIgnore.setPaths(pathsIgnore);
                     break;
-                case "extends":
+                case SpecConstants.ContextEntries.EXTENDS:
                     extend(globalScope);
                     break;
                 default:
@@ -84,7 +84,7 @@ public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
                 }
             }
 
-            if (!keys.isEmpty()) {
+            if (!deletedKeys.isEmpty()) {
                 log.warn(String.format("You are overriding default values from the ignore files you extended. (%s)", deletedKeys));
             }
         }

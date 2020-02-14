@@ -23,6 +23,7 @@ public class SpecConstants {
         public final static String PROJECT = "project";
         public final static String INFO = "info";
         public final static String PATHS = "paths";
+        public final static String EXTENDS = "extends";
     }
 
     public static class OperationIgnoresEntries {
