@@ -3,10 +3,13 @@ package org.openapi.diff.ignore;
 import com.qdesrame.openapi.diff.OpenApiCompare;
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.output.HtmlRender;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.parser.OpenAPIV3Parser;
 import org.junit.Test;
 import org.openapi.diff.ignore.models.OpenApiIgnore;
 import org.openapi.diff.ignore.models.ignore.*;
-import org.openapi.diff.ignore.processors.IgnoreProcessor;
+import org.openapi.diff.ignore.processors.ContextProcessor;
+import org.openapi.diff.ignore.processors.OpenApiPreprocessor;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -21,25 +24,25 @@ import static org.junit.Assert.assertTrue;
 public class DeserializersTest {
 
     private final String OPENAPI_GENERATED_PETSTORE = "petstore_v3_generated.yaml";
-    private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_orignal.yaml";
+    private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_original.yaml";
 
 
-//    @Test
+    @Test
     public void test() {
-        IgnoreProcessor parser = new IgnoreProcessor(
+        ContextProcessor parser = new ContextProcessor(
                 getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
         );
 
-//        IgnoreProcessor parser = new IgnoreProcessor(
-//                getClass().getClassLoader().getResource("defaults/.default").getFile()
-//        );
+        OpenAPI openApiOriginal = new OpenAPIV3Parser().read(getClass().getClassLoader().getResource(OPENAPI_ORIGINAL_PETSTORE).getFile());
+        OpenAPI openApiOGenerated = new OpenAPIV3Parser().read(getClass().getClassLoader().getResource(OPENAPI_GENERATED_PETSTORE).getFile());
 
         OpenApiIgnore ignoreOpenApi = parser.processIgnore();
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
 
-//        ApplyIgnorePostProcessor applyIgnorePostProcessor = new ApplyIgnorePostProcessor(changedOpenApi, ignoreOpenApi);
-//        applyIgnorePostProcessor.applyIgnore();
+        OpenApiPreprocessor openApiPreprocessor = new OpenApiPreprocessor(openApiOriginal, openApiOGenerated, ignoreOpenApi);
+        openApiPreprocessor.process();
 
+
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromSpecifications(openApiOriginal, openApiOGenerated);
         String html =
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
                         .render(changedOpenApi);
@@ -57,7 +60,7 @@ public class DeserializersTest {
 
     @Test
     public void testContextDeserialization() {
-        IgnoreProcessor parser = new IgnoreProcessor(
+        ContextProcessor parser = new ContextProcessor(
                 getClass().getClassLoader().getResource(".context").getFile()
         );
 

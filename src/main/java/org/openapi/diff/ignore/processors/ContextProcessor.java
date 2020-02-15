@@ -18,18 +18,18 @@ import java.lang.invoke.MethodHandles;
 
 import static java.lang.System.exit;
 
-public class IgnoreProcessor {
+public class ContextProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
     private final ContextMapKey<String, String> mapKey = new ContextMapKey<>();
     private String ignorePath;
 
-    public IgnoreProcessor() {
+    public ContextProcessor() {
         this.ignorePath = SpecConstants.DEFAULT_SEARCH;
     }
 
-    public IgnoreProcessor(String ignorePath) {
+    public ContextProcessor(String ignorePath) {
         this.ignorePath = ignorePath;
     }
 
