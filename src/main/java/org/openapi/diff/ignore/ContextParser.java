@@ -1,5 +1,5 @@
 package org.openapi.diff.ignore;
 
-public class ignoreParser {
+public class ContextParser {
 
 }
