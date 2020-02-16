@@ -75,7 +75,7 @@ public class ContextProcessor {
                 toRemove.add(changedOperation);
             }
         }
-        
+
         changedOpenApi.getChangedOperations().removeAll(toRemove);
         return changedOpenApi;
     }
