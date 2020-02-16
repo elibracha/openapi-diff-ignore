@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.openapi.diff.ignore.models.OpenApiIgnore;
 import org.openapi.diff.ignore.models.ignore.*;
 import org.openapi.diff.ignore.processors.ContextProcessor;
-import org.openapi.diff.ignore.processors.OpenApiPreprocessor;
+import org.openapi.diff.ignore.processors.OpenApiPostprocessor;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -38,7 +38,7 @@ public class DeserializersTest {
 
         OpenApiIgnore ignoreOpenApi = parser.processIgnore();
 
-        OpenApiPreprocessor openApiPreprocessor = new OpenApiPreprocessor(openApiOriginal, openApiOGenerated, ignoreOpenApi);
+        OpenApiPostprocessor openApiPreprocessor = new OpenApiPostprocessor(openApiOriginal, openApiOGenerated, ignoreOpenApi);
         openApiPreprocessor.process();
 
 
