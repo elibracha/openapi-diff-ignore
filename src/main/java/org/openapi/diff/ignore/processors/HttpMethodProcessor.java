@@ -7,6 +7,8 @@ import org.openapi.diff.ignore.models.ignore.OperationIgnore;
 public class HttpMethodProcessor {
     private final RequestProcessor requestProcessor = new RequestProcessor();
     private final SecurityProcessor securityProcessor = new SecurityProcessor();
+    private final ParamterProcessor paramterProcessor = new ParamterProcessor();
+    private final ResponseProcessor responseProcessor = new ResponseProcessor();
 
     public boolean apply(HttpMethodIgnore httpMethodIgnore, ChangedOperation changedOperation) {
         String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
@@ -15,14 +17,27 @@ public class HttpMethodProcessor {
         if (operationIgnore != null) {
             if (operationIgnore.getRequest() != null && changedOperation.getRequestBody() != null) {
                 boolean requestResult = requestProcessor.apply(operationIgnore.getRequest(), changedOperation.getRequestBody());
-                boolean securityResult = securityProcessor.apply(operationIgnore.getSecurity(), changedOperation.getSecurityRequirements());
-
                 if (requestResult) {
                     changedOperation.setRequestBody(null);
                 }
 
+            }
+            if (operationIgnore.getSecurity() != null && changedOperation.getSecurityRequirements() != null) {
+                boolean securityResult = securityProcessor.apply(operationIgnore.getSecurity(), changedOperation.getSecurityRequirements());
                 if (securityResult) {
                     changedOperation.setSecurityRequirements(null);
+                }
+            }
+            if (operationIgnore.getParameters() != null && changedOperation.getParameters() != null) {
+                boolean parameterResult = paramterProcessor.apply(operationIgnore.getParameters(), changedOperation.getParameters());
+                if (parameterResult) {
+                    changedOperation.setParameters(null);
+                }
+            }
+            if (operationIgnore.getResponse() != null && changedOperation.getApiResponses() != null) {
+                boolean responseResult = responseProcessor.apply(operationIgnore.getResponse(), changedOperation.getApiResponses());
+                if (responseResult) {
+                    changedOperation.setApiResponses(null);
                 }
             }
         }
