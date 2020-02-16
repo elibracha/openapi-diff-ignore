@@ -51,8 +51,13 @@ public class StatusDeserializer extends AbstractDeserializer<StatusIgnore> {
 
         for (Iterator<Map.Entry<String, JsonNode>> contentIt = statusScope.getValue().fields(); contentIt.hasNext(); ) {
             Map.Entry<String, JsonNode> contentScope = contentIt.next();
-            Content contentIgnore = ObjectMapperFactory.createYaml().convertValue(contentScope.getValue(), Content.class);
-            st.put(key, contentIgnore);
+            switch (contentScope.getKey()) {
+                case "new":
+                    content.setNewContent(contentScope.getValue().booleanValue());
+                case "content":
+                    Content contentIgnore = ObjectMapperFactory.createYaml().convertValue(contentScope.getValue(), Content.class);
+                    content.setContentSchemas(contentIgnore.getContentSchemas());
+            }
         }
     }
 }

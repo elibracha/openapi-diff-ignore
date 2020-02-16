@@ -14,5 +14,6 @@ import java.util.Map;
 @Data
 @JsonDeserialize(using = ContentDeserializer.class)
 public class Content extends IgnoreElemnt {
+    private boolean newContent;
     private Map<String, ContentSchema> contentSchemas;
 }

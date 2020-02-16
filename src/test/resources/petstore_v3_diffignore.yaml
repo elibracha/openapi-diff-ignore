@@ -1,27 +1,24 @@
-
+extends: .default
 version: 1.0.0
 info: this is a sample ignore file to silence changes in openapi-diff
 project: sample-service
 paths:
   /pet/**, /store/**, /user/**:
     get:
+      response:
+        200:
+          new: true
       parameters:
         - username
         - password
 
     post:
-      parameters:
-        - username
-        - password
       request:
         content:
           application/octet-stream: $
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                - orderId
       response:
         200:
+          new: true
           content:
             application/json:
               schema:

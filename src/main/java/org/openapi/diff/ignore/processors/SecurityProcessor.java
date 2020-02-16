@@ -38,10 +38,10 @@ public class SecurityProcessor {
             }
         }
 
-        return securityRequirements.getChanged() == null ||
-                securityRequirements.getChanged().size() == 0 &&
-                        securityRequirements.getMissing() == null ||
-                securityRequirements.getMissing().size() == 0;
+        return (securityRequirements.getChanged() == null ||
+                securityRequirements.getChanged().size() == 0) &&
+                (securityRequirements.getMissing() == null ||
+                        securityRequirements.getMissing().size() == 0);
     }
 
     private boolean processRequirement(SecurityRequirement oldSecurityRequirement, Map<String, SecurityProperty> security) {

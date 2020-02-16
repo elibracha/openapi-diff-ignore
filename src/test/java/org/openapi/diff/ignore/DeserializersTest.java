@@ -27,7 +27,7 @@ public class DeserializersTest {
     @Test
     public void test() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
+                getClass().getClassLoader().getResource("petstore_v3_diffignore.yaml").getFile()
         );
 
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
