@@ -16,6 +16,8 @@ import java.util.Map;
 public class ResponseProcessor {
     public boolean apply(ResponseIgnore response, ChangedApiResponse apiResponses) {
         List<String> changeToRemove = new ArrayList<>();
+        List<String> missingToRemove = new ArrayList<>();
+        List<String> increaseToRemove = new ArrayList<>();
 
         if (apiResponses.getChanged() != null) {
             for (Map.Entry<String, ChangedResponse> entry : apiResponses.getChanged().entrySet()) {
@@ -25,23 +27,27 @@ public class ResponseProcessor {
                         changeToRemove.add(entry.getKey());
                 }
             }
-
+            apiResponses.getChanged().keySet().removeAll(changeToRemove);
+        }
+        if (apiResponses.getMissing() != null) {
             for (Map.Entry<String, ApiResponse> entry : apiResponses.getMissing().entrySet()) {
                 if (response.getResponse() != null && response.getResponse().getStatus() != null) {
                     boolean result = processStatusMissingOrIncrease(entry.getValue(), response.getResponse().getStatus().get(entry.getKey()));
                     if (result)
-                        changeToRemove.add(entry.getKey());
+                        missingToRemove.add(entry.getKey());
                 }
             }
-
+            apiResponses.getMissing().keySet().removeAll(missingToRemove);
+        }
+        if (apiResponses.getIncreased() != null) {
             for (Map.Entry<String, ApiResponse> entry : apiResponses.getIncreased().entrySet()) {
                 if (response.getResponse() != null && response.getResponse().getStatus() != null) {
                     boolean result = processStatusMissingOrIncrease(entry.getValue(), response.getResponse().getStatus().get(entry.getKey()));
                     if (result)
-                        changeToRemove.add(entry.getKey());
+                        increaseToRemove.add(entry.getKey());
                 }
             }
-            apiResponses.getChanged().keySet().removeAll(changeToRemove);
+            apiResponses.getIncreased().keySet().removeAll(increaseToRemove);
         }
 
         return (apiResponses.getIncreased() == null ||
@@ -53,7 +59,7 @@ public class ResponseProcessor {
     }
 
     private boolean processStatusMissingOrIncrease(ApiResponse apiResponse, Content contentIgnore) {
-        return contentIgnore != null && contentIgnore.isNewContent();
+        return (contentIgnore != null && contentIgnore.isNewContent()) || (contentIgnore != null && contentIgnore.isIgnoreAll());
     }
 
     private boolean processStatusChange(ChangedResponse changedResponse, Content contentIgnore) {
