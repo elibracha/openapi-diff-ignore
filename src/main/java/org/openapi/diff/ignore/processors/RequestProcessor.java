@@ -43,6 +43,7 @@ public class RequestProcessor {
                         }
 
                         if (changedMediaType.isDifferent()) {
+                            System.out.println(); //TODO: fix to clean up properly
                         }
                     }
             }

@@ -19,6 +19,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.System.exit;
 
@@ -65,11 +67,16 @@ public class ContextProcessor {
             throw new SpecificationSupportException("Invalid Ignore");
 
         AntPathMatcher antPathMatcher = new AntPathMatcher();
+        List<ChangedOperation> toRemove = new ArrayList<>();
 
         for (ChangedOperation changedOperation : changedOpenApi.getChangedOperations()) {
-            pathsProcessor.apply(changedOperation, openApiIgnore.getIgnore().getPaths(), antPathMatcher);
+            boolean result = pathsProcessor.apply(changedOperation, openApiIgnore.getIgnore().getPaths(), antPathMatcher);
+            if (result) {
+                toRemove.add(changedOperation);
+            }
         }
-
+        
+        changedOpenApi.getChangedOperations().removeAll(toRemove);
         return changedOpenApi;
     }
 }

@@ -1,6 +1,5 @@
 package org.openapi.diff.ignore.processors;
 
-import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.model.ChangedOperation;
 import org.openapi.diff.ignore.models.ignore.PathsIgnore;
 import org.springframework.util.AntPathMatcher;
@@ -9,8 +8,8 @@ public class PathsProcessor {
 
     private final HttpMethodProcessor httpMethodProcessor = new HttpMethodProcessor();
 
-    public ChangedOpenApi apply(ChangedOperation changedOperation, PathsIgnore pathsIgnore,
-                                AntPathMatcher antPathMatcher) {
+    public boolean apply(ChangedOperation changedOperation, PathsIgnore pathsIgnore,
+                         AntPathMatcher antPathMatcher) {
 
         String pathUrl = changedOperation.getPathUrl();
 
@@ -19,11 +18,13 @@ public class PathsProcessor {
                 boolean match = antPathMatcher.match(path, pathUrl);
 
                 if (match) {
-                    httpMethodProcessor.apply(pathsIgnore.getPaths().get(path), changedOperation);
+                    boolean result = httpMethodProcessor.apply(pathsIgnore.getPaths().get(path), changedOperation);
+                    if (result) {
+                        return true;
+                    }
                 }
             }
         }
-
-        return null;
+        return false;
     }
 }

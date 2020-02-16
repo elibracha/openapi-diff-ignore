@@ -6,20 +6,30 @@ import org.openapi.diff.ignore.models.ignore.OperationIgnore;
 
 public class HttpMethodProcessor {
     private final RequestProcessor requestProcessor = new RequestProcessor();
+    private final SecurityProcessor securityProcessor = new SecurityProcessor();
 
-    public void apply(HttpMethodIgnore httpMethodIgnore, ChangedOperation changedOperation) {
+    public boolean apply(HttpMethodIgnore httpMethodIgnore, ChangedOperation changedOperation) {
         String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
         OperationIgnore operationIgnore = httpMethodIgnore.checkIfIgnoreExist(httpMethod);
 
         if (operationIgnore != null) {
             if (operationIgnore.getRequest() != null && changedOperation.getRequestBody() != null) {
-                boolean result = requestProcessor.apply(operationIgnore.getRequest(), changedOperation.getRequestBody());
-                if (result) {
+                boolean requestResult = requestProcessor.apply(operationIgnore.getRequest(), changedOperation.getRequestBody());
+                boolean securityResult = securityProcessor.apply(operationIgnore.getSecurity(), changedOperation.getSecurityRequirements());
+
+                if (requestResult) {
                     changedOperation.setRequestBody(null);
+                }
+
+                if (securityResult) {
+                    changedOperation.setSecurityRequirements(null);
                 }
             }
         }
 
-        System.out.println();
+        return changedOperation.getRequestBody() == null &&
+                changedOperation.getSecurityRequirements() == null &&
+                changedOperation.getParameters() == null &&
+                changedOperation.getApiResponses() == null;
     }
 }
