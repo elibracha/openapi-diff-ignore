@@ -14,6 +14,10 @@ public class HttpMethodProcessor {
         String httpMethod = changedOperation.getHttpMethod().name().toLowerCase();
         OperationIgnore operationIgnore = httpMethodIgnore.checkIfIgnoreExist(httpMethod);
 
+        if (operationIgnore.isIgnoreAll()) {
+            return true;
+        }
+
         if (operationIgnore != null) {
             if (operationIgnore.getRequest() != null && changedOperation.getRequestBody() != null) {
                 boolean requestResult = requestProcessor.apply(operationIgnore.getRequest(), changedOperation.getRequestBody());

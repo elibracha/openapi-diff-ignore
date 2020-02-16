@@ -29,19 +29,12 @@ paths:
                   - petId
                   - quantity
                   - shipDate
-
-            application/xml:
-              schema:
-                properties:
-                  - orderId
+                  - complete
       security:
         petstore_auth:
           - 'write:pets'
           - 'write:pests'
           - 'read:pets'
-        random:
-          - 'write:random'
 
 
-
-    put: ''
+    put: $
