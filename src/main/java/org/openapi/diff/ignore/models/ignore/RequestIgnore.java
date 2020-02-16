@@ -13,5 +13,5 @@ import org.openapi.diff.ignore.models.IgnoreElemnt;
 @Data
 @JsonDeserialize(using = RequestDeserializer.class)
 public class RequestIgnore extends IgnoreElemnt {
-    private Content request;
+    private Content content;
 }

@@ -107,7 +107,7 @@ public class DeserializersTest {
             }
         };
 
-        contentResponse.setContent(response);
+        contentResponse.setContentSchemas(response);
 
         Map<String, Content> status = new HashMap<String, Content>() {
             {
@@ -137,8 +137,8 @@ public class DeserializersTest {
             }
         };
 
-        contentRequest.setContent(request);
-        requestIgnorePost.setRequest(contentRequest);
+        contentRequest.setContentSchemas(request);
+        requestIgnorePost.setContent(contentRequest);
 
         parametersIgnorePost.setParameters(Arrays.asList("username", "password"));
 
@@ -224,7 +224,7 @@ public class DeserializersTest {
             }
         };
 
-        contentIgnore.setContent(response);
+        contentIgnore.setContentSchemas(response);
 
         assertEquals(contentIgnore, securityIgnoreFromFile);
 
@@ -256,8 +256,8 @@ public class DeserializersTest {
             }
         };
 
-        contentRequest.setContent(request);
-        requestIgnore.setRequest(contentRequest);
+        contentRequest.setContentSchemas(request);
+        requestIgnore.setContent(contentRequest);
 
 
         assertEquals(requestIgnore, requestIgnoreFromFile);
@@ -291,7 +291,7 @@ public class DeserializersTest {
             }
         };
 
-        content.setContent(response);
+        content.setContentSchemas(response);
 
         Map<String, Content> status = new HashMap<String, Content>() {
             {
@@ -356,7 +356,7 @@ public class DeserializersTest {
             }
         };
 
-        content.setContent(response);
+        content.setContentSchemas(response);
 
         Map<String, Content> status = new HashMap<String, Content>() {
             {
@@ -386,8 +386,8 @@ public class DeserializersTest {
             }
         };
 
-        contentRequest.setContent(request);
-        requestIgnore.setRequest(contentRequest);
+        contentRequest.setContentSchemas(request);
+        requestIgnore.setContent(contentRequest);
 
         parametersIgnore.setParameters(Arrays.asList("username", "password"));
 

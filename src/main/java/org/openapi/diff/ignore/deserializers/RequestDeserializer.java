@@ -30,7 +30,7 @@ public class RequestDeserializer extends AbstractDeserializer<RequestIgnore> {
             switch (requestContentScope.getKey()) {
                 case SpecConstants.RequestEntries.CONTENT:
                     Content contentIgnore = ObjectMapperFactory.createYaml().convertValue(requestContentScope.getValue(), Content.class);
-                    requestIgnore.setRequest(contentIgnore);
+                    requestIgnore.setContent(contentIgnore);
                     break;
                 default:
                     throw new SpecificationSupportException(String.format(

@@ -2,18 +2,12 @@ package org.openapi.diff.ignore.processors;
 
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.model.ChangedOperation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.openapi.diff.ignore.models.ignore.PathsIgnore;
 import org.springframework.util.AntPathMatcher;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
 public class PathsProcessor {
 
-    private HttpMethodProcessor httpMethodProcessor;
+    private final HttpMethodProcessor httpMethodProcessor = new HttpMethodProcessor();
 
     public ChangedOpenApi apply(ChangedOperation changedOperation, PathsIgnore pathsIgnore,
                                 AntPathMatcher antPathMatcher) {

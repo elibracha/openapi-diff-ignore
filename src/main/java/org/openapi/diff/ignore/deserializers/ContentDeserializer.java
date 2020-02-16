@@ -32,7 +32,7 @@ public class ContentDeserializer extends AbstractDeserializer<Content> {
             contentSchemaMap.put(contentSchemaScope.getKey(), contentSchemaIgnore);
         }
 
-        content.setContent(contentSchemaMap);
+        content.setContentSchemas(contentSchemaMap);
 
         return content;
     }
