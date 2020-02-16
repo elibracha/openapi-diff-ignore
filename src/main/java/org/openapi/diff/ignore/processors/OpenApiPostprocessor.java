@@ -30,7 +30,7 @@ public class OpenApiPostprocessor {
         this.changedOperationsToRemove = new ArrayList<>();
     }
 
-    public ChangedOpenApi applyIgnore() {
+    public ChangedOpenApi process() {
 
         AntPathMatcher antPathMatcher = new AntPathMatcher();
 

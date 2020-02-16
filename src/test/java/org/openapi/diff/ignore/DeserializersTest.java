@@ -3,8 +3,6 @@ package org.openapi.diff.ignore;
 import com.qdesrame.openapi.diff.OpenApiCompare;
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.output.HtmlRender;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.parser.OpenAPIV3Parser;
 import org.junit.Test;
 import org.openapi.diff.ignore.models.OpenApiIgnore;
 import org.openapi.diff.ignore.models.ignore.*;
@@ -33,16 +31,14 @@ public class DeserializersTest {
                 getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
         );
 
-        OpenAPI openApiOriginal = new OpenAPIV3Parser().read(getClass().getClassLoader().getResource(OPENAPI_ORIGINAL_PETSTORE).getFile());
-        OpenAPI openApiOGenerated = new OpenAPIV3Parser().read(getClass().getClassLoader().getResource(OPENAPI_GENERATED_PETSTORE).getFile());
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
 
         OpenApiIgnore ignoreOpenApi = parser.processIgnore();
 
-        OpenApiPostprocessor openApiPreprocessor = new OpenApiPostprocessor(openApiOriginal, openApiOGenerated, ignoreOpenApi);
-        openApiPreprocessor.process();
+        OpenApiPostprocessor openApiPostprocessor = new OpenApiPostprocessor(changedOpenApi, ignoreOpenApi);
+        openApiPostprocessor.process();
 
 
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromSpecifications(openApiOriginal, openApiOGenerated);
         String html =
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
                         .render(changedOpenApi);
