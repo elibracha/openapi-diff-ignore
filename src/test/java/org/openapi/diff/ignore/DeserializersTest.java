@@ -25,7 +25,7 @@ public class DeserializersTest {
 
 
     @Test
-    public void test() throws SpecificationSupportException {
+    public void testContextProcessorUnchange() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
                 getClass().getClassLoader().getResource("petstore_v3_diffignore.yaml").getFile()
         );
