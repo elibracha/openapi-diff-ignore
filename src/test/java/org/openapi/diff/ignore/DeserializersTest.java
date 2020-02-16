@@ -4,10 +4,9 @@ import com.qdesrame.openapi.diff.OpenApiCompare;
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;
 import com.qdesrame.openapi.diff.output.HtmlRender;
 import org.junit.Test;
-import org.openapi.diff.ignore.models.OpenApiIgnore;
+import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.ignore.*;
 import org.openapi.diff.ignore.processors.ContextProcessor;
-import org.openapi.diff.ignore.processors.OpenApiPostprocessor;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -26,22 +25,19 @@ public class DeserializersTest {
 
 
     @Test
-    public void test() {
-        ContextProcessor parser = new ContextProcessor(
+    public void test() throws SpecificationSupportException {
+        ContextProcessor contextProcessor = new ContextProcessor(
                 getClass().getClassLoader().getResource("petstore_v3_diffignore").getFile()
         );
 
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
 
-        OpenApiIgnore ignoreOpenApi = parser.processIgnore();
-
-        OpenApiPostprocessor openApiPostprocessor = new OpenApiPostprocessor(changedOpenApi, ignoreOpenApi);
-        openApiPostprocessor.process();
+        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
 
 
         String html =
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApi);
+                        .render(changedOpenApiAfter);
         try {
             FileWriter fw = new FileWriter("target/testDiff.html");
             fw.write(html);
@@ -55,12 +51,11 @@ public class DeserializersTest {
     }
 
     @Test
-    public void testContextDeserialization() {
-        ContextProcessor parser = new ContextProcessor(
-                getClass().getClassLoader().getResource(".context").getFile()
-        );
+    public void testContextDeserialization() throws FileNotFoundException {
+        Map<String, Object> result = loadMap(".context");
 
-        OpenApiIgnore ignoreOpenApi = new OpenApiIgnore();
+        ContextIgnore contextIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(result, ContextIgnore.class);
+
         ContextIgnore contextIgnore = new ContextIgnore();
         PathsIgnore pathsIgnore = new PathsIgnore();
 
@@ -176,12 +171,7 @@ public class DeserializersTest {
         contextIgnore.setProject("sample-service");
         contextIgnore.setVersion("1.0.0");
 
-        OpenApiIgnore ignoreOpenApiContext = parser.processIgnore();
-
-        ignoreOpenApi.setIgnore(contextIgnore);
-        ignoreOpenApi.setValidIgnore(true);
-
-        assertEquals(ignoreOpenApiContext, ignoreOpenApi);
+        assertEquals(contextIgnoreFromFile, contextIgnore);
     }
 
     @Test
