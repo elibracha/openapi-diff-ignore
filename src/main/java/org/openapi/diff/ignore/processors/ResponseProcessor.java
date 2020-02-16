@@ -1,41 +1,86 @@
 package org.openapi.diff.ignore.processors;
 
 import com.qdesrame.openapi.diff.model.ChangedApiResponse;
-import com.qdesrame.openapi.diff.model.ChangedContent;
+import com.qdesrame.openapi.diff.model.ChangedMediaType;
 import com.qdesrame.openapi.diff.model.ChangedResponse;
+import io.swagger.v3.oas.models.media.Schema;
 import org.openapi.diff.ignore.models.ignore.Content;
 import org.openapi.diff.ignore.models.ignore.ContentSchema;
 import org.openapi.diff.ignore.models.ignore.ResponseIgnore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ResponseProcessor {
     public boolean apply(ResponseIgnore response, ChangedApiResponse apiResponses) {
+        List<String> changeToRemove = new ArrayList<>();
+
         if (apiResponses.getChanged() != null) {
             for (Map.Entry<String, ChangedResponse> entry : apiResponses.getChanged().entrySet()) {
                 if (response.getResponse() != null && response.getResponse().getStatus() != null) {
-                    processStatus(entry.getValue(), response.getResponse().getStatus().get(entry.getKey()));
+                    boolean result = processStatus(entry.getValue(), response.getResponse().getStatus().get(entry.getKey()));
+                    if (result)
+                        changeToRemove.add(entry.getKey());
                 }
             }
+            apiResponses.getChanged().keySet().removeAll(changeToRemove);
         }
-        return false;
+
+        return apiResponses.getIncreased() == null ||
+                apiResponses.getIncreased().size() == 0 &&
+                        apiResponses.getMissing() == null ||
+                apiResponses.getMissing().size() == 0 &&
+                        apiResponses.getChanged() == null ||
+                apiResponses.getChanged().size() == 0;
     }
 
     private boolean processStatus(ChangedResponse changedResponse, Content contentIgnore) {
 
-        for (Map.Entry<String, ContentSchema> entry : contentIgnore.getContentSchemas().entrySet()) {
-            ContentSchema contentSchema = contentIgnore.getContentSchemas().get(entry.getKey());
+        List<String> toRemove = new ArrayList<>();
 
-            if (contentSchema != null && changedResponse.getContent() != null) {
-                processContent(changedResponse.getContent(), contentSchema);
+        if (changedResponse.getContent() != null) {
+            for (Map.Entry<String, ChangedMediaType> entry : changedResponse.getContent().getChanged().entrySet()) {
+                boolean result = processContent(entry.getKey(), entry.getValue(), contentIgnore.getContentSchemas());
+                if (result)
+                    toRemove.add(entry.getKey());
             }
         }
 
-        return false;
+        changedResponse.getContent().getChanged().keySet().removeAll(toRemove);
+
+        return changedResponse.getContent().getIncreased() == null ||
+                changedResponse.getContent().getIncreased().size() == 0 &&
+                        changedResponse.getContent().getMissing() == null ||
+                changedResponse.getContent().getMissing().size() == 0 &&
+                        changedResponse.getContent().getChanged() == null ||
+                changedResponse.getContent().getChanged().size() == 0;
     }
 
-    private boolean processContent(ChangedContent content, ContentSchema contentSchema) {
-        
-        return false;
+    private boolean processContent(String key, ChangedMediaType content, Map<String, ContentSchema> contentSchemas) {
+        if (contentSchemas == null)
+            return false;
+
+        ContentSchema contentSchema = contentSchemas.get(key);
+        List<String> increaseToRemove = new ArrayList<>();
+        List<String> missingToRemove = new ArrayList<>();
+
+        for (Map.Entry<String, Schema> entry : content.getSchema().getIncreasedProperties().entrySet()) {
+            if (contentSchema.getSchema().getProperties().contains(entry.getKey())) {
+                increaseToRemove.add(entry.getKey());
+            }
+        }
+
+        for (Map.Entry<String, Schema> entry : content.getSchema().getMissingProperties().entrySet()) {
+            if (contentSchema.getSchema().getProperties().contains(entry.getKey())) {
+                missingToRemove.add(entry.getKey());
+            }
+        }
+
+        content.getSchema().getIncreasedProperties().keySet().removeAll(increaseToRemove);
+        content.getSchema().getMissingProperties().keySet().removeAll(missingToRemove);
+
+        return content.getSchema().getMissingProperties() == null ||
+                content.getSchema().getMissingProperties().size() == 0;
     }
 }

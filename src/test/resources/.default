@@ -4,6 +4,6 @@ paths:
   /**:
     $:
       response:
-        default, 200: $
+        default: $
 
 
