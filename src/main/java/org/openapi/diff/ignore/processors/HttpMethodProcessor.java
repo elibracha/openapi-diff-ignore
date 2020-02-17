@@ -7,7 +7,7 @@ import org.openapi.diff.ignore.models.ignore.OperationIgnore;
 public class HttpMethodProcessor {
     private final RequestProcessor requestProcessor = new RequestProcessor();
     private final SecurityProcessor securityProcessor = new SecurityProcessor();
-    private final ParameterProcessor paramterProcessor = new ParameterProcessor();
+    private final ParameterProcessor parameterProcessor = new ParameterProcessor();
     private final ResponseProcessor responseProcessor = new ResponseProcessor();
 
     public boolean apply(HttpMethodIgnore httpMethodIgnore, ChangedOperation changedOperation) {
@@ -33,7 +33,7 @@ public class HttpMethodProcessor {
                 }
             }
             if (operationIgnore.getParameters() != null && changedOperation.getParameters() != null) {
-                boolean parameterResult = paramterProcessor.apply(operationIgnore.getParameters(), changedOperation.getParameters());
+                boolean parameterResult = parameterProcessor.apply(operationIgnore.getParameters(), changedOperation.getParameters());
                 if (parameterResult) {
                     changedOperation.setParameters(null);
                 }
