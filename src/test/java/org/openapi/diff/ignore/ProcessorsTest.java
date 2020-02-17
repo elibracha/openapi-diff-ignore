@@ -8,10 +8,12 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.junit.Test;
 import org.openapi.diff.ignore.processors.ParameterProcessor;
 import org.openapi.diff.ignore.processors.RequestProcessor;
 import org.openapi.diff.ignore.processors.ResponseProcessor;
+import org.openapi.diff.ignore.processors.SecurityProcessor;
 
 import java.util.*;
 
@@ -36,6 +38,30 @@ public class ProcessorsTest {
         changedParameters.setMissing(oldParameters);
 
         assertTrue(parameterProcessor.apply(util.getParametersPost(), changedParameters));
+    }
+
+    @Test
+    public void testSecurityProcessor() {
+        SecurityProcessor securityProcessor = new SecurityProcessor();
+        List<SecurityRequirement> requirementsOld = new ArrayList<>();
+        List<SecurityRequirement> requirementsNew = new ArrayList<>();
+
+        ChangedSecurityRequirements securityRequirements = new ChangedSecurityRequirements(requirementsOld, requirementsNew);
+
+        SecurityRequirement securityRequirementPetAuth = new SecurityRequirement();
+        SecurityRequirement SecurityRequirementRandom = new SecurityRequirement();
+        TestUtil util = new TestUtil();
+
+        securityRequirementPetAuth.put("petstore_auth", Arrays.asList("write:pets", "write:pests", "read:pets"));
+        SecurityRequirementRandom.put("random", Collections.singletonList("write:random"));
+
+
+        requirementsNew.add(securityRequirementPetAuth);
+        requirementsNew.add(SecurityRequirementRandom);
+
+        securityRequirements.setMissing(requirementsNew);
+
+        assertTrue(securityProcessor.apply(util.getSecurityPost(), securityRequirements));
     }
 
     @Test
