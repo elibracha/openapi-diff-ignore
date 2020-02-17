@@ -33,5 +33,4 @@ paths:
           - 'write:pests'
           - 'read:pets'
 
-
     put: $
