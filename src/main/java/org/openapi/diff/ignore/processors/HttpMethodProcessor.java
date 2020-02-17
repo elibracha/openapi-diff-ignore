@@ -7,7 +7,7 @@ import org.openapi.diff.ignore.models.ignore.OperationIgnore;
 public class HttpMethodProcessor {
     private final RequestProcessor requestProcessor = new RequestProcessor();
     private final SecurityProcessor securityProcessor = new SecurityProcessor();
-    private final ParamterProcessor paramterProcessor = new ParamterProcessor();
+    private final ParameterProcessor paramterProcessor = new ParameterProcessor();
     private final ResponseProcessor responseProcessor = new ResponseProcessor();
 
     public boolean apply(HttpMethodIgnore httpMethodIgnore, ChangedOperation changedOperation) {

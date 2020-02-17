@@ -11,21 +11,21 @@ public class DeserializersTest {
 
     @Test
     public void testContextDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         ContextIgnore contextIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".context"), ContextIgnore.class);
         assertEquals(util.getContext(), contextIgnoreFromFile);
     }
 
     @Test
     public void testPathsDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         PathsIgnore contextIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".paths"), PathsIgnore.class);
         assertEquals(util.getPaths(), contextIgnoreFromFile);
     }
 
     @Test
     public void testSecurityDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         SecurityIgnore securityIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".security"), SecurityIgnore.class);
         assertEquals(util.getSecurityPost(), securityIgnoreFromFile);
 
@@ -33,7 +33,7 @@ public class DeserializersTest {
 
     @Test
     public void testContentDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         Content contentIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".content"), Content.class);
         assertEquals(util.getContentPost(), contentIgnoreFromFile);
 
@@ -41,28 +41,28 @@ public class DeserializersTest {
 
     @Test
     public void testRequestDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         RequestIgnore requestIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".request"), RequestIgnore.class);
         assertEquals(util.getRequestPost(), requestIgnoreFromFile);
     }
 
     @Test
     public void testResponseDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         ResponseIgnore responseIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".response"), ResponseIgnore.class);
         assertEquals(util.getResponsePost(), responseIgnoreFromFile);
     }
 
     @Test
     public void testOperationDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         OperationIgnore operationIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".operation"), OperationIgnore.class);
         assertEquals(util.getOperationPost(), operationIgnoreFromFile);
     }
 
     @Test
     public void testHttpDeserialization() throws FileNotFoundException {
-        DeserializersTestUtil util = new DeserializersTestUtil();
+        TestUtil util = new TestUtil();
         HttpMethodIgnore httpMethodIgnoreFromFile = ObjectMapperFactory.createYaml().convertValue(util.loadMap(".http_method"), HttpMethodIgnore.class);
         assertEquals(util.getHttpMethodPost(), httpMethodIgnoreFromFile);
     }

@@ -280,6 +280,9 @@ paths:
             type: string
       requestBody:
         content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
           application/octet-stream:
             schema:
               $ref: '#/components/schemas/Resource'

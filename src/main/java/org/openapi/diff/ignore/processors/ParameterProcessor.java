@@ -5,7 +5,7 @@ import org.openapi.diff.ignore.models.ignore.ParametersIgnore;
 
 import java.util.stream.Collectors;
 
-public class ParamterProcessor {
+public class ParameterProcessor {
 
     public boolean apply(ParametersIgnore parameters, ChangedParameters changedParameters) {
         changedParameters.setMissing(

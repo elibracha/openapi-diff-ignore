@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class DeserializersTestUtil {
+public class TestUtil {
 
     public ContextIgnore getContext() {
         ContextIgnore contextIgnore = new ContextIgnore();
