@@ -1,17 +1,17 @@
 package org.openapi.diff.ignore;
 
-import com.qdesrame.openapi.diff.model.ChangedContent;
-import com.qdesrame.openapi.diff.model.ChangedParameters;
-import com.qdesrame.openapi.diff.model.ChangedRequestBody;
-import com.qdesrame.openapi.diff.model.DiffContext;
+import com.qdesrame.openapi.diff.model.*;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.junit.Test;
 import org.openapi.diff.ignore.processors.ParameterProcessor;
 import org.openapi.diff.ignore.processors.RequestProcessor;
+import org.openapi.diff.ignore.processors.ResponseProcessor;
 
 import java.util.*;
 
@@ -73,5 +73,47 @@ public class ProcessorsTest {
         changedRequestBody.setContent(changedContent);
 
         assertTrue(requestProcessor.apply(util.getRequestPost(), changedRequestBody));
+    }
+
+    @Test
+    public void testResponseProcessor() {
+        ResponseProcessor responseProcessor = new ResponseProcessor();
+        ApiResponses responseOld = new ApiResponses();
+        ApiResponses responseNew = new ApiResponses();
+        DiffContext diffContext = new DiffContext();
+        TestUtil util = new TestUtil();
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        Content content = new Content();
+        MediaType mediaTypeJson = new MediaType();
+        MediaType mediaTypeXml = new MediaType();
+
+        Schema schemaJson = new Schema();
+        Schema schemaXml = new Schema();
+
+        schemaJson.setName("petId");
+        schemaXml.setName("orderId");
+
+        mediaTypeJson.setSchema(schemaJson);
+        mediaTypeXml.setSchema(schemaXml);
+
+
+        content.put("application/json", mediaTypeJson);
+        content.put("application/xml", mediaTypeXml);
+
+        apiResponse.setContent(content);
+
+        ChangedApiResponse changedApiResponse = new ChangedApiResponse(responseOld, responseNew, diffContext);
+
+        Map<String, ApiResponse> missing = new HashMap<String, ApiResponse>() {
+            {
+                put("200", apiResponse);
+            }
+        };
+
+        changedApiResponse.setMissing(missing);
+
+        assertTrue(responseProcessor.apply(util.getResponsePost(), changedApiResponse));
     }
 }

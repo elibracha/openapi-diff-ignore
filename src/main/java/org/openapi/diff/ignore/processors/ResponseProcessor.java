@@ -3,6 +3,7 @@ package org.openapi.diff.ignore.processors;
 import com.qdesrame.openapi.diff.model.ChangedApiResponse;
 import com.qdesrame.openapi.diff.model.ChangedMediaType;
 import com.qdesrame.openapi.diff.model.ChangedResponse;
+import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.openapi.diff.ignore.models.ignore.Content;
@@ -59,7 +60,18 @@ public class ResponseProcessor {
     }
 
     private boolean processStatusMissingOrIncrease(ApiResponse apiResponse, Content contentIgnore) {
-        return (contentIgnore != null && contentIgnore.isNewContent()) || (contentIgnore != null && contentIgnore.isIgnoreAll());
+        List<String> toRemove = new ArrayList<>();
+
+        if (contentIgnore != null && apiResponse.getContent() != null) {
+            for (Map.Entry<String, MediaType> entry : apiResponse.getContent().entrySet()) {
+                boolean result = processContentMissingOrIncreased(entry.getKey(), entry.getValue(), contentIgnore.getContentSchemas());
+                if (result)
+                    toRemove.add(entry.getKey());
+            }
+            apiResponse.getContent().keySet().removeAll(toRemove);
+        }
+        return (contentIgnore != null && contentIgnore.isNewContent()) || (contentIgnore != null && contentIgnore.isIgnoreAll())
+                || apiResponse.getContent() == null || apiResponse.getContent().size() == 0;
     }
 
     private boolean processStatusChange(ChangedResponse changedResponse, Content contentIgnore) {
@@ -68,7 +80,7 @@ public class ResponseProcessor {
 
         if (contentIgnore != null && changedResponse.getContent() != null) {
             for (Map.Entry<String, ChangedMediaType> entry : changedResponse.getContent().getChanged().entrySet()) {
-                boolean result = processContent(entry.getKey(), entry.getValue(), contentIgnore.getContentSchemas());
+                boolean result = processContentChanged(entry.getKey(), entry.getValue(), contentIgnore.getContentSchemas());
                 if (result)
                     toRemove.add(entry.getKey());
             }
@@ -84,7 +96,20 @@ public class ResponseProcessor {
                         changedResponse.getContent().getChanged().size() == 0);
     }
 
-    private boolean processContent(String key, ChangedMediaType content, Map<String, ContentSchema> contentSchemas) {
+    private boolean processContentMissingOrIncreased(String key, MediaType content, Map<String, ContentSchema> contentSchemas) {
+        if (contentSchemas == null)
+            return false;
+
+        ContentSchema contentSchema = contentSchemas.get(key);
+
+        if (contentSchema != null)
+            if (contentSchema.getSchema().getProperties().contains(content.getSchema().getName()))
+                content.setSchema(null);
+
+        return content.getSchema() == null;
+    }
+
+    private boolean processContentChanged(String key, ChangedMediaType content, Map<String, ContentSchema> contentSchemas) {
         if (contentSchemas == null)
             return false;
 
