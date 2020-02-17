@@ -19,6 +19,7 @@ In the following description, if a field is not explicitly REQUIRED or described
 
 Field Name | Type | Description
 ---|:---:|---
+<a name="oasInfo"></a>extends | `string` | Provides metadata about general basic ignore file for the API ignore.
 <a name="oasVersion"></a>version | `string` | **REQUIRED**. This string MUST be the [semantic version number](https://semver.org/spec/v2.0.0.html) of the [Ignore Specification version](#versions) that the OpenAPI ignore document uses. The `version` field SHOULD be used by tooling specifications and clients to interpret the OpenAPI ignore document.
 <a name="oasInfo"></a>info | `string` | Provides metadata about general info for the API ignore. The metadata MAY be used by tooling as required.
 <a name="oasInfo"></a>project | `string` | Provides metadata about the Project using the ignore file. The metadata MAY be used by tooling as required.
