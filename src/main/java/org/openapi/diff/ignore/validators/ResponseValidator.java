@@ -26,8 +26,8 @@ public class ResponseValidator implements Validator {
 
         for (Map.Entry<String, Object> entry : response.entrySet()) {
             if (!supported.contains(entry.getKey())) {
-                result.setMessage(String.format("value \"%s\" not supported int response", entry.getKey()))
-                        .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                result.setMessage(String.format("value \"%s\" not supported int response", entry.getKey()));
+                result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
         }

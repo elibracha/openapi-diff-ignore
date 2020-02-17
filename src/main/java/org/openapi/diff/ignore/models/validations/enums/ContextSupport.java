@@ -2,6 +2,7 @@ package org.openapi.diff.ignore.models.validations.enums;
 
 public enum ContextSupport {
 
+    EXTENDS("extends"),
     VERSION("version"),
     INFO("info"),
     PROJECT("project"),

@@ -27,8 +27,8 @@ public class RequestValidator implements Validator {
 
         for (Map.Entry<String, Object> entry : request.entrySet()) {
             if (!supported.contains(entry.getKey())) {
-                result.setMessage(String.format("value \"%s\" not supported in request", entry.getKey()))
-                        .setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                result.setMessage(String.format("value \"%s\" not supported in request", entry.getKey()));
+                result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
         }
