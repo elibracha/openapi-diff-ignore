@@ -1,17 +1,15 @@
 package org.openapi.diff.ignore.validators;
 
+import lombok.Data;
 import org.openapi.diff.ignore.models.validations.ValidationResult;
 
 import java.util.Map;
 
+@Data
 public class ResponseValidator implements Validator {
 
+    private ValidationResult result = new ValidationResult();
     private Map<String, Object> response;
-    private ValidationResult result;
-
-    public ResponseValidator() {
-        this.result = new ValidationResult();
-    }
 
     public boolean validate() {
 //        List<String> supported = Arrays.stream(ResponseSupport.values())
@@ -27,13 +25,5 @@ public class ResponseValidator implements Validator {
 //            }
 //        }
         return true;
-    }
-
-    public void setResponse(Map<String, Object> response) {
-        this.response = response;
-    }
-
-    public ValidationResult getResult() {
-        return result;
     }
 }
