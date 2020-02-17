@@ -28,8 +28,12 @@ public class ContentDeserializer extends AbstractDeserializer<Content> {
         for (Iterator<Map.Entry<String, JsonNode>> it = contentScope.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> contentSchemaScope = it.next();
             ContentSchema contentSchemaIgnore = ObjectMapperFactory.createYaml().convertValue(contentSchemaScope.getValue(), ContentSchema.class);
-
-            contentSchemaMap.put(contentSchemaScope.getKey(), contentSchemaIgnore);
+            if (checkWildCards(contentSchemaScope.getKey())) {
+                for (String sup : extractWildCards(contentSchemaScope.getKey()))
+                    contentSchemaMap.put(sup, contentSchemaIgnore);
+            } else {
+                contentSchemaMap.put(contentSchemaScope.getKey(), contentSchemaIgnore);
+            }
         }
 
         content.setContentSchemas(contentSchemaMap);

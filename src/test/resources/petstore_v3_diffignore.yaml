@@ -15,8 +15,7 @@ paths:
     post:
       request:
         content:
-          application/json: $
-          application/octet-stream: $
+          application/json, application/octet-stream: $
       response:
         200:
           new: true
