@@ -1,0 +1,31 @@
+parameters:
+  - username
+  - password
+request:
+  content:
+    application/json:
+      schema:
+        properties:
+          - petId
+    application/x-www-form-urlencoded:
+      schema:
+        properties:
+          - orderId
+response:
+  200:
+    content:
+      application/json:
+        schema:
+          properties:
+            - petId
+      application/xml:
+        schema:
+          properties:
+            - orderId
+security:
+  petstore_auth:
+    - 'write:pets'
+    - 'write:pests'
+    - 'read:pets'
+  random:
+    - 'write:random'

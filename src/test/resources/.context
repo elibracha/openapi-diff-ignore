@@ -5,8 +5,8 @@ paths:
   /**:
     get:
       parameters:
-        - username
-        - password
+        - random
+        - test
 
     post:
       parameters:
@@ -42,4 +42,4 @@ paths:
           - 'write:random'
 
 
-    put: ''
+    put: $
