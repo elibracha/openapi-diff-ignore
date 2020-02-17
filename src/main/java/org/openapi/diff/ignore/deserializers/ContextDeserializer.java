@@ -11,6 +11,7 @@ import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
 import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.ignore.ContextIgnore;
 import org.openapi.diff.ignore.models.ignore.PathsIgnore;
+import org.openapi.diff.ignore.processors.ValidationProcessor;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -23,6 +24,8 @@ import java.util.Map;
 
 @Slf4j
 public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
+
+    private final ValidationProcessor validationProcessor = new ValidationProcessor();
 
     private PathsIgnore pathsIgnore;
     private PathsIgnore pathsIgnoreExtended;
@@ -39,33 +42,34 @@ public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
 
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
 
-        for (Iterator<Map.Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
-            Map.Entry<String, JsonNode> globalScope = it.next();
+        if (validationProcessor.validate(root))
+            for (Iterator<Map.Entry<String, JsonNode>> it = root.fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> globalScope = it.next();
 
-            switch (globalScope.getKey()) {
-                case SpecConstants.ContextEntries.VERSION:
-                    contextIgnore.setVersion(globalScope.getValue().asText());
-                    break;
-                case SpecConstants.ContextEntries.PROJECT:
-                    contextIgnore.setProject(globalScope.getValue().asText());
-                    break;
-                case SpecConstants.ContextEntries.INFO:
-                    contextIgnore.setInfo(globalScope.getValue().asText());
-                    break;
-                case SpecConstants.ContextEntries.PATHS:
-                    pathsIgnore = objectMapper.convertValue(globalScope.getValue(), PathsIgnore.class);
-                    extendPostProcess();
-                    contextIgnore.setPaths(pathsIgnore);
-                    break;
-                case SpecConstants.ContextEntries.EXTENDS:
-                    extend(globalScope);
-                    break;
-                default:
-                    throw new SpecificationSupportException(String.format(
-                            "Specification does not support value \"%s\", please referenced the documentation for supported entries.",
-                            globalScope.getKey()));
+                switch (globalScope.getKey()) {
+                    case SpecConstants.ContextEntries.VERSION:
+                        contextIgnore.setVersion(globalScope.getValue().asText());
+                        break;
+                    case SpecConstants.ContextEntries.PROJECT:
+                        contextIgnore.setProject(globalScope.getValue().asText());
+                        break;
+                    case SpecConstants.ContextEntries.INFO:
+                        contextIgnore.setInfo(globalScope.getValue().asText());
+                        break;
+                    case SpecConstants.ContextEntries.PATHS:
+                        pathsIgnore = objectMapper.convertValue(globalScope.getValue(), PathsIgnore.class);
+                        extendPostProcess();
+                        contextIgnore.setPaths(pathsIgnore);
+                        break;
+                    case SpecConstants.ContextEntries.EXTENDS:
+                        extend(globalScope);
+                        break;
+                    default:
+                        throw new SpecificationSupportException(String.format(
+                                "Specification does not support value \"%s\", please referenced the documentation for supported entries.",
+                                globalScope.getKey()));
+                }
             }
-        }
 
         return contextIgnore;
     }

@@ -36,8 +36,12 @@ public class ContextIgnoreValidator implements Validator {
 
         if (ignore.get("paths") != null) {
             pathValidator.setPaths(ignore.get("paths"));
+            boolean r = pathValidator.validate();
 
-            return pathValidator.validate();
+            result.setValidationStatus(pathValidator.getResult().getValidationStatus());
+            result.setMessage(pathValidator.getResult().getMessage());
+
+            return r;
         }
 
         return true;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.openapi.diff.ignore.models.validations.ValidationResult;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
+import org.springframework.util.AntPathMatcher;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -11,22 +12,23 @@ import java.util.Map;
 @Data
 public class PathValidator implements Validator {
 
-    private static final String ENDPOINT_PATTERN = "(\\/[a-zA-Z{}1-9$*\\/]+)";
-
     private final OperationValidator operationValidator = new OperationValidator();
     private final ValidationResult result = new ValidationResult();
     private JsonNode paths;
 
     public boolean validate() {
 
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
+
         for (Iterator<Map.Entry<String, JsonNode>> it = paths.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> pathScope = it.next();
-
-            if (!pathScope.getKey().matches(ENDPOINT_PATTERN)) {
-                result.setMessage(String.format("value %s not a valid endpoint", pathScope.getKey()));
-                result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
-                return false;
-            }
+            if (pathScope.getKey().contains(","))
+                for (String path : pathScope.getKey().split(","))
+                    if (!antPathMatcher.isPattern(path) && !path.equals("$")) {
+                        result.setMessage(String.format("value %s not a valid endpoint", path.trim()));
+                        result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                        return false;
+                    }
 
             operationValidator.setOperations(pathScope.getValue());
 
@@ -39,4 +41,5 @@ public class PathValidator implements Validator {
 
         return true;
     }
+
 }
