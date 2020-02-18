@@ -62,13 +62,18 @@
     </build>
 
     <dependencies>
-        <!-- START ENDPOINT MATCHING -->
+        <!-- START VALIDATION MATCHING -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>5.2.3.RELEASE</version>
         </dependency>
-        <!-- END ENDPOINT MATCHING -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <!-- END VALIDATION MATCHING -->
 
         <!-- START LOMBOK -->
         <dependency>

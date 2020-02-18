@@ -34,6 +34,25 @@ public class OperationValidator implements Validator {
                 result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
+
+            if (operationScope.getValue().get("request") != null) {
+                requestValidator.setRequest(operationScope.getValue().get("request"));
+                boolean r = requestValidator.validate();
+                if (!r) {
+                    result.setMessage(requestValidator.getResult().getMessage());
+                    result.setValidationStatus(requestValidator.getResult().getValidationStatus());
+                    return false;
+                }
+            }
+            if (operationScope.getValue().get("response") != null) {
+                responseValidator.setResponse(operationScope.getValue().get("response"));
+                boolean r = responseValidator.validate();
+                if (!r) {
+                    result.setMessage(responseValidator.getResult().getMessage());
+                    result.setValidationStatus(responseValidator.getResult().getValidationStatus());
+                    return false;
+                }
+            }
         }
         return true;
     }

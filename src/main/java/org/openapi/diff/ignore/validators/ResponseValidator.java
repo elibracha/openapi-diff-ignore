@@ -1,29 +1,31 @@
 package org.openapi.diff.ignore.validators;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.openapi.diff.ignore.models.validations.ValidationResult;
+import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
+import java.util.Iterator;
 import java.util.Map;
 
 @Data
 public class ResponseValidator implements Validator {
 
     private ValidationResult result = new ValidationResult();
-    private Map<String, Object> response;
+    private JsonNode response;
 
     public boolean validate() {
-//        List<String> supported = Arrays.stream(ResponseSupport.values())
-//                .map(ResponseSupport::getValue)
-//                .collect(Collectors.toList());
-//
-//
-//        for (Map.Entry<String, Object> entry : response.entrySet()) {
-//            if (!supported.contains(entry.getKey())) {
-//                result.setMessage(String.format("value \"%s\" not supported int response", entry.getKey()));
-//                result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
-//                return false;
-//            }
-//        }
+
+        for (Iterator<Map.Entry<String, JsonNode>> it = response.fields(); it.hasNext(); ) {
+            Map.Entry<String, JsonNode> responseScope = it.next();
+
+            if (!(StringUtils.isNumeric(responseScope.getKey()) || responseScope.getKey().equals("default"))) {
+                result.setMessage(String.format("value \"%s\" not supported in response status", responseScope.getKey()));
+                result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                return false;
+            }
+        }
         return true;
     }
 }
