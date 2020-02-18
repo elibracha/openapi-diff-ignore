@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
-public class ContextIgnoreValidator implements Validator {
+public class ContextValidator implements Validator {
     private final ValidationResult result = new ValidationResult();
     private final PathValidator pathValidator = new PathValidator();
     private JsonNode ignore;

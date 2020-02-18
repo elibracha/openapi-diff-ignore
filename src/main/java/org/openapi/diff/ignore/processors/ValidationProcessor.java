@@ -2,7 +2,7 @@ package org.openapi.diff.ignore.processors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
-import org.openapi.diff.ignore.validators.ContextIgnoreValidator;
+import org.openapi.diff.ignore.validators.ContextValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ import java.lang.invoke.MethodHandles;
 public class ValidationProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
-    private final ContextIgnoreValidator contextIgnoreValidator = new ContextIgnoreValidator();
+    private final ContextValidator contextIgnoreValidator = new ContextValidator();
 
     public boolean validate(JsonNode ignore) {
         contextIgnoreValidator.setIgnore(ignore);

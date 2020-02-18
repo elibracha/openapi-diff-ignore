@@ -134,4 +134,24 @@ public class ValidatorsTest {
         pathValidator.setPaths(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
         assertTrue(pathValidator.validate());
     }
+
+    @Test
+    public void testContextValidationTrue() throws IOException {
+        ContextValidator contextValidator = new ContextValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.context_validate_true").getPath()));
+
+        contextValidator.setIgnore(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertTrue(contextValidator.validate());
+    }
+
+    @Test
+    public void testContextValidationFalse() throws IOException {
+        ContextValidator contextValidator = new ContextValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.context_validate_false").getPath()));
+
+        contextValidator.setIgnore(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertFalse(contextValidator.validate());
+    }
 }
