@@ -2,10 +2,7 @@ package org.openapi.diff.ignore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import org.openapi.diff.ignore.validators.HttpMethodValidator;
-import org.openapi.diff.ignore.validators.OperationValidator;
-import org.openapi.diff.ignore.validators.RequestValidator;
-import org.openapi.diff.ignore.validators.ResponseValidator;
+import org.openapi.diff.ignore.validators.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -106,5 +103,25 @@ public class ValidatorsTest {
 
         httpMethodValidator.setHttpMethod(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
         assertFalse(httpMethodValidator.validate());
+    }
+
+    @Test
+    public void testPathValidationTrue() throws IOException {
+        PathValidator pathValidator = new PathValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.path_validate_true").getPath()));
+
+        pathValidator.setPaths(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertTrue(pathValidator.validate());
+    }
+
+    @Test
+    public void testPathValidationFalse() throws IOException {
+        PathValidator pathValidator = new PathValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.path_validate_false").getPath()));
+
+        pathValidator.setPaths(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertFalse(pathValidator.validate());
     }
 }
