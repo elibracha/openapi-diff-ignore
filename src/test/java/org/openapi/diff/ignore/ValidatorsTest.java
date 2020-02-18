@@ -89,6 +89,16 @@ public class ValidatorsTest {
     }
 
     @Test
+    public void testHttpMethodValidationWildCardTrue() throws IOException {
+        HttpMethodValidator httpMethodValidator = new HttpMethodValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.http_method_validate_wildcard_true").getPath()));
+
+        httpMethodValidator.setHttpMethod(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertTrue(httpMethodValidator.validate());
+    }
+
+    @Test
     public void testHttpMethodValidationFalse() throws IOException {
         HttpMethodValidator httpMethodValidator = new HttpMethodValidator();
         ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
