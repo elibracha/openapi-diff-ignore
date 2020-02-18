@@ -1,0 +1,9 @@
+content:
+  application/json:
+    schema:
+      properties:
+        - petId
+  application/x-www-form-urlencoded:
+    schema:
+      properties:
+        - orderId
