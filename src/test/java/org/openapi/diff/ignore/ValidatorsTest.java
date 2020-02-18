@@ -2,6 +2,7 @@ package org.openapi.diff.ignore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import org.openapi.diff.ignore.validators.OperationValidator;
 import org.openapi.diff.ignore.validators.RequestValidator;
 import org.openapi.diff.ignore.validators.ResponseValidator;
 
@@ -53,5 +54,25 @@ public class ValidatorsTest {
 
         requestValidator.setRequest(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
         assertFalse(requestValidator.validate());
+    }
+
+    @Test
+    public void testOperationValidationTrue() throws IOException {
+        OperationValidator operationValidator = new OperationValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.operation_validate_true").getPath()));
+
+        operationValidator.setOperations(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertTrue(operationValidator.validate());
+    }
+
+    @Test
+    public void testOperationValidationFalse() throws IOException {
+        OperationValidator operationValidator = new OperationValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.operation_validate_false").getPath()));
+
+        operationValidator.setOperations(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertFalse(operationValidator.validate());
     }
 }

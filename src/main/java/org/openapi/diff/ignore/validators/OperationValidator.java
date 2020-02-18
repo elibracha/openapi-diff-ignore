@@ -3,7 +3,7 @@ package org.openapi.diff.ignore.validators;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.openapi.diff.ignore.models.validations.ValidationResult;
-import org.openapi.diff.ignore.models.validations.enums.HttpMethodSupport;
+import org.openapi.diff.ignore.models.validations.enums.OperationSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
 import java.util.Arrays;
@@ -21,16 +21,16 @@ public class OperationValidator implements Validator {
     private JsonNode operations;
 
     public boolean validate() {
-        List<String> supported = Arrays.stream(HttpMethodSupport.values())
-                .map(HttpMethodSupport::getValue)
-                .collect(Collectors.toList());
 
+        List<String> supported = Arrays.stream(OperationSupport.values())
+                .map(OperationSupport::getValue)
+                .collect(Collectors.toList());
 
         for (Iterator<Map.Entry<String, JsonNode>> it = operations.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> operationScope = it.next();
 
             if (!supported.contains(operationScope.getKey()) && !operationScope.getKey().equals("$")) {
-                result.setMessage(String.format("the method \"%s\" not a valid entry in operation method", operationScope.getKey()));
+                result.setMessage(String.format("the value \"%s\" is not a valid entry in operation", operationScope.getKey()));
                 result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }

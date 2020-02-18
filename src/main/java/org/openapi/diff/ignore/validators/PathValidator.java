@@ -12,7 +12,7 @@ import java.util.Map;
 @Data
 public class PathValidator implements Validator {
 
-    private final OperationValidator operationValidator = new OperationValidator();
+    private final HttpMethodValidator httpMethodValidator = new HttpMethodValidator();
     private final ValidationResult result = new ValidationResult();
     private JsonNode paths;
 
@@ -30,11 +30,11 @@ public class PathValidator implements Validator {
                         return false;
                     }
 
-            operationValidator.setOperations(pathScope.getValue());
+            httpMethodValidator.setHttpMethod(pathScope.getValue());
 
-            if (!operationValidator.validate()) {
-                this.result.setMessage(operationValidator.getResult().getMessage());
-                this.result.setValidationStatus(operationValidator.getResult().getValidationStatus());
+            if (!httpMethodValidator.validate()) {
+                this.result.setMessage(httpMethodValidator.getResult().getMessage());
+                this.result.setValidationStatus(httpMethodValidator.getResult().getValidationStatus());
                 return false;
             }
         }
