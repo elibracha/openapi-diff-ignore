@@ -1,0 +1,31 @@
+$:
+  get:
+    response:
+      200:
+        new: true
+    parameters:
+      - username
+      - password
+
+  post:
+    request:
+      content:
+        application/json, application/octet-stream: $
+    response:
+      200:
+        new: true
+        content:
+          application/json:
+            schema:
+              properties:
+                - petId
+                - quantity
+                - shipDate
+                - complete
+    security:
+      petstore_auth:
+        - 'write:pets'
+        - 'write:pests'
+        - 'read:pets'
+
+  put: $

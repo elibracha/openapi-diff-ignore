@@ -124,4 +124,14 @@ public class ValidatorsTest {
         pathValidator.setPaths(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
         assertFalse(pathValidator.validate());
     }
+
+    @Test
+    public void testPathValidationWildCardTrue() throws IOException {
+        PathValidator pathValidator = new PathValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        byte[] content = Files.readAllBytes(Paths.get(getClass().getResource("/validate/.path_validate_wildcard_true").getPath()));
+
+        pathValidator.setPaths(objectMapper.readTree(new String(content, StandardCharsets.UTF_8)));
+        assertTrue(pathValidator.validate());
+    }
 }
