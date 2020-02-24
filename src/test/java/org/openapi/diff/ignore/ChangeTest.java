@@ -13,6 +13,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertTrue;
 
 public class ChangeTest {
+    
     private final String OPENAPI_GENERATED_PETSTORE = "petstore_v3_generated.yaml";
     private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_original.yaml";
 
