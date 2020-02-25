@@ -24,6 +24,7 @@ public class RequestProcessor {
                 if (result)
                     changeToRemove.add(entry.getKey());
             }
+
             for (Map.Entry<String, MediaType> entry : requestBody.getContent().getMissing().entrySet()) {
                 boolean result = processMediaTypeMissingOrIncrease(entry.getKey(), entry.getValue(), requestIgnore.getContent());
                 if (result)
