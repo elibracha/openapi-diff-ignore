@@ -16,7 +16,6 @@ public class ResponseValidator implements Validator {
     private JsonNode response;
 
     public boolean validate() {
-
         for (Iterator<Map.Entry<String, JsonNode>> it = response.fields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> responseScope = it.next();
 

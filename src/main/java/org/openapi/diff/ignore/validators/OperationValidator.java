@@ -18,6 +18,7 @@ public class OperationValidator implements Validator {
     private final ValidationResult result = new ValidationResult();
     private final ResponseValidator responseValidator = new ResponseValidator();
     private final RequestValidator requestValidator = new RequestValidator();
+    private final ParamsValidator paramsValidator = new ParamsValidator();
     private JsonNode operations;
 
     public boolean validate() {
@@ -35,8 +36,8 @@ public class OperationValidator implements Validator {
                 return false;
             }
 
-            if (operationScope.getValue().get("request") != null) {
-                requestValidator.setRequest(operationScope.getValue().get("request"));
+            if (operationScope.getKey().equals("request")) {
+                requestValidator.setRequest(operationScope.getValue());
                 boolean r = requestValidator.validate();
                 if (!r) {
                     result.setMessage(requestValidator.getResult().getMessage());
@@ -44,12 +45,21 @@ public class OperationValidator implements Validator {
                     return false;
                 }
             }
-            if (operationScope.getValue().get("response") != null) {
-                responseValidator.setResponse(operationScope.getValue().get("response"));
+            if (operationScope.getKey().equals("response")) {
+                responseValidator.setResponse(operationScope.getValue());
                 boolean r = responseValidator.validate();
                 if (!r) {
                     result.setMessage(responseValidator.getResult().getMessage());
                     result.setValidationStatus(responseValidator.getResult().getValidationStatus());
+                    return false;
+                }
+            }
+            if (operationScope.getKey().equals("parameters")) {
+                paramsValidator.setParams(operationScope.getValue());
+                boolean r = paramsValidator.validate();
+                if (!r) {
+                    result.setMessage(paramsValidator.getResult().getMessage());
+                    result.setValidationStatus(paramsValidator.getResult().getValidationStatus());
                     return false;
                 }
             }

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.openapi.diff.ignore.validators.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertFalse;
@@ -205,5 +208,45 @@ public class ValidatorsTest {
         String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
         contextValidator.setIgnore(objectMapper.readTree(content));
         assertFalse(contextValidator.validate());
+    }
+
+    @Test
+    public void testParamsValidationTrue() throws IOException {
+        ParamsValidator paramsValidator = new ParamsValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("validate/.param_validate_true");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+        paramsValidator.setParams(objectMapper.readTree(content));
+        assertTrue(paramsValidator.validate());
+    }
+
+    @Test
+    public void testParamsvalidationFalse() throws IOException {
+        ParamsValidator paramsValidator = new ParamsValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+
+        InputStream is = classloader.getResourceAsStream("validate/.context_validate_false");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+        paramsValidator.setParams(objectMapper.readTree(content));
+        assertFalse(paramsValidator.validate());
+    }
+
+    @Test
+    public void testParamsValidationWildcardTrue() throws IOException {
+        ParamsValidator paramsValidator = new ParamsValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("validate/.param_validate_wildcare_true");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+
+        paramsValidator.setParams(objectMapper.readTree(content));
+        assertTrue(paramsValidator.validate());
     }
 }
