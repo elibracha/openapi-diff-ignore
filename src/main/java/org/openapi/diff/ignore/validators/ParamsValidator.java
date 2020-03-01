@@ -4,11 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.Data;
 import org.openapi.diff.ignore.models.validations.ValidationResult;
-import org.openapi.diff.ignore.models.validations.enums.RequestSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Iterator;
+import java.util.Map;
 
 @Data
 public class ParamsValidator implements Validator {

@@ -18,7 +18,7 @@ public class OperationValidator implements Validator {
     private final ValidationResult result = new ValidationResult();
     private final ResponseValidator responseValidator = new ResponseValidator();
     private final RequestValidator requestValidator = new RequestValidator();
-    private final ParamsValidator paramsValidator= new ParamsValidator();
+    private final ParamsValidator paramsValidator = new ParamsValidator();
     private JsonNode operations;
 
     public boolean validate() {
