@@ -71,7 +71,8 @@ public class ResponseProcessor {
             apiResponse.getContent().keySet().removeAll(toRemove);
         }
         return (contentIgnore != null && contentIgnore.isNewContent()) || (contentIgnore != null && contentIgnore.isIgnoreAll())
-                || apiResponse.getContent() == null || apiResponse.getContent().size() == 0;
+                || ((apiResponse.getContent() == null || apiResponse.getContent().size() == 0) && apiResponse.getDescription() == null &&
+                apiResponse.getHeaders() == null && apiResponse.get$ref() == null && apiResponse.getExtensions() == null && apiResponse.getLinks() == null);
     }
 
     private boolean processStatusChange(ChangedResponse changedResponse, Content contentIgnore) {
