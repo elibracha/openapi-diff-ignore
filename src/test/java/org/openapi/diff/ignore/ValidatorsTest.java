@@ -229,7 +229,7 @@ public class ValidatorsTest {
         ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
-        InputStream is = classloader.getResourceAsStream("validate/.context_validate_false");
+        InputStream is = classloader.getResourceAsStream("validate/.param_validate_false");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
         paramsValidator.setParams(objectMapper.readTree(content));
@@ -248,5 +248,45 @@ public class ValidatorsTest {
 
         paramsValidator.setParams(objectMapper.readTree(content));
         assertTrue(paramsValidator.validate());
+    }
+
+    @Test
+    public void testSecurityValidationTrue() throws IOException {
+        SecurityValidator securityValidator = new SecurityValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("validate/.security_validate_true");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+        securityValidator.setSecurity(objectMapper.readTree(content));
+        assertTrue(securityValidator.validate());
+    }
+
+    @Test
+    public void testSecurityValidationFalse() throws IOException {
+        SecurityValidator securityValidator = new SecurityValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+
+        InputStream is = classloader.getResourceAsStream("validate/.security_validate_false");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+        securityValidator.setSecurity(objectMapper.readTree(content));
+        assertFalse(securityValidator.validate());
+    }
+
+    @Test
+    public void testSecurityValidationWildcardTrue() throws IOException {
+        SecurityValidator securityValidator = new SecurityValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("validate/.security_validate_wildcard_true");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+
+        securityValidator.setSecurity(objectMapper.readTree(content));
+        assertTrue(securityValidator.validate());
     }
 }

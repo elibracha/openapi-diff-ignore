@@ -1,0 +1,9 @@
+petstore_auth:
+  - 'write:pets'
+  - 'write:pests'
+  - 'read:pets'
+some_auth:
+  - 'write:pets'
+  - 'write:pests'
+  - 'read:pets'
+all_auth: $

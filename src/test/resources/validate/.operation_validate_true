@@ -28,4 +28,4 @@ security:
     - 'write:pests'
     - 'read:pets'
   random:
-    - 'write:random'
+  - 'write:random'

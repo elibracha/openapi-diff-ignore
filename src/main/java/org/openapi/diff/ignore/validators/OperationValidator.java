@@ -19,6 +19,7 @@ public class OperationValidator implements Validator {
     private final ResponseValidator responseValidator = new ResponseValidator();
     private final RequestValidator requestValidator = new RequestValidator();
     private final ParamsValidator paramsValidator = new ParamsValidator();
+    private final SecurityValidator securityValidatorr = new SecurityValidator();
     private JsonNode operations;
 
     public boolean validate() {
@@ -60,6 +61,15 @@ public class OperationValidator implements Validator {
                 if (!r) {
                     result.setMessage(paramsValidator.getResult().getMessage());
                     result.setValidationStatus(paramsValidator.getResult().getValidationStatus());
+                    return false;
+                }
+            }
+            if (operationScope.getKey().equals("security")) {
+                securityValidatorr.setSecurity(operationScope.getValue());
+                boolean r = securityValidatorr.validate();
+                if (!r) {
+                    result.setMessage(securityValidatorr.getResult().getMessage());
+                    result.setValidationStatus(securityValidatorr.getResult().getValidationStatus());
                     return false;
                 }
             }
