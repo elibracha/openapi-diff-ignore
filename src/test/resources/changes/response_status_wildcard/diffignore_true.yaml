@@ -1,0 +1,11 @@
+version: 1.0.0
+info: this is a sample ignore file to silence changes in openapi-diff
+project: sample-service
+paths:
+  /pet:
+    put:
+      response:
+        '200': $
+        '400': $
+        '404': $
+        '405': $
