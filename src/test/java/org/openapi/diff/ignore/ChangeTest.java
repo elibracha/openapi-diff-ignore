@@ -33,7 +33,31 @@ public class ChangeTest {
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
                         .render(changedOpenApiAfter);
         try {
-            FileWriter fw = new FileWriter("target/testDiff.html");
+            FileWriter fw = new FileWriter("target/contextDiff.html");
+            fw.write(html);
+            fw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(changedOpenApi.isUnchanged());
+    }
+    @Test
+    public void testResponseProcessorUnchange() throws SpecificationSupportException {
+        ContextProcessor contextProcessor = new ContextProcessor(
+                getClass().getClassLoader().getResource("changes/response_wildcard_diffignore.yaml").getFile()
+        );
+
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response_v3_original.yaml","changes/response_v3_generated.yaml");
+
+        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
+
+        String html =
+                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
+                        .render(changedOpenApiAfter);
+        try {
+            FileWriter fw = new FileWriter("target/responseDiff.html");
             fw.write(html);
             fw.close();
 

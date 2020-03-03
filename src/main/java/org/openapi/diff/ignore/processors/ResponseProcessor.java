@@ -20,6 +20,10 @@ public class ResponseProcessor {
         List<String> missingToRemove = new ArrayList<>();
         List<String> increaseToRemove = new ArrayList<>();
 
+        if(response.isIgnoreAll()){
+            return true;
+        }
+
         if (apiResponses.getChanged() != null) {
             for (Map.Entry<String, ChangedResponse> entry : apiResponses.getChanged().entrySet()) {
                 if (response.getResponse() != null && response.getResponse().getStatus() != null) {
@@ -62,6 +66,10 @@ public class ResponseProcessor {
     private boolean processStatusMissingOrIncrease(ApiResponse apiResponse, Content contentIgnore) {
         List<String> toRemove = new ArrayList<>();
 
+        if(contentIgnore != null && contentIgnore.isIgnoreAll()){
+            return true;
+        }
+
         if (contentIgnore != null && apiResponse.getContent() != null) {
             for (Map.Entry<String, MediaType> entry : apiResponse.getContent().entrySet()) {
                 boolean result = processContentMissingOrIncreased(entry.getKey(), entry.getValue(), contentIgnore.getContentSchemas());
@@ -78,6 +86,10 @@ public class ResponseProcessor {
     private boolean processStatusChange(ChangedResponse changedResponse, Content contentIgnore) {
 
         List<String> toRemove = new ArrayList<>();
+
+        if(contentIgnore != null && contentIgnore.isIgnoreAll()){
+            return true;
+        }
 
         if (contentIgnore != null && changedResponse.getContent() != null) {
             for (Map.Entry<String, ChangedMediaType> entry : changedResponse.getContent().getChanged().entrySet()) {
