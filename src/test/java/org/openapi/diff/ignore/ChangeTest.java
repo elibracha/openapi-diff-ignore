@@ -20,7 +20,7 @@ public class ChangeTest {
 
 
     @Test
-    public void testContextProcessorUnchange() throws SpecificationSupportException {
+    public void testContextProcessorUnchanged() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
                 getClass().getClassLoader().getResource("petstore_v3_diffignore.yaml").getFile()
         );
@@ -44,6 +44,7 @@ public class ChangeTest {
 
         assertTrue(changedOpenApi.isUnchanged());
     }
+
     @Test
     public void testResponseWildcardTrue() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
@@ -68,6 +69,7 @@ public class ChangeTest {
 
         assertTrue(changedOpenApi.isUnchanged());
     }
+
     @Test
     public void testResponseStatusWildcardTrue() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
@@ -92,6 +94,7 @@ public class ChangeTest {
 
         assertTrue(changedOpenApi.isUnchanged());
     }
+
     @Test
     public void testResponseStatusWildcardFalse() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
@@ -115,5 +118,30 @@ public class ChangeTest {
         }
 
         assertFalse(changedOpenApi.isUnchanged());
+    }
+
+    @Test
+    public void testResponseStatusSchemaWildcardTrue() throws SpecificationSupportException {
+        ContextProcessor contextProcessor = new ContextProcessor(
+                getClass().getClassLoader().getResource("changes/response_status_schema_wildcard/diffignore_true.yaml").getFile()
+        );
+
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response_status_schema_wildcard/original.yaml", "changes/response_status_schema_wildcard/generated.yaml");
+
+        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
+
+        String html =
+                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
+                        .render(changedOpenApiAfter);
+        try {
+            FileWriter fw = new FileWriter("target/responseStatusSchemaWildcardTrueDiff.html");
+            fw.write(html);
+            fw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(changedOpenApi.isUnchanged());
     }
 }

@@ -46,8 +46,7 @@ public class StatusDeserializer extends AbstractDeserializer<StatusIgnore> {
     }
 
     private void setMethod(String key, Map.Entry<String, JsonNode> statusScope, Map<String, Content> st) {
-        Content content = (Content) preProcess(new Content(), statusScope.getValue());
-        st.put(key, content);
+        Content content = new Content();
 
         for (Iterator<Map.Entry<String, JsonNode>> contentIt = statusScope.getValue().fields(); contentIt.hasNext(); ) {
             Map.Entry<String, JsonNode> contentScope = contentIt.next();
@@ -57,7 +56,10 @@ public class StatusDeserializer extends AbstractDeserializer<StatusIgnore> {
                 case "content":
                     Content contentIgnore = ObjectMapperFactory.createYaml().convertValue(contentScope.getValue(), Content.class);
                     content.setContentSchemas(contentIgnore.getContentSchemas());
+                    content.setIgnoreAll(contentIgnore.isIgnoreAll());
             }
         }
+
+        st.put(key, content);
     }
 }
