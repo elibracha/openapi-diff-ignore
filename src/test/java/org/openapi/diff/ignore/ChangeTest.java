@@ -46,10 +46,10 @@ public class ChangeTest {
     @Test
     public void testResponseProcessorUnchange() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response_wildcard_diffignore.yaml").getFile()
+                getClass().getClassLoader().getResource("changes/response_wildcard/response_wildcard_diffignore.yaml").getFile()
         );
 
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response_v3_original.yaml","changes/response_v3_generated.yaml");
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response_wildcard/response_v3_original.yaml", "changes/response_wildcard/response_v3_generated.yaml");
 
         ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
 
