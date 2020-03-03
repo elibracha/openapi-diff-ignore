@@ -58,7 +58,7 @@ public class ChangeTest {
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
                         .render(changedOpenApiAfter);
         try {
-            FileWriter fw = new FileWriter("target/responseDiff.html");
+            FileWriter fw = new FileWriter("target/responseWildcardDiff.html");
             fw.write(html);
             fw.close();
 
@@ -82,7 +82,7 @@ public class ChangeTest {
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
                         .render(changedOpenApiAfter);
         try {
-            FileWriter fw = new FileWriter("target/responseDiff.html");
+            FileWriter fw = new FileWriter("target/responseStatusWildCardTrue.html");
             fw.write(html);
             fw.close();
 
@@ -98,7 +98,7 @@ public class ChangeTest {
                 getClass().getClassLoader().getResource("changes/response_status_wildcard/diffignore_false.yaml").getFile()
         );
 
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response_wildcard/original.yaml", "changes/response_wildcard/generated.yaml");
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response_status_wildcard/original.yaml", "changes/response_status_wildcard/generated.yaml");
 
         ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
 
@@ -106,7 +106,7 @@ public class ChangeTest {
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
                         .render(changedOpenApiAfter);
         try {
-            FileWriter fw = new FileWriter("target/responseDiff.html");
+            FileWriter fw = new FileWriter("target/responseStatusWildCardFalseDiff.html");
             fw.write(html);
             fw.close();
 
