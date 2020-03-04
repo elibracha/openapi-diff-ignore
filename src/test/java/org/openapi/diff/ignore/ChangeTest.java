@@ -123,7 +123,7 @@ public class ChangeTest {
     @Test
     public void testResponseStatusSchemaWildcardTrue() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response_status_schema_wildcard/diffignore_true.yaml").getFile()
+                getClass().getClassLoader().getResource("changes/response_status_schema_wildcard/diffignore.yaml").getFile()
         );
 
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response_status_schema_wildcard/original.yaml", "changes/response_status_schema_wildcard/generated.yaml");

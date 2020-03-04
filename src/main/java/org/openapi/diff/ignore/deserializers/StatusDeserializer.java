@@ -35,9 +35,17 @@ public class StatusDeserializer extends AbstractDeserializer<StatusIgnore> {
                 List<String> keys = extractWildCards(statusScope.getKey());
 
                 for (String sup : keys)
-                    setMethod(sup, statusScope, st);
+                    if (statusIgnore.isIgnoreAll())
+                        setMethod(sup, statusScope, st, true);
+                    else {
+                        setMethod(sup, statusScope, st, false);
+                    }
             } else {
-                setMethod(statusScope.getKey(), statusScope, st);
+                if (statusIgnore.isIgnoreAll())
+                    setMethod(statusScope.getKey(), statusScope, st, true);
+                else {
+                    setMethod(statusScope.getKey(), statusScope, st, false);
+                }
             }
         }
 
@@ -45,8 +53,9 @@ public class StatusDeserializer extends AbstractDeserializer<StatusIgnore> {
         return statusIgnore;
     }
 
-    private void setMethod(String key, Map.Entry<String, JsonNode> statusScope, Map<String, Content> st) {
+    private void setMethod(String key, Map.Entry<String, JsonNode> statusScope, Map<String, Content> st, boolean ignoreAll) {
         Content content = new Content();
+        content.setIgnoreAll(ignoreAll);
 
         for (Iterator<Map.Entry<String, JsonNode>> contentIt = statusScope.getValue().fields(); contentIt.hasNext(); ) {
             Map.Entry<String, JsonNode> contentScope = contentIt.next();
