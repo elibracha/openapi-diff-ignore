@@ -24,7 +24,7 @@ public abstract class AbstractDeserializer<T> extends StdDeserializer<T> {
     }
 
     protected IgnoreElemnt preProcess(IgnoreElemnt elem, JsonNode node) {
-        if (!node.isContainerNode()) {
+        if (!node.isContainerNode() && node.asText().trim().equals("$")) {
             elem.setIgnoreAll(true);
         }
 

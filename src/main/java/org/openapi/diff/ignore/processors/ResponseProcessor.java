@@ -20,7 +20,7 @@ public class ResponseProcessor {
         List<String> missingToRemove = new ArrayList<>();
         List<String> increaseToRemove = new ArrayList<>();
 
-        if(response.isIgnoreAll()){
+        if (response.isIgnoreAll()) {
             return true;
         }
 
@@ -66,7 +66,7 @@ public class ResponseProcessor {
     private boolean processStatusMissingOrIncrease(ApiResponse apiResponse, Content contentIgnore) {
         List<String> toRemove = new ArrayList<>();
 
-        if(contentIgnore != null && contentIgnore.isIgnoreAll()){
+        if (contentIgnore != null && contentIgnore.isIgnoreAll()) {
             return true;
         }
 
@@ -87,7 +87,7 @@ public class ResponseProcessor {
 
         List<String> toRemove = new ArrayList<>();
 
-        if(contentIgnore != null && contentIgnore.isIgnoreAll()){
+        if (contentIgnore != null && contentIgnore.isIgnoreAll()) {
             return true;
         }
 
