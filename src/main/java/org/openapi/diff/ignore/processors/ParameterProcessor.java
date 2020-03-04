@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 public class ParameterProcessor {
 
     public boolean apply(ParametersIgnore parameters, ChangedParameters changedParameters) {
+        if (parameters.isIgnoreAll()) {
+            return true;
+        }
+
         changedParameters.setMissing(
                 changedParameters.getMissing().stream().filter(e -> !parameters.getParameters().contains(e.getName())).collect(Collectors.toList())
         );
