@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 public class SecurityProcessor {
 
     public boolean apply(SecurityIgnore security, ChangedSecurityRequirements securityRequirements) {
+        if (security.isIgnoreAll())
+            return true;
+
         List<ChangedSecurityRequirement> changeToRemove = new ArrayList<>();
         List<SecurityRequirement> missingToRemove = new ArrayList<>();
 
