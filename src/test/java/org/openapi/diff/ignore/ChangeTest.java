@@ -15,17 +15,13 @@ import static org.junit.Assert.assertTrue;
 
 public class ChangeTest {
 
-    private final String OPENAPI_GENERATED_PETSTORE = "petstore_v3_generated.yaml";
-    private final String OPENAPI_ORIGINAL_PETSTORE = "petstore_v3_original.yaml";
-
-
     @Test
     public void testContextProcessorUnchanged() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("petstore_v3_diffignore.yaml").getFile()
+                getClass().getClassLoader().getResource("changes/context/diffignore.yaml").getFile()
         );
 
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(OPENAPI_ORIGINAL_PETSTORE, OPENAPI_GENERATED_PETSTORE);
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/context/original.yaml", "changes/context/generated.yaml");
 
         ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
 
