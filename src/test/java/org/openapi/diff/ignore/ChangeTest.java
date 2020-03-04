@@ -67,6 +67,31 @@ public class ChangeTest {
     }
 
     @Test
+    public void testRequestWildcardTrue() throws SpecificationSupportException {
+        ContextProcessor contextProcessor = new ContextProcessor(
+                getClass().getClassLoader().getResource("changes/request/request_wildcard/diffignore.yaml").getFile()
+        );
+
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/request/request_wildcard/original.yaml", "changes/request/request_wildcard/generated.yaml");
+
+        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
+
+        String html =
+                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
+                        .render(changedOpenApiAfter);
+        try {
+            FileWriter fw = new FileWriter("target/requestWildcardDiff.html");
+            fw.write(html);
+            fw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(changedOpenApi.isUnchanged());
+    }
+
+    @Test
     public void testResponseWildcardTrue() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
                 getClass().getClassLoader().getResource("changes/response/response_wildcard/diffignore_true.yaml").getFile()

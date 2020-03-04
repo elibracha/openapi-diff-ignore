@@ -18,6 +18,9 @@ public class RequestProcessor {
         List<String> changeToRemove = new ArrayList<>();
         List<String> missingAndIncreaseToRemove = new ArrayList<>();
 
+        if (requestIgnore.isIgnoreAll())
+            return true;
+
         if (requestBody.getContent() != null) {
             for (Map.Entry<String, ChangedMediaType> entry : requestBody.getContent().getChanged().entrySet()) {
                 boolean result = processMediaTypeChanged(entry.getKey(), entry.getValue(), requestIgnore.getContent());
@@ -51,13 +54,14 @@ public class RequestProcessor {
 
     private boolean processMediaTypeMissingOrIncrease(String key, MediaType value, Content content) {
 
-        for (Map.Entry<String, ContentSchema> ignoreEntry : content.getContentSchemas().entrySet()) {
-            if (ignoreEntry.getKey().matches(key)) {
-                if (ignoreEntry.getValue().isIgnoreAll() || ignoreEntry.getValue().getSchema().getProperties().contains(value.getSchema().getName())) {
-                    return true;
+        if (content != null)
+            for (Map.Entry<String, ContentSchema> ignoreEntry : content.getContentSchemas().entrySet()) {
+                if (ignoreEntry.getKey().matches(key)) {
+                    if (ignoreEntry.getValue().isIgnoreAll() || ignoreEntry.getValue().getSchema().getProperties().contains(value.getSchema().getName())) {
+                        return true;
+                    }
                 }
             }
-        }
         return false;
     }
 
