@@ -1,0 +1,9 @@
+version: 1.0.0
+info: this is a sample ignore file to silence changes in openapi-diff
+project: sample-service
+paths:
+  /pet:
+    put:
+      request:
+        content:
+          application/xml, application/x-www-form-urlencoded: $
