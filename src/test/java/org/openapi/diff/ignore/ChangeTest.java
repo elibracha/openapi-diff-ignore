@@ -215,22 +215,22 @@ public class ChangeTest {
 
         assertTrue(changedOpenApi.isUnchanged());
     }
-
     @Test
-    public void testSecurityWildcardTrue() throws SpecificationSupportException {
+    public void testSecurityProcessorIncreasedTrue() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/security/diffignore.yaml").getFile()
+                getClass().getClassLoader().getResource("changes/security/increased_true/diffignore.yaml").getFile()
         );
 
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/original.yaml", "changes/security/generated.yaml");
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/increased_true/original.yaml", "changes/security/increased_true/generated.yaml");
 
         ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
+
 
         String html =
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
                         .render(changedOpenApiAfter);
         try {
-            FileWriter fw = new FileWriter("target/securityWildcardDiff.html");
+            FileWriter fw = new FileWriter("target/securityIncreasedTrue.html");
             fw.write(html);
             fw.close();
 
@@ -240,4 +240,30 @@ public class ChangeTest {
 
         assertTrue(changedOpenApi.isUnchanged());
     }
+    @Test
+    public void testSecurityProcessorIncreasedFalse() throws SpecificationSupportException {
+        ContextProcessor contextProcessor = new ContextProcessor(
+                getClass().getClassLoader().getResource("changes/security/increased_false/diffignore.yaml").getFile()
+        );
+
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/increased_false/original.yaml", "changes/security/increased_false/generated.yaml");
+
+        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
+
+
+        String html =
+                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
+                        .render(changedOpenApiAfter);
+        try {
+            FileWriter fw = new FileWriter("target/securityIncreasedFalse.html");
+            fw.write(html);
+            fw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertFalse(changedOpenApi.isUnchanged());
+    }
+
 }
