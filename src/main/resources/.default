@@ -1,0 +1,9 @@
+version: 1.0.0
+info: this is the default ignore file that ignores common mismatch
+paths:
+  /**:
+    $:
+      response:
+        default: $
+
+
