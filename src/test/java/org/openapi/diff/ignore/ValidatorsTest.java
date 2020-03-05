@@ -16,6 +16,35 @@ import static org.junit.Assert.assertTrue;
 public class ValidatorsTest {
 
     @Test
+    public void testVersionValidationTrue() throws IOException {
+        ContextValidator contextValidator = new ContextValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("validate/.context_version_validate_true");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+
+        contextValidator.setIgnore(objectMapper.readTree(content));
+        assertTrue(contextValidator.validate());
+    }
+
+
+    @Test
+    public void testVersionValidationFalse() throws IOException {
+        ContextValidator contextValidator = new ContextValidator();
+        ObjectMapper objectMapper = ObjectMapperFactory.createYaml();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("validate/.context_version_validate_false");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String content = reader.lines().map(s -> s + System.lineSeparator()).collect(Collectors.joining());
+
+        contextValidator.setIgnore(objectMapper.readTree(content));
+        assertFalse(contextValidator.validate());
+    }
+
+    @Test
     public void testResponseValidationTrue() throws IOException {
         ResponseValidator responseValidator = new ResponseValidator();
         ObjectMapper objectMapper = ObjectMapperFactory.createYaml();

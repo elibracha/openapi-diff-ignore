@@ -2,6 +2,7 @@ package org.openapi.diff.ignore.validators;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
+import org.openapi.diff.ignore.models.SpecConstants;
 import org.openapi.diff.ignore.models.validations.ValidationResult;
 import org.openapi.diff.ignore.models.validations.enums.ContextSupport;
 import org.openapi.diff.ignore.models.validations.enums.ValidationStatus;
@@ -32,6 +33,18 @@ public class ContextValidator implements Validator {
                 result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
                 return false;
             }
+        }
+
+        if (ignore.get("version") != null) {
+            if (!SpecConstants.VERSIONS.contains(ignore.get("version").asText())) {
+                result.setMessage(String.format("version not supported \"%s\"", ignore.get("version")));
+                result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+                return false;
+            }
+        } else {
+            result.setMessage("version spec must be present in ignore file.");
+            result.setValidationStatus(ValidationStatus.BAD_IGNORE_FILE);
+            return false;
         }
 
         if (ignore.get("paths") != null) {
