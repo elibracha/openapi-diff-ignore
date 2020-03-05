@@ -5,5 +5,4 @@ paths:
   /pet:
     put:
       response:
-        200:
-          content: $
+        '200': $
