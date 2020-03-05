@@ -4,5 +4,4 @@ project: sample-service
 paths:
   /pet:
     put:
-      response:
-        '200': $
+      security: $

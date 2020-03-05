@@ -219,10 +219,10 @@ public class ChangeTest {
     @Test
     public void testSecurityWildcardTrue() throws SpecificationSupportException {
         ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/security/response_wildcard/diffignore.yaml").getFile()
+                getClass().getClassLoader().getResource("changes/security/diffignore.yaml").getFile()
         );
 
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/response_wildcard/original.yaml", "changes/security/response_wildcard/generated.yaml");
+        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/original.yaml", "changes/security/generated.yaml");
 
         ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
 
