@@ -16,6 +16,7 @@ public class SecurityProcessor {
     public boolean apply(SecurityIgnore security, ChangedSecurityRequirements securityRequirements) {
         List<ChangedSecurityRequirement> changeToRemove = new ArrayList<>();
         List<SecurityRequirement> missingToRemove = new ArrayList<>();
+        List<SecurityRequirement> increasedToRemove = new ArrayList<>();
 
         if (securityRequirements != null) {
             if (securityRequirements.getChanged() != null) {
@@ -36,12 +37,23 @@ public class SecurityProcessor {
                 }
                 securityRequirements.getMissing().removeAll(missingToRemove);
             }
+            if (securityRequirements.getIncreased() != null) {
+                for (SecurityRequirement changedSecurityRequirement : securityRequirements.getIncreased()) {
+                    boolean result = processRequirement(changedSecurityRequirement, security.getSecurity());
+                    if (result)
+                        increasedToRemove.add(changedSecurityRequirement);
+
+                }
+                securityRequirements.getIncreased().removeAll(increasedToRemove);
+            }
         }
 
         return (securityRequirements.getChanged() == null ||
                 securityRequirements.getChanged().size() == 0) &&
                 (securityRequirements.getMissing() == null ||
-                        securityRequirements.getMissing().size() == 0);
+                        securityRequirements.getMissing().size() == 0) &&
+                (securityRequirements.getIncreased() == null ||
+                        securityRequirements.getIncreased().size() == 0);
     }
 
     private boolean processRequirement(SecurityRequirement oldSecurityRequirement, Map<String, SecurityProperty> security) {
