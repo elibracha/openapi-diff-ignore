@@ -4,4 +4,9 @@ project: sample-service
 paths:
   /pet:
     put:
-      security: $
+      response:
+        200:
+          content: $
+      security:
+        petstore_auth:
+          - 'write:pets'
