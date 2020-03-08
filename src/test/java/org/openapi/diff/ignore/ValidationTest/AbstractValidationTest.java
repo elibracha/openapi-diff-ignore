@@ -1,7 +1,8 @@
-package org.openapi.diff.ignore;
+package org.openapi.diff.ignore.ValidationTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.openapi.diff.ignore.ObjectMapperFactory;
 import org.openapi.diff.ignore.validators.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

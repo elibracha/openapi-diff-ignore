@@ -1,14 +1,9 @@
-package org.openapi.diff.ignore;
+package org.openapi.diff.ignore.ValidationTest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.openapi.diff.ignore.validators.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,7 +18,6 @@ public class ValidatorsTest extends AbstractValidationTest{
                 true
         );
     }
-
 
     @Test
     public void testVersionValidationFalse() throws IOException {
@@ -50,7 +44,6 @@ public class ValidatorsTest extends AbstractValidationTest{
                 "validate/.response_validate_false",
                 false
         );
-
     }
 
     @Test
@@ -88,7 +81,6 @@ public class ValidatorsTest extends AbstractValidationTest{
                 false
         );
     }
-
 
     @Test
     public void testHttpMethodValidationTrue() throws IOException {

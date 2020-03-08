@@ -1,14 +1,7 @@
-package org.openapi.diff.ignore;
+package org.openapi.diff.ignore.ChangeTest;
 
-import com.qdesrame.openapi.diff.OpenApiCompare;
-import com.qdesrame.openapi.diff.model.ChangedOpenApi;
-import com.qdesrame.openapi.diff.output.HtmlRender;
 import org.junit.Test;
 import org.openapi.diff.ignore.exceptions.SpecificationSupportException;
-import org.openapi.diff.ignore.processors.ContextProcessor;
-
-import java.io.FileWriter;
-import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -157,5 +150,4 @@ public class ChangeTest extends AbstractChangeTest {
                 false
         );
     }
-
 }

@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore;
+package org.openapi.diff.ignore.ChangeTest;
 
 import com.qdesrame.openapi.diff.OpenApiCompare;
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;
@@ -35,7 +35,6 @@ public abstract class AbstractChangeTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         if(assertTrue)
             assertTrue(changedOpenApi.isUnchanged());
         else{
