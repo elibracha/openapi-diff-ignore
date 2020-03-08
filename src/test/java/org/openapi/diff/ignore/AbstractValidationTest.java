@@ -31,17 +31,19 @@ public abstract class AbstractValidationTest {
 
         boolean rs = validator.validate();
 
-        if(validator.getResult().getMessage() != null)
-            log.error(String.format("%s: %s - %s",
-                validator.getResult().getValidationStatus().getStatus(),
-                validator.getResult().getValidationStatus().getMessage(),
-                validator.getResult().getMessage()));
-
-
-        if(assertTrue)
-            assertTrue(rs);
-        else {
-            assertFalse(rs);
+        try {
+            if (assertTrue)
+                assertTrue(rs);
+            else {
+                assertFalse(rs);
+            }
+        } catch (AssertionError e){
+            if(validator.getResult().getMessage() != null)
+                log.error(String.format("%s: %s - %s",
+                        validator.getResult().getValidationStatus().getStatus(),
+                        validator.getResult().getValidationStatus().getMessage(),
+                        validator.getResult().getMessage()));
+            throw e;
         }
 
     }
