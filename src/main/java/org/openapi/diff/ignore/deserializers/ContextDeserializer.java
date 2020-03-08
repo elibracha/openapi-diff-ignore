@@ -99,8 +99,9 @@ public class ContextDeserializer extends StdDeserializer<ContextIgnore> {
             throw new SpecificationSupportException("extends key must be above paths ignore declaration.");
         }
 
-        InputStream inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource(globalScope.getValue().asText()).getFile()));
-        ContextIgnore contextIgnoreExtended = ObjectMapperFactory.createJson().convertValue(new Yaml().load(inputStream), ContextIgnore.class);
-        this.pathsIgnoreExtended = contextIgnoreExtended.getPaths();
+        try(InputStream inputStream = getClass().getResourceAsStream("/" + globalScope.getValue().asText().trim())){
+            ContextIgnore contextIgnoreExtended = ObjectMapperFactory.createJson().convertValue(new Yaml().load(inputStream), ContextIgnore.class);
+            this.pathsIgnoreExtended = contextIgnoreExtended.getPaths();
+        }
     }
 }
