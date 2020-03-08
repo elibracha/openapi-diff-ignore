@@ -13,334 +13,149 @@ import java.io.IOException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class ChangeTest {
+public class ChangeTest extends AbstractChangeTest {
 
     @Test
     public void testContextProcessorUnchanged() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/context/diffignore.yaml").getFile()
-        );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/context/original.yaml", "changes/context/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/contextDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
+        this.executeChangeTest(
+                "changes/context/diffignore.yaml",
+                "changes/context/original.yaml",
+                "changes/context/generated.yaml",
+                "contextDiff",
+                true
+                );
     }
 
     @Test
     public void testParametersWildcardTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/parameters/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/parameters/diffignore.yaml",
+                "changes/parameters/original.yaml",
+                "changes/parameters/generated.yaml",
+                "parameterWildcardDiff",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/parameters/original.yaml", "changes/parameters/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/parameterWildcardDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testRequestContentMediaTypesWildcardTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/request/request_content_media_types/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/request/request_content_media_types/diffignore.yaml",
+                "changes/request/request_content_media_types/original.yaml",
+                "changes/request/request_content_media_types/generated.yaml",
+                "requestWildMediaTypecardDiff",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/request/request_content_media_types/original.yaml", "changes/request/request_content_media_types/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/requestWildMediaTypecardDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testRequestWildcardTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/request/request_wildcard/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/request/request_wildcard/diffignore.yaml",
+                "changes/request/request_wildcard/original.yaml",
+                "changes/request/request_wildcard/generated.yaml",
+                "requestWildcardDiff",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/request/request_wildcard/original.yaml", "changes/request/request_wildcard/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/requestWildcardDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testResponseWildcardTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response/response_wildcard/diffignore_true.yaml").getFile()
+        this.executeChangeTest(
+                "changes/response/response_wildcard/diffignore_true.yaml",
+                "changes/response/response_wildcard/original.yaml",
+                "changes/response/response_wildcard/generated.yaml",
+                "responseWildcardDiff",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response/response_wildcard/original.yaml", "changes/response/response_wildcard/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/responseWildcardDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testResponseStatusWildcardTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response/response_status_wildcard/diffignore_true.yaml").getFile()
+        this.executeChangeTest(
+                "changes/response/response_status_wildcard/diffignore_true.yaml",
+                "changes/response/response_wildcard/original.yaml",
+                "changes/response/response_wildcard/generated.yaml",
+                "responseStatusWildCardTrue",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response/response_wildcard/original.yaml", "changes/response/response_wildcard/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/responseStatusWildCardTrue.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testResponseStatusWildcardFalse() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response/response_status_wildcard/diffignore_false.yaml").getFile()
+        this.executeChangeTest(
+                "changes/response/response_status_wildcard/diffignore_false.yaml",
+                "changes/response/response_status_wildcard/original.yaml",
+                "changes/response/response_status_wildcard/generated.yaml",
+                "responseStatusWildCardFalseDiff",
+                false
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response/response_status_wildcard/original.yaml", "changes/response/response_status_wildcard/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/responseStatusWildCardFalseDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertFalse(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testResponseStatusSchemaWildcardTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response/response_status_schema_wildcard/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/response/response_status_schema_wildcard/diffignore.yaml",
+                "changes/response/response_status_schema_wildcard/original.yaml",
+                "changes/response/response_status_schema_wildcard/generated.yaml",
+                "responseStatusSchemaWildcardTrueDiff",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response/response_status_schema_wildcard/original.yaml", "changes/response/response_status_schema_wildcard/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/responseStatusSchemaWildcardTrueDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testSecurityWildcardTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/security/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/security/diffignore.yaml",
+                "changes/security/original.yaml",
+                "changes/security/generated.yaml",
+                "responseStatusSchemaWildcardTrueDiff",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/original.yaml", "changes/security/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/securityWildcardDiff.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testResponseIncreasedTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response/response_increased_true/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/response/response_increased_true/diffignore.yaml",
+                "changes/response/response_increased_true/original.yaml",
+                "changes/response/response_increased_true/generated.yaml",
+                "ResponseIncreasedTrue",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response/response_increased_true/original.yaml", "changes/response/response_increased_true/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/ResponseIncreasedTrue.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testResponseIncreasedFalse() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/response/response_increased_false/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/response/response_increased_false/diffignore.yaml",
+                "changes/response/response_increased_false/original.yaml",
+                "changes/response/response_increased_false/generated.yaml",
+                "ResponseIncreasedFalse",
+                false
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/response/response_increased_false/original.yaml", "changes/response/response_increased_false/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/ResponseIncreasedFalse.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertFalse(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testSecurityProcessorIncreasedTrue() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/security/increased_true/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/security/increased_true/diffignore.yaml",
+                "changes/security/increased_true/original.yaml",
+                "changes/security/increased_true/generated.yaml",
+                "securityIncreasedTrue",
+                true
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/increased_true/original.yaml", "changes/security/increased_true/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/securityIncreasedTrue.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(changedOpenApi.isUnchanged());
     }
 
     @Test
     public void testSecurityProcessorIncreasedFalse() throws SpecificationSupportException {
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource("changes/security/increased_false/diffignore.yaml").getFile()
+        this.executeChangeTest(
+                "changes/security/increased_false/diffignore.yaml",
+                "changes/security/increased_false/original.yaml",
+                "changes/security/increased_false/generated.yaml",
+                "securityIncreasedFalse",
+                false
         );
-
-        ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations("changes/security/increased_false/original.yaml", "changes/security/increased_false/generated.yaml");
-
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
-
-
-        String html =
-                new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
-        try {
-            FileWriter fw = new FileWriter("target/securityIncreasedFalse.html");
-            fw.write(html);
-            fw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertFalse(changedOpenApi.isUnchanged());
     }
 
 }
