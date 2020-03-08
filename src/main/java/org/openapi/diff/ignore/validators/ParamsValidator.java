@@ -29,4 +29,9 @@ public class ParamsValidator implements Validator {
 
         return true;
     }
+
+    @Override
+    public void setTree(JsonNode tree) {
+        setParams(tree);
+    }
 }

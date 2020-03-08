@@ -12,7 +12,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class AbstractChangeTest {
+public abstract class AbstractChangeTest {
 
     protected void executeChangeTest(String ignorePath, String originalPath, String generatedPath, String outputPath, boolean assertTrue) throws SpecificationSupportException{
         ContextProcessor contextProcessor = new ContextProcessor(

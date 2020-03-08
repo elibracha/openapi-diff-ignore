@@ -47,4 +47,10 @@ public class PathValidator implements Validator {
         return true;
     }
 
+    @Override
+    public void setTree(JsonNode tree) {
+        setPaths(tree);
+    }
+
+
 }

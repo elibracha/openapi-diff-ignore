@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
-public class HttpMethodValidator {
+public class HttpMethodValidator implements Validator{
 
     private final OperationValidator operationValidator = new OperationValidator();
     private final ValidationResult result = new ValidationResult();
@@ -44,5 +44,10 @@ public class HttpMethodValidator {
         }
 
         return true;
+    }
+
+    @Override
+    public void setTree(JsonNode tree) {
+        setHttpMethod(tree);
     }
 }

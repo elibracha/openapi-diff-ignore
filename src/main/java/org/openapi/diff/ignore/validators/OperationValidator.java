@@ -19,7 +19,7 @@ public class OperationValidator implements Validator {
     private final ResponseValidator responseValidator = new ResponseValidator();
     private final RequestValidator requestValidator = new RequestValidator();
     private final ParamsValidator paramsValidator = new ParamsValidator();
-    private final SecurityValidator securityValidatorr = new SecurityValidator();
+    private final SecurityValidator securityValidator = new SecurityValidator();
     private JsonNode operations;
 
     public boolean validate() {
@@ -65,15 +65,20 @@ public class OperationValidator implements Validator {
                 }
             }
             if (operationScope.getKey().equals("security")) {
-                securityValidatorr.setSecurity(operationScope.getValue());
-                boolean r = securityValidatorr.validate();
+                securityValidator.setSecurity(operationScope.getValue());
+                boolean r = securityValidator.validate();
                 if (!r) {
-                    result.setMessage(securityValidatorr.getResult().getMessage());
-                    result.setValidationStatus(securityValidatorr.getResult().getValidationStatus());
+                    result.setMessage(securityValidator.getResult().getMessage());
+                    result.setValidationStatus(securityValidator.getResult().getValidationStatus());
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    @Override
+    public void setTree(JsonNode tree) {
+        setOperations(tree);
     }
 }

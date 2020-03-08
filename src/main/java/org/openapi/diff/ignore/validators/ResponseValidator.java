@@ -27,4 +27,9 @@ public class ResponseValidator implements Validator {
         }
         return true;
     }
+
+    @Override
+    public void setTree(JsonNode tree) {
+        setResponse(tree);
+    }
 }

@@ -34,4 +34,9 @@ public class SecurityValidator implements Validator {
         }
         return true;
     }
+
+    @Override
+    public void setTree(JsonNode tree) {
+        setSecurity(tree);
+    }
 }

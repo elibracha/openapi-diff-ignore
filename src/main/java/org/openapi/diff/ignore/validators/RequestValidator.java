@@ -35,4 +35,9 @@ public class RequestValidator implements Validator {
 
         return true;
     }
+
+    @Override
+    public void setTree(JsonNode tree) {
+        setRequest(tree);
+    }
 }

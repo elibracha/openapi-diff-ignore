@@ -60,4 +60,8 @@ public class ContextValidator implements Validator {
         return true;
     }
 
+    @Override
+    public void setTree(JsonNode tree) {
+        setIgnore(tree);
+    }
 }
