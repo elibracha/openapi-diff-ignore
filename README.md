@@ -19,11 +19,11 @@ In the following description, if a field is not explicitly REQUIRED or described
 
 Field Name | Type | Description
 ---|:---:|---
-<a name="oasInfo"></a>extends | `string` | Provides metadata about general basic ignore file for the API ignore.
-<a name="oasVersion"></a>version | `string` | **REQUIRED**. This string MUST be the [semantic version number](https://semver.org/spec/v2.0.0.html) of the [Ignore Specification version](#versions) that the OpenAPI ignore document uses. The `version` field SHOULD be used by tooling specifications and clients to interpret the OpenAPI ignore document.
-<a name="oasInfo"></a>info | `string` | Provides metadata about general info for the API ignore. The metadata MAY be used by tooling as required.
-<a name="oasInfo"></a>project | `string` | Provides metadata about the Project using the ignore file. The metadata MAY be used by tooling as required.
-<a name="paths"></a>paths | [Paths Object](#pathsObject) |  The available paths and operations for the API.
+<a name="extends"></a>extends | `string` | Can be used to inherit a pre defined ignore file functionality. Provides metadata about basic ignore file for your custom API ignore. (Like -> ".default")
+<a name="version"></a>version | `string` | **REQUIRED**. This string MUST be the [semantic version number](https://semver.org/spec/v2.0.0.html) of the [Ignore Specification version](#versions) that the OpenAPI ignore document uses. The `version` field SHOULD be used by tooling specifications and clients to interpret the OpenAPI ignore document.
+<a name="info"></a>info | `string` | Provides metadata about general info for the API ignore. The metadata MAY be used by tooling as required.
+<a name="project"></a>project | `string` | Provides metadata about the Project using the ignore file. The metadata MAY be used by tooling as required.
+<a name="paths"></a>paths | [Paths Object](#pathsObject) |  The available paths and operations for the API that needed to be ignored.
 
 #### <a name="pathsObject"></a>Paths Object
 
@@ -33,38 +33,53 @@ Holds the relative paths to the individual endpoints and their operations.
 
 Field Pattern | Type | Description
 ---|:---:|---
-<a name="pathsPath"></a>/{path} | [Path Item Object](#pathItemObject) | A relative path to an individual endpoint. The field name MUST begin with a slash. Wildcard is allowed. When matching URLs, concrete (non-wildcard) paths would be matched before their wildcard counterparts. Templated paths with the same hierarchy but different templated names MUST NOT exist as they are identical. In case of ambiguous matching, it's up to the tooling to decide which one to use.
+<a name="pathsPath"></a>/{path} | [Path Item Object](#pathItemObject) | A relative path to an individual endpoint. The field name MUST begin with a slash. Wildcard is allowed. When matching URLs. In case of ambiguous matching, it's up to the tooling to decide the execution order.
 
 ##### Path Wildcard Matching
 
-Assuming the following paths, the concrete definition, `/pets/mine`, will be matched first if used:
+Assuming the following paths, the concrete definition, `/pets/mine`, will be matched if used:
 
 ```
-  /pets/{petId}   # will not be matched
-
   /pets/**        # will match and also match all pets endpoints
   /**             # will match and also will match all endpoints
 ```
-NOTICE! When using wildcards all all endpoints matching the wildcard will apply the ignore specified.
+NOTICE! When using wildcards all endpoints matching the wildcard will apply the ignore specified.
 
 ##### Paths Object Example
 
 ```yaml
 paths:
-  /**:
-    ignore-type: single # by default single no need to specify
-    get:
+  /pet/**, /store/**:        # this path will match any 'pet' or 'store' endpoint 
+    get:                      
+      response:
+        200:
+          new: true
       parameters:
         - username
         - password
+
+    post:
+      request:
+        content:
+          application/json, application/octet-stream: $
       response:
-        status:
-          - default
-          - 200
+        200:
+          new: true
+          content:
+            application/json:
+              schema:
+                properties:
+                  - petId
+                  - quantity
+                  - shipDate
+                  - complete
+      security:
+        petstore_auth:
+          - 'write:pets'
+          - 'read:pets'
 
-
-  /store:
-    ignore-type: single # will ignore any change to the endpoint
+  /user/login:               # this path will match only '/user/login' endpoint. 
+    post: $        
 ```
 
 #### <a name="pathItemObject"></a>Path Item Object
@@ -77,7 +92,6 @@ The path itself is still exposed to the documentation viewer but they will not k
 
 Field Name | Type | Description
 ---|:---:|---
-<a name="pathItemIgnoreType"></a>ignore-type | `string`| A definition of ignore type possible values are "single" or "all" all will ignore any change to the endpoint and by default the value i single with will ignore only what you defined.
 <a name="pathItemGet"></a>get | [Operation Object](#operationObject) | A definition of a GET operation on this path.
 <a name="pathItemPut"></a>put | [Operation Object](#operationObject) | A definition of a PUT operation on this path.
 <a name="pathItemPost"></a>post | [Operation Object](#operationObject) | A definition of a POST operation on this path.
@@ -91,14 +105,27 @@ Field Name | Type | Description
 
 
 ```yaml
- get:
-  parameters:
-    - username
-    - password
-  response:
-    status:
-      - default
-      - 200
+ post:
+      request:
+        content:
+          application/json, application/octet-stream: $
+      response:
+        200:
+          new: true
+          content:
+            application/json:
+              schema:
+                properties:
+                  - petId
+                  - quantity
+                  - shipDate
+                  - complete
+      security:
+        petstore_auth:
+          - 'write:pets'
+          - 'read:pets'
+put: $
+delete: $
 ```
 
 #### <a name="operationObject"></a>Operation Object
@@ -109,24 +136,58 @@ Describes a single API ignore operation on a path.
 
 Field Name | Type | Description
 ---|:---:|---
-<a name="operationDescription"></a>info | `string` | A verbose explanation of the operation behavior.
-<a name="operationParameters"></a>parameters | [Parameter Object](#parameterObject)| A list of parameters that are going to be ignored.
-<a name="operationRequestBody"></a>request | [Request Object](#requestBodyObject) | The request body applicable for this operation. can specify ignore for content-type and status codes.
-<a name="operationResponses"></a>response | [Response Object](#responsesObject) | The list of possible response statuses that are going to be ignored.
+<a name="security"></a>security | [Security Object](#parameterObject) | A list of security requirements that are going to be ignored.
+<a name="parameters"></a>parameters | [Parameter Object](#parameterObject)| A list of parameters that are going to be ignored.
+<a name="request"></a>request | [Request Object](#requestBodyObject) | The request body applicable for this operation. can specify ignore for content-type.
+<a name="response"></a>response | [Response Object](#responsesObject) | The list of possible response statuses that are going to be ignored.
 
 ##### Operation Object Example
 
 ```yaml
 request:
-  content-type:
-    - application/octet-stream
-  response:
-    info: this is going to ignore all status changes that marked as default or 200
-    status:
-      - default
-      - 200
-```
+  content:
+    application/json, application/octet-stream: $
 
+parameters:
+  - username
+  - password
+
+response:
+  200:
+    new: true
+    content:
+      application/json:
+        schema:
+          properties:
+            - petId
+            - quantity
+            - shipDate
+            - complete
+
+security:
+  petstore_auth:
+    - 'write:pets'
+    - 'read:pets'
+```
+#### <a name="securityObject"></a>Security Object
+
+Describes a security requirements that needed to be ignored.
+
+##### Fixed Fields
+
+Field Name | Type | Description
+---|:---:|---
+<a name="schmea"></a>{schema} | Map<String, List> | A map of security requirements that are going to be ignored.
+##### Security Object Example
+
+```yaml
+security:
+  petstore_auth:
+    - 'write:pets'
+    - 'read:pets'
+  api_key:
+    - 'read:users'
+```
 
 Documentation
 -------------
