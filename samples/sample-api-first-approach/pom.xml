@@ -8,7 +8,7 @@
         <version>2.2.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.openapi.diff.ignore.samples</groupId>
+    <groupId>com.github.elibracha.samples</groupId>
     <artifactId>sample-api-first-approach</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sample-api-first-approach</name>

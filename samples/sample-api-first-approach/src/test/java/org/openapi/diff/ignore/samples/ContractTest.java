@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore.samples;
+package com.github.elibracha.samples;
 
 import com.qdesrame.openapi.diff.OpenApiCompare;
 import com.qdesrame.openapi.diff.model.ChangedOpenApi;

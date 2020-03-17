@@ -1,7 +1,7 @@
-package org.openapi.diff.ignore.samples.controllers.v2;
+package com.github.elibracha.samples.controllers.v2;
 
-import org.openapi.diff.ignore.samples.petstore.api.StoreApi;
-import org.openapi.diff.ignore.samples.petstore.model.Order;
+import com.github.elibracha.samples.petstore.api.StoreApi;
+import com.github.elibracha.samples.petstore.model.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

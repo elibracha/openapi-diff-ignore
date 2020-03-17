@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore.samples;
+package com.github.elibracha.samples;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

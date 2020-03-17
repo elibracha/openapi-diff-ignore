@@ -2,7 +2,7 @@ package com.github.elibracha.ValidationTest;
 
 import com.github.elibracha.validators.*;
 import org.junit.Test;
-import org.openapi.diff.ignore.validators.*;
+import com.github.elibracha.validators.*;
 
 import java.io.IOException;
 

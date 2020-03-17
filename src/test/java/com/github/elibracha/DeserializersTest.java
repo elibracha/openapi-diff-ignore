@@ -2,7 +2,7 @@ package com.github.elibracha;
 
 import com.github.elibracha.models.ignore.*;
 import org.junit.Test;
-import org.openapi.diff.ignore.models.ignore.*;
+import com.github.elibracha.models.ignore.*;
 
 import java.io.FileNotFoundException;
 

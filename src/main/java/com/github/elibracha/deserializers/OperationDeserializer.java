@@ -7,7 +7,6 @@ import com.github.elibracha.ObjectMapperFactory;
 import com.github.elibracha.models.SpecConstants;
 import com.github.elibracha.models.ignore.*;
 import com.github.elibracha.exceptions.SpecificationSupportException;
-import org.openapi.diff.ignore.models.ignore.*;
 
 import java.io.IOException;
 import java.util.Iterator;

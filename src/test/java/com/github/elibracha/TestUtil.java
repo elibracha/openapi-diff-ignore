@@ -1,7 +1,7 @@
 package com.github.elibracha;
 
 import com.github.elibracha.models.ignore.*;
-import org.openapi.diff.ignore.models.ignore.*;
+import com.github.elibracha.models.ignore.*;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;

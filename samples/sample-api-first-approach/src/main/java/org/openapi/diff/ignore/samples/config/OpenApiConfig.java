@@ -1,4 +1,4 @@
-package org.openapi.diff.ignore.samples.config;
+package com.github.elibracha.samples.config;
 
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
@@ -17,7 +17,7 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi tempOpenApi1(@Qualifier("openApbCustomizerV1") OpenApiCustomiser openApiCustomiser) {
         String[] paths = {"/v1/**"};
-        String[] packagedToMatch = {"org.openapi.diff.ignore.samples.controllers"};
+        String[] packagedToMatch = {"com.github.elibracha.samples.controllers"};
         GroupedOpenApi openApi = GroupedOpenApi.builder().setGroup("v1").pathsToMatch(paths).packagesToScan(packagedToMatch).addOpenApiCustomiser(openApiCustomiser).build();
         return openApi;
     }
@@ -25,7 +25,7 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi tempOpenApi2(@Qualifier("openApbCustomizerV2") OpenApiCustomiser openApiCustomiser) {
         String[] paths = {"/v2/**"};
-        String[] packagedToMatch = {"org.openapi.diff.ignore.samples.controllers"};
+        String[] packagedToMatch = {"com.github.elibracha.samples.controllers"};
         GroupedOpenApi openApi = GroupedOpenApi.builder().setGroup("v2").pathsToMatch(paths).packagesToScan(packagedToMatch).addOpenApiCustomiser(openApiCustomiser).build();
         return openApi;
     }
