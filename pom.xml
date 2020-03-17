@@ -17,7 +17,7 @@
         </repository>
     </repositories>
 
-    <groupId>org.openapi.diff.ignore</groupId>
+    <groupId>com.github.elibracha</groupId>
     <artifactId>openapi-diff-ignore</artifactId>
     <version>1.0.0</version>
 
