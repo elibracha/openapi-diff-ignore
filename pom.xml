@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -27,7 +25,7 @@
         <connection>scm:git:git://github.com/elibracha/openapi-diff-ignore.git</connection>
         <developerConnection>scm:git:git@github.com:elibracha/openapi-diff-ignore.git</developerConnection>
         <url>https://github.com/elibracha/openapi-diff-ignore</url>
-        <tag>HEAD</tag>
+        <tag>openapi-diff-ignore-1.0.0</tag>
     </scm>
 
     <distributionManagement>
@@ -44,7 +42,7 @@
 
     <groupId>com.github.elibracha</groupId>
     <artifactId>openapi-diff-ignore</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compile.plugin.source>1.8</maven.compile.plugin.source>
@@ -53,6 +51,12 @@
     </properties>
 
     <profiles>
+        <profile>
+            <id>ossrh</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
         <!-- GPG Signature on release -->
         <profile>
             <id>release-sign-artifacts</id>
