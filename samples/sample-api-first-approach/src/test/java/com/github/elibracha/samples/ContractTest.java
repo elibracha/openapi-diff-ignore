@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openapi.diff.ignore.processors.ContextProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +26,7 @@ import java.nio.file.Paths;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MainApp.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ContractTest {
 
     private Path resourceDirectory = Paths.get("src", "test", "resources");
@@ -36,16 +37,24 @@ public class ContractTest {
     @Test
     public void apiContractTest() throws Exception {
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api-docs").accept(MediaType.APPLICATION_JSON))
+        ContextProcessor contextProcessor = new ContextProcessor(
+                getClass().getClassLoader().getResource(".diffignore.yaml").getFile()
+        );
+
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs/v1").accept(MediaType.APPLICATION_JSON))
                 .andDo((result) -> {
                     String swaggerJsonString = result.getResponse().getContentAsString();
-                    FileUtils.writeStringToFile(new File(resourceDirectory + "/swagger/documentation/openapi_from_code.json"), swaggerJsonString, Charset.defaultCharset());
+                    FileUtils.writeStringToFile(new File(resourceDirectory + "/swagger/documentation/generated.json"), swaggerJsonString, Charset.defaultCharset());
                 });
 
 
-        ChangedOpenApi diff = OpenApiCompare.fromLocations(resourceDirectory + "/swagger/documentation/openapi.yml", resourceDirectory + "/swagger/documentation/openapi_from_code.json");
+        ChangedOpenApi diff = OpenApiCompare.fromLocations(resourceDirectory + "/swagger/documentation/original.yml", resourceDirectory + "/swagger/documentation/generated.json");
+        contextProcessor.process(diff);
+
         renderMarkDown(diff);
         renderHtml(diff);
+
         Assert.assertEquals(0, diff.getChangedOperations().size());
         Assert.assertEquals(0, diff.getMissingEndpoints().size());
         Assert.assertEquals(0, diff.getDeprecatedEndpoints().size());

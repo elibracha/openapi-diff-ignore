@@ -1,0 +1,17 @@
+extends: .default
+version: 1.0.0
+info: this is a sample ignore file to silence changes in openapi-diff
+project: sample-service
+paths:
+  /user/**:
+    $:
+      response:
+        200:
+          new: true
+          content: $
+
+  /pet/{petId}/uploadImage:
+    post:
+      request:
+        content:
+          application/octet-stream: $

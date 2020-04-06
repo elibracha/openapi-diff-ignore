@@ -87,6 +87,19 @@
             <version>2.3.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.elibracha</groupId>
+            <artifactId>openapi-diff</artifactId>
+            <version>2.2.5</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -115,7 +128,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>4.2.2</version>
                 <executions>
                     <execution>
                         <goals>
