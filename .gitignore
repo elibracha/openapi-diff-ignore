@@ -131,3 +131,9 @@ buildNumber.properties
 # End of https://www.gitignore.io/api/java,maven,intellij
 /openapi-diff-ignore.iml
 /.idea/
+
+.settings/
+
+.project
+
+.classpath
