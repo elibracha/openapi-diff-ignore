@@ -42,7 +42,7 @@
 
     <groupId>com.github.elibracha</groupId>
     <artifactId>openapi-diff-ignore</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <maven.compile.plugin.source>1.8</maven.compile.plugin.source>
