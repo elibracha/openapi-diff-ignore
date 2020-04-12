@@ -4,11 +4,12 @@ import com.github.elibracha.OpenApiCompare;
 import com.github.elibracha.model.ChangedOpenApi;
 import com.github.elibracha.output.HtmlRender;
 import com.github.elibracha.output.MarkdownRender;
+import com.github.elibracha.processors.ContextProcessor;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openapi.diff.ignore.processors.ContextProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
