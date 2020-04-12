@@ -99,7 +99,8 @@ public class ResponseProcessor {
             }
         }
 
-        changedResponse.getContent().getChanged().keySet().removeAll(toRemove);
+        if(changedResponse.getContent() != null)
+        	changedResponse.getContent().getChanged().keySet().removeAll(toRemove);
 
         return (changedResponse.getContent().getIncreased() == null ||
                 changedResponse.getContent().getIncreased().size() == 0) &&
@@ -142,9 +143,11 @@ public class ResponseProcessor {
             }
         }
 
-        content.getSchema().getIncreasedProperties().keySet().removeAll(increaseToRemove);
-        content.getSchema().getMissingProperties().keySet().removeAll(missingToRemove);
-
+        if(content.getSchema() != null) {
+	        content.getSchema().getIncreasedProperties().keySet().removeAll(increaseToRemove);
+	        content.getSchema().getMissingProperties().keySet().removeAll(missingToRemove);
+        }
+        
         return content.getSchema().getMissingProperties() == null ||
                 content.getSchema().getMissingProperties().size() == 0;
     }
