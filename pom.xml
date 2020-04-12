@@ -25,7 +25,6 @@
         <connection>scm:git:git://github.com/elibracha/openapi-diff-ignore.git</connection>
         <developerConnection>scm:git:git@github.com:elibracha/openapi-diff-ignore.git</developerConnection>
         <url>https://github.com/elibracha/openapi-diff-ignore</url>
-        <tag>openapi-diff-ignore-1.0.0</tag>
     </scm>
 
     <distributionManagement>
@@ -42,7 +41,7 @@
 
     <groupId>com.github.elibracha</groupId>
     <artifactId>openapi-diff-ignore</artifactId>
-    <version>2.2.7-SNAPSHOT</version>
+    <version>2.2.8-SNAPSHOT</version>
 
     <properties>
         <maven.compile.plugin.source>1.8</maven.compile.plugin.source>
