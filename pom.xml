@@ -274,6 +274,18 @@
             <artifactId>openapi-diff-commons</artifactId>
             <version>1.0.2</version>
         </dependency>
+         <dependency>
+            <groupId>com.github.elibracha</groupId>
+            <artifactId>openapi-diff</artifactId>
+            <version>2.2.8</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- END OPENAPI-DIFF DEPENDENCIES-->
     </dependencies>
 </project>
