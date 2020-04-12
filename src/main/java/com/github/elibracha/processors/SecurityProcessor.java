@@ -2,8 +2,8 @@ package com.github.elibracha.processors;
 
 import com.github.elibracha.models.ignore.SecurityIgnore;
 import com.github.elibracha.models.ignore.SecurityProperty;
-import com.qdesrame.openapi.diff.model.ChangedSecurityRequirement;
-import com.qdesrame.openapi.diff.model.ChangedSecurityRequirements;
+import com.github.elibracha.model.ChangedSecurityRequirement;
+import com.github.elibracha.model.ChangedSecurityRequirements;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 
 import java.util.ArrayList;

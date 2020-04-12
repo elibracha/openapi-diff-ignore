@@ -1,9 +1,9 @@
 package com.github.elibracha.samples;
 
-import com.qdesrame.openapi.diff.OpenApiCompare;
-import com.qdesrame.openapi.diff.model.ChangedOpenApi;
-import com.qdesrame.openapi.diff.output.HtmlRender;
-import com.qdesrame.openapi.diff.output.MarkdownRender;
+import com.github.elibracha.OpenApiCompare;
+import com.github.elibracha.model.ChangedOpenApi;
+import com.github.elibracha.output.HtmlRender;
+import com.github.elibracha.output.MarkdownRender;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;

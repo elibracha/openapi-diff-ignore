@@ -1,7 +1,7 @@
 package com.github.elibracha.processors;
 
 import com.github.elibracha.models.ignore.ParametersIgnore;
-import com.qdesrame.openapi.diff.model.ChangedParameters;
+import com.github.elibracha.model.ChangedParameters;
 
 import java.util.stream.Collectors;
 

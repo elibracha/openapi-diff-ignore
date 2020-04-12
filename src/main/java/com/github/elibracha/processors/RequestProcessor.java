@@ -3,9 +3,9 @@ package com.github.elibracha.processors;
 import com.github.elibracha.models.ignore.Content;
 import com.github.elibracha.models.ignore.ContentSchema;
 import com.github.elibracha.models.ignore.RequestIgnore;
-import com.qdesrame.openapi.diff.model.Changed;
-import com.qdesrame.openapi.diff.model.ChangedMediaType;
-import com.qdesrame.openapi.diff.model.ChangedRequestBody;
+import com.github.elibracha.model.Changed;
+import com.github.elibracha.model.ChangedMediaType;
+import com.github.elibracha.model.ChangedRequestBody;
 import io.swagger.v3.oas.models.media.MediaType;
 
 import java.util.ArrayList;

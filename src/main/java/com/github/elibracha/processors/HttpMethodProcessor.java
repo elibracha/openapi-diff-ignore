@@ -1,7 +1,7 @@
 package com.github.elibracha.processors;
 
 import com.github.elibracha.models.ignore.OperationIgnore;
-import com.qdesrame.openapi.diff.model.ChangedOperation;
+import com.github.elibracha.model.ChangedOperation;
 import com.github.elibracha.models.ignore.HttpMethodIgnore;
 
 public class HttpMethodProcessor {

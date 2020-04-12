@@ -1,6 +1,6 @@
 package com.github.elibracha.processors;
 
-import com.qdesrame.openapi.diff.model.ChangedOperation;
+import com.github.elibracha.model.ChangedOperation;
 import com.github.elibracha.models.ignore.PathsIgnore;
 import org.springframework.util.AntPathMatcher;
 
