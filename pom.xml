@@ -8,19 +8,6 @@
         <version>9</version>
     </parent>
 
-    <repositories>
-        <repository>
-            <id>elibracha-openapi-diff</id>
-            <url>https://packagecloud.io/elibracha/openapi-diff/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <scm>
         <connection>scm:git:git://github.com/elibracha/openapi-diff-ignore.git</connection>
         <developerConnection>scm:git:git@github.com:elibracha/openapi-diff-ignore.git</developerConnection>
