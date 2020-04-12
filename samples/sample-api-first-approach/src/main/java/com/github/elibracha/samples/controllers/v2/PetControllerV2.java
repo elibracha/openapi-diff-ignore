@@ -26,12 +26,12 @@ public class PetControllerV2 implements PetApi {
     }
 
     @Override
-    public ResponseEntity<List<List<Pet>>> findPetsByStatus(@Valid String status) {
+    public ResponseEntity<List<Pet>> findPetsByStatus(@Valid String status) {
         return null;
     }
 
     @Override
-    public ResponseEntity<List<List<Pet>>> findPetsByTags(@Valid List<String> tags) {
+    public ResponseEntity<List<Pet>> findPetsByTags(@Valid List<String> tags) {
         return null;
     }
 

@@ -19,7 +19,7 @@ public class StoreControllerV2 implements StoreApi {
     }
 
     @Override
-    public ResponseEntity<Map<String, Map<String, Integer>>> getInventory() {
+    public ResponseEntity<Map<String, Integer>> getInventory() {
         return null;
     }
 

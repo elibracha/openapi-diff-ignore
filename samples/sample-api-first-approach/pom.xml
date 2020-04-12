@@ -25,11 +25,6 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -53,7 +48,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -62,11 +56,17 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.2.30</version>
         </dependency>
+        
+         <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.24</version>
+        </dependency>
 
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>openapi-generator-maven-plugin</artifactId>
-            <version>4.2.0</version>
+         <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.1.1</version>
         </dependency>
 
         <dependency>
@@ -78,15 +78,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.9.8</version>
         </dependency>
 
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
         </dependency>
-
+        
         <dependency>
             <groupId>com.github.elibracha</groupId>
             <artifactId>openapi-diff</artifactId>
@@ -128,7 +126,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>4.2.2</version>
+                <version>4.3.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -145,12 +143,12 @@
                             <configOptions>
                                 <sourceFolder>src/main/java</sourceFolder>
                                 <dateLibrary>java8</dateLibrary>
+                                <useTags>true</useTags>
                                 <withXml>true</withXml>
                                 <skipDefaultInterface>true</skipDefaultInterface>
-                                <fullJavaUtil>true</fullJavaUtil>
                                 <interfaceOnly>true</interfaceOnly>
                                 <performBeanValidation>true</performBeanValidation>
-                                <allowUnicodeIdentifiers>true</allowUnicodeIdentifiers>
+                                <delegatePattern>false</delegatePattern>
                             </configOptions>
 
                         </configuration>
