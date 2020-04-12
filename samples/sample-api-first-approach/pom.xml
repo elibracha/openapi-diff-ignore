@@ -19,7 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <basePackage>${project.groupId}</basePackage>
-        <serverName>petstore</serverName>
+        <apiName>petstore</apiName>
     </properties>
 
     <dependencies>
@@ -136,9 +136,9 @@
                             <!-- configure to generate server side -->
                             <generatorName>spring</generatorName>
                             <!-- Location of the OpenAPI spec, as URL or file.  -->
-                            <inputSpec>${project.basedir}/src/main/resources/openapi/server/${serverName}.yml</inputSpec>
-                            <apiPackage>${basePackage}.${serverName}.api</apiPackage>
-                            <modelPackage>${basePackage}.${serverName}.model</modelPackage>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/documentation/original.yml</inputSpec>
+                            <apiPackage>${basePackage}.${apiName}.api</apiPackage>
+                            <modelPackage>${basePackage}.${apiName}.model</modelPackage>
                             <templateDirectory>${project.basedir}/template</templateDirectory>
                             <configOptions>
                                 <sourceFolder>src/main/java</sourceFolder>

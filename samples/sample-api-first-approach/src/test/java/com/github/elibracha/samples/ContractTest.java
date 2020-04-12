@@ -46,11 +46,11 @@ public class ContractTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs/v1").accept(MediaType.APPLICATION_JSON))
                 .andDo((result) -> {
                     String swaggerJsonString = result.getResponse().getContentAsString();
-                    FileUtils.writeStringToFile(new File(resourceDirectory + "/swagger/documentation/generated.json"), swaggerJsonString, Charset.defaultCharset());
+                    FileUtils.writeStringToFile(new File(resourceDirectory + "/openapi/documentation/generated.json"), swaggerJsonString, Charset.defaultCharset());
                 });
 
 
-        ChangedOpenApi diff = OpenApiCompare.fromLocations(resourceDirectory + "/swagger/documentation/original.yml", resourceDirectory + "/swagger/documentation/generated.json");
+        ChangedOpenApi diff = OpenApiCompare.fromLocations(resourceDirectory + "/openapi/documentation/original.yml", resourceDirectory + "/openapi/documentation/generated.json");
         contextProcessor.process(diff);
 
         renderMarkDown(diff);
@@ -64,7 +64,7 @@ public class ContractTest {
     private void renderMarkDown(ChangedOpenApi diff) throws IOException {
         String render = new MarkdownRender().render(diff);
         FileWriter fw = new FileWriter(
-                resourceDirectory + "/swagger/diff/api_diff-" + diff.getNewSpecOpenApi().getInfo().getVersion() + ".md");
+                resourceDirectory + "/openapi/diff/api_diff-" + diff.getNewSpecOpenApi().getInfo().getVersion() + ".md");
         fw.write(render);
         fw.close();
     }
@@ -72,7 +72,7 @@ public class ContractTest {
     private void renderHtml(ChangedOpenApi diff) throws IOException {
         String render = new HtmlRender().render(diff);
         FileWriter fw = new FileWriter(
-                resourceDirectory + "/swagger/diff/api_diff-" + diff.getNewSpecOpenApi().getInfo().getVersion() + ".html");
+                resourceDirectory + "/openapi/diff/api_diff-" + diff.getNewSpecOpenApi().getInfo().getVersion() + ".html");
         fw.write(render);
         fw.close();
     }
