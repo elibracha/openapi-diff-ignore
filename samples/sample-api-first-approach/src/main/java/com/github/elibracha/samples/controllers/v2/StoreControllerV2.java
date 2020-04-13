@@ -13,23 +13,23 @@ import java.util.Map;
 @RequestMapping("/v2")
 public class StoreControllerV2 implements StoreApi {
 
-    @Override
-    public ResponseEntity<Void> deleteOrder(Long orderId) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Void> deleteOrder(Long orderId) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<Map<String, Integer>> getInventory() {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Map<String, Integer>> getInventory() {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<Order> getOrderById(Long orderId) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Order> getOrderById(Long orderId) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<Order> placeOrder(@Valid Order order) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Order> placeOrder(@Valid Order order) {
+		return null;
+	}
 }
