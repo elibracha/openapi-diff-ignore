@@ -28,53 +28,23 @@ import java.nio.file.Paths;
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ContractTest {
-
-    private Path resourceDirectory = Paths.get("src", "test", "resources");
-
-    @Autowired
-    private MockMvc mockMvc;
+public class ContractTest extends  AbstractContractTest {
 
     @Test
-    public void apiContractTest() throws Exception {
-
-        ContextProcessor contextProcessor = new ContextProcessor(
-                getClass().getClassLoader().getResource(".diffignore.yaml").getFile()
+    public void apiContractTestV1() throws Exception {
+        this.executeContractTest(
+                "v1",
+                ".diffignore.yaml",
+                "/openapi/documentation/original.yml"
         );
 
-
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs/v1").accept(MediaType.APPLICATION_JSON))
-                .andDo((result) -> {
-                    String swaggerJsonString = result.getResponse().getContentAsString();
-                    FileUtils.writeStringToFile(new File(resourceDirectory + "/openapi/documentation/generated.json"), swaggerJsonString, Charset.defaultCharset());
-                });
-
-
-        ChangedOpenApi diff = OpenApiCompare.fromLocations(resourceDirectory + "/openapi/documentation/original.yml", resourceDirectory + "/openapi/documentation/generated.json");
-        contextProcessor.process(diff);
-
-        renderMarkDown(diff);
-        renderHtml(diff);
-
-        Assert.assertEquals(0, diff.getChangedOperations().size());
-        Assert.assertEquals(0, diff.getMissingEndpoints().size());
-        Assert.assertEquals(0, diff.getDeprecatedEndpoints().size());
     }
-
-    private void renderMarkDown(ChangedOpenApi diff) throws IOException {
-        String render = new MarkdownRender().render(diff);
-        FileWriter fw = new FileWriter(
-                resourceDirectory + "/openapi/diff/api_diff-" + diff.getNewSpecOpenApi().getInfo().getVersion() + ".md");
-        fw.write(render);
-        fw.close();
+    @Test
+    public void apiContractTestV2() throws Exception {
+        this.executeContractTest(
+                "v2",
+                ".diffignore.yaml",
+                "/openapi/documentation/original.yml"
+        );
     }
-
-    private void renderHtml(ChangedOpenApi diff) throws IOException {
-        String render = new HtmlRender().render(diff);
-        FileWriter fw = new FileWriter(
-                resourceDirectory + "/openapi/diff/api_diff-" + diff.getNewSpecOpenApi().getInfo().getVersion() + ".html");
-        fw.write(render);
-        fw.close();
-    }
-
 }

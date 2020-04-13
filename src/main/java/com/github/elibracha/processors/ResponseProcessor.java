@@ -101,7 +101,9 @@ public class ResponseProcessor {
 
         if(changedResponse.getContent() != null)
         	changedResponse.getContent().getChanged().keySet().removeAll(toRemove);
-
+            else {
+                return true;
+        }
         return (changedResponse.getContent().getIncreased() == null ||
                 changedResponse.getContent().getIncreased().size() == 0) &&
                 (changedResponse.getContent().getMissing() == null ||
