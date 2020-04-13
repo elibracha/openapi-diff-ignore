@@ -15,43 +15,44 @@ import java.util.List;
 @RequestMapping("/v1")
 public class PetControllerV1 implements PetApi {
 
-    @Override
-    public ResponseEntity<Pet> addPet(@Valid Pet pet) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Pet> addPet(@Valid Pet pet) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<Void> deletePet(Long petId, String apiKey) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Void> deletePet(Long petId, String apiKey) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<List<Pet>> findPetsByStatus(@Valid String status) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<List<Pet>> findPetsByStatus(@Valid String status) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<List<Pet>> findPetsByTags(@Valid List<String> tags) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<List<Pet>> findPetsByTags(@Valid List<String> tags) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<Pet> getPetById(Long petId) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Pet> getPetById(Long petId) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<Pet> updatePet(@Valid Pet pet) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Pet> updatePet(@Valid Pet pet) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<Void> updatePetWithForm(Long petId, @Valid String name, @Valid String status) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<Void> updatePetWithForm(Long petId, @Valid String name, @Valid String status) {
+		return null;
+	}
 
-    @Override
-    public ResponseEntity<ModelApiResponse> uploadFile(Long petId, @Valid String additionalMetadata, @Valid Resource body) {
-        return null;
-    }
+	@Override
+	public ResponseEntity<ModelApiResponse> uploadFile(Long petId, @Valid String additionalMetadata,
+			@Valid Resource body) {
+		return null;
+	}
 }
