@@ -99,7 +99,7 @@ public class ResponseProcessor {
             }
         }
 
-        if(changedResponse.getContent() != null)
+        if(changedResponse.getContent() != null && changedResponse.getContent().getChanged() != null)
         	changedResponse.getContent().getChanged().keySet().removeAll(toRemove);
 
         return (changedResponse.getContent().getIncreased() == null ||
