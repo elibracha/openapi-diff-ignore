@@ -27,27 +27,40 @@ for more information about [OpenApi-diff-ignore](https://github.com/elibracha/op
 If you want to run, you'll need:
 - Java 1.8+
 - Maven 3.x.x or later
-- Run Maven, specifying a location into which the completed Maven distro should be installed:
+- Run Maven, specifying a location into which the completed Maven distro should be installed.
+###Two ways to run
+1.Using Junit, and checkout our test to see how its works.
 ```
 ./mvn clean install
 ```
--------
-  ## How to use CLI
--------
-//NOT READY YET FROM HERE// ABOUT CLI
 
-need to show how to run the cli +example
+
+2.Using [OpenApi-diff](https://github.com/elibracha/openapi-diff). this is Command line tool to detect breaking changes between two openapi specifications(swaggers).
+ ####How to use the cli
+ - download the jar file,and open CMD at location of jar.
+```
+java -jar openapi-diff-2.3.1-SNAPSHOT.jar <old swagger> <new swagger>
+```
+####Simple example:
+
+```
+java -jar openapi-diff-2.3.1-SNAPSHOT.jar original.yml generated.json -i --ignore-path .diffignore.yaml
+```
+-------
 
 ##  Command Line
 
 ```bash
-$ openapi-diff --help
 usage: openapi-diff <old> <new>
     --debug                     Print debugging information
     --error                     Print error information
+    --fail-on-incompatible      Fail only if API changes broke backward
+                                compatibility
  -h,--help                      print this message
     --header <property=value>   use given header for authorisation
     --html <file>               export diff as html in given file
+ -i                             activate diff ignore
+    --ignore-path <file>        path to diff ignore file
     --info                      Print additional information
  -l,--log <level>               use given level for log (TRACE, DEBUG,
                                 INFO, WARN, ERROR, OFF). Default: ERROR
@@ -58,7 +71,6 @@ usage: openapi-diff <old> <new>
     --query <property=value>    use query param for authorisation
     --state                     Only output diff state: no_changes,
                                 incompatible, compatible
-    --fail-on-incompatible      Fail only if API changes broke backward compatibility
     --trace                     be extra verbose
     --version                   print the version information and exit
     --warn                      Print warning information
