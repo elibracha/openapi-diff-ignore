@@ -21,12 +21,12 @@ public abstract class AbstractChangeTest {
 
         ChangedOpenApi changedOpenApi = OpenApiCompare.fromLocations(originalPath, generatedPath);
 
-        ChangedOpenApi changedOpenApiAfter = contextProcessor.process(changedOpenApi);
+        contextProcessor.process(changedOpenApi);
 
 
         String html =
                 new HtmlRender("Changelog", "http://deepoove.com/swagger-diff/stylesheets/demo.css")
-                        .render(changedOpenApiAfter);
+                        .render(changedOpenApi);
         try {
             FileWriter fw = new FileWriter(String.format("target/%s.html", outputPath));
             fw.write(html);
